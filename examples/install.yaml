@@ -1,0 +1,6 @@
+apiVersion: pkg.crossplane.io/v1
+kind: Provider
+metadata:
+  name: provider-confluent
+spec:
+  package: crossplane-contrib/provider-confluent:v0.1.0
