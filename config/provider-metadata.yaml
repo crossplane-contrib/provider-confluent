@@ -271,10 +271,10 @@ resources:
 
               # Option #2: Manage a single Kafka cluster in the same Terraform workspace
               $ terraform import confluent_kafka_topic.my_topic lkc-abc123/orders-123
-    confluent_kql_cluster Resource - terraform-provider-confluent:
+    confluent_ksql_cluster Resource - terraform-provider-confluent:
         subCategory: ""
-        name: confluent_kql_cluster Resource - terraform-provider-confluent
-        title: confluent_kql_cluster Resource - terraform-provider-confluent
+        name: confluent_ksql_cluster Resource - terraform-provider-confluent
+        title: confluent_ksql_cluster Resource - terraform-provider-confluent
         argumentDocs:
             api_version: '- (Required String) An API Version of the schema version of the ksqlDB cluster, for example, ksqldbcm/v2.'
             credential_identity: '(Required Configuration Block) supports the following:'
