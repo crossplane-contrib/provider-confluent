@@ -8,17 +8,19 @@ import (
 	"context"
 	"encoding/json"
 
+	"github.com/crossplane-contrib/provider-confluent/apis/v1beta1"
 	"github.com/crossplane/crossplane-runtime/pkg/resource"
 	"github.com/pkg/errors"
+	"github.com/upbound/upjet/pkg/terraform"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-
-	"github.com/upbound/upjet/pkg/terraform"
-
-	"github.com/crossplane-contrib/provider-confluent/apis/v1beta1"
 )
 
 const (
+	// ProviderConfig secret keys
+	cloudAPIKey    = "cloud_api_key"
+	cloudAPISecret = "cloud_api_secret"
+
 	// error messages
 	errNoProviderConfig     = "no providerConfigRef provided"
 	errGetProviderConfig    = "cannot get referenced ProviderConfig"
@@ -63,10 +65,10 @@ func TerraformSetupBuilder(version, providerSource, providerVersion string) terr
 		}
 
 		// Set credentials in Terraform provider configuration.
-		/*ps.Configuration = map[string]any{
-			"username": creds["username"],
-			"password": creds["password"],
-		}*/
+		ps.Configuration = map[string]any{
+			cloudAPIKey:    creds[cloudAPIKey],
+			cloudAPISecret: creds[cloudAPISecret],
+		}
 		return ps, nil
 	}
 }
