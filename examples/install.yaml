@@ -3,4 +3,6 @@ kind: Provider
 metadata:
   name: provider-confluent
 spec:
-  package: crossplane-contrib/provider-confluent:v0.1.0
+   package: "eureka-docker-prod.common.repositories.cloud.sap/nebulaworks/provider-confluent:0.0.1-local"
+   packagePullSecrets:
+     - name: eureka-registry

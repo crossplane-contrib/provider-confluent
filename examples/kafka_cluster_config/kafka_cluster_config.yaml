@@ -1,0 +1,9 @@
+apiVersion: confluent.crossplane.io/v1alpha1
+kind: ClusterConfig
+metadata:
+  name: lkc-abc123
+spec:
+  forProvider:
+    config:
+        auto.create.topics.enable: "true"
+        log.retention.ms: "604800123"

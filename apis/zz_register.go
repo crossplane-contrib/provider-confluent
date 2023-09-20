@@ -10,11 +10,7 @@ package apis
 import (
 	"k8s.io/apimachinery/pkg/runtime"
 
-	v1alpha1 "github.com/crossplane-contrib/provider-confluent/apis/api/v1alpha1"
-	v1alpha1confluent "github.com/crossplane-contrib/provider-confluent/apis/confluent/v1alpha1"
-	v1alpha1kafka "github.com/crossplane-contrib/provider-confluent/apis/kafka/v1alpha1"
-	v1alpha1role "github.com/crossplane-contrib/provider-confluent/apis/role/v1alpha1"
-	v1alpha1service "github.com/crossplane-contrib/provider-confluent/apis/service/v1alpha1"
+	v1alpha1 "github.com/crossplane-contrib/provider-confluent/apis/confluent/v1alpha1"
 	v1alpha1apis "github.com/crossplane-contrib/provider-confluent/apis/v1alpha1"
 	v1beta1 "github.com/crossplane-contrib/provider-confluent/apis/v1beta1"
 )
@@ -23,10 +19,6 @@ func init() {
 	// Register the types with the Scheme so the components can map objects to GroupVersionKinds and back
 	AddToSchemes = append(AddToSchemes,
 		v1alpha1.SchemeBuilder.AddToScheme,
-		v1alpha1confluent.SchemeBuilder.AddToScheme,
-		v1alpha1kafka.SchemeBuilder.AddToScheme,
-		v1alpha1role.SchemeBuilder.AddToScheme,
-		v1alpha1service.SchemeBuilder.AddToScheme,
 		v1alpha1apis.SchemeBuilder.AddToScheme,
 		v1beta1.SchemeBuilder.AddToScheme,
 	)

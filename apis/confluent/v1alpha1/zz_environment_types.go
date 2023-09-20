@@ -13,7 +13,7 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
-type EnvironmentObservation struct {
+type EnvironmentObservation_2 struct {
 
 	// A human-readable name for the Environment.
 	DisplayName *string `json:"displayName,omitempty" tf:"display_name,omitempty"`
@@ -24,7 +24,7 @@ type EnvironmentObservation struct {
 	ResourceName *string `json:"resourceName,omitempty" tf:"resource_name,omitempty"`
 }
 
-type EnvironmentParameters struct {
+type EnvironmentParameters_2 struct {
 
 	// A human-readable name for the Environment.
 	// +kubebuilder:validation:Optional
@@ -34,13 +34,13 @@ type EnvironmentParameters struct {
 // EnvironmentSpec defines the desired state of Environment
 type EnvironmentSpec struct {
 	v1.ResourceSpec `json:",inline"`
-	ForProvider     EnvironmentParameters `json:"forProvider"`
+	ForProvider     EnvironmentParameters_2 `json:"forProvider"`
 }
 
 // EnvironmentStatus defines the observed state of Environment.
 type EnvironmentStatus struct {
 	v1.ResourceStatus `json:",inline"`
-	AtProvider        EnvironmentObservation `json:"atProvider,omitempty"`
+	AtProvider        EnvironmentObservation_2 `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true
