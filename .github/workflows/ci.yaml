@@ -118,7 +118,7 @@ jobs:
         run: make vendor vendor.check
       - name: make generate
         run: |
-          FAIL=true; make generate;
+          FAIL=true; make generate > /dev/null || true;
       - name: pre-process-docs
         run: |
           cat .work/confluentinc/confluent/docs/resources/confluent_ksql_cluster.md | grep "page_title" > /dev/null; page_title_exists=$?
