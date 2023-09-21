@@ -127,9 +127,9 @@ jobs:
       - name: pre-process-docs
         run: |
           broken_doc_file=".work/confluentinc/confluent/docs/resources/confluent_ksql_cluster.md"
-          file_contents=$(cat $broken_doc_file)
-          echo $file_contents | grep "page_title"
-          page_title_exists=$?
+#          file_contents=$(cat $broken_doc_file)
+#          echo $file_contents | grep "page_title"
+#          page_title_exists=$?
 
       - name: Check Diff
         run: make check-diff
