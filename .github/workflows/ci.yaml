@@ -139,7 +139,8 @@ jobs:
           fi
 
       - name: Check Diff
-        run: make check-diff
+        run: |
+          make generate && make check-diff
 
   unit-tests:
     runs-on: ubuntu-20.04
