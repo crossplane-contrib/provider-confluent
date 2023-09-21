@@ -130,6 +130,7 @@ jobs:
           broken_doc_file=".work/confluentinc/confluent/docs/resources/confluent_ksql_cluster.md"
           file_contents=$(cat $broken_doc_file)
           echo $file_contents | grep "page_title123"
+          exit $?
       - name: inject-doc-header-if-dne
         if: ${{ steps.pre-process-docs.outcome == 'failure' }}
         run: |
