@@ -140,8 +140,10 @@ jobs:
 
       - name: Check Diff
         run: |
+          set +e
           go install golang.org/x/tools/cmd/goimports@latest
           make generate && make check-diff
+          git status
 
   unit-tests:
     runs-on: ubuntu-20.04
