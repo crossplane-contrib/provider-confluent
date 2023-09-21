@@ -132,8 +132,10 @@ jobs:
           echo $file_contents | grep "page_title123"
           exit $?
       - name: inject-doc-header-if-dne
-        if: ${{ steps.pre-process-docs.outcome == 'failure' }}
+#        if: ${{ steps.pre-process-docs.outcome == 'failure' }}
         run: |
+          echo ${{ steps.pre-process-docs.outcome }}
+          echo "-------"
           broken_doc_file=".work/confluentinc/confluent/docs/resources/confluent_ksql_cluster.md"
           if [[ $page_title_exists -neq "0" ]]; then
             echo '---
