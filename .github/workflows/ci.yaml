@@ -120,6 +120,11 @@ jobs:
       - name: make generate
         run: |
           make generate > /dev/null || true
+      - name: debug
+        run: |
+          tree .work || true
+          tree ../.work || true
+          tree
       - name: pre-process-docs
         run: |
           file_contents=`cat ../.work/confluentinc/confluent/docs/resources/confluent_ksql_cluster.md`
