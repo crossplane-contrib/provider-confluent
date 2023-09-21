@@ -47,7 +47,7 @@ CONTROLLER_IMAGE="${BUILD_REGISTRY}/${PROJECT_NAME}-${SAFEHOSTARCH}"
 K8S_CLUSTER="${K8S_CLUSTER:-${BUILD_REGISTRY}-inttests}"
 
 CROSSPLANE_NAMESPACE="crossplane-system"
-PACKAGE_NAME="provider-gitlab"
+PACKAGE_NAME="provider-confluent"
 
 # cleanup on exit
 if [ "$skipcleanup" != true ]; then
