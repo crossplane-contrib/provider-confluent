@@ -116,9 +116,11 @@ jobs:
           restore-keys: ${{ runner.os }}-pkg-
       - name: Vendor Dependencies
         run: make vendor vendor.check
+      - name: make generate
+        run: |
+          FAIL=true; make generate;
       - name: pre-process-docs
         run: |
-          FAIL=true; make generate
           cat .work/confluentinc/confluent/docs/resources/confluent_ksql_cluster.md | grep "page_title" > /dev/null; page_title_exists=$?
           if [[ $page_title_exists -neq "0" ]]; then
           	@echo '---
