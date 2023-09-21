@@ -123,9 +123,12 @@ jobs:
       - name: debug
         run: |
           tree .work || true
+          cat .work/confluentinc/confluent/docs/resources/confluent_ksql_cluster.md
+
       - name: pre-process-docs
         run: |
-          file_contents=`cat .work/confluentinc/confluent/docs/resources/confluent_ksql_cluster.md`
+          cat .work/confluentinc/confluent/docs/resources/confluent_ksql_cluster.md
+          file_contents=$(cat .work/confluentinc/confluent/docs/resources/confluent_ksql_cluster.md)
           echo $file_contents | grep "page_title"
           page_title_exists=$?
           if [[ $page_title_exists -neq "0" ]]; then
