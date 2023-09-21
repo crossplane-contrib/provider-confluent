@@ -125,10 +125,11 @@ jobs:
           tree .work || true
 
       - name: pre-process-docs
+        continue-on-error: true
         run: |
           broken_doc_file=".work/confluentinc/confluent/docs/resources/confluent_ksql_cluster.md"
           file_contents=$(cat $broken_doc_file)
-          echo $file_contents | grep "page_title"
+          echo $file_contents | grep "page_title123"
           page_title_exists=$?
 #          if [[ $page_title_exists -neq "0" ]]; then
 #          	echo '---
