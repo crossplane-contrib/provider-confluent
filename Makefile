@@ -10,6 +10,7 @@ export TERRAFORM_PROVIDER_SOURCE := confluentinc/confluent
 export TERRAFORM_PROVIDER_REPO := https://github.com/confluentinc/terraform-provider-confluent
 export TERRAFORM_PROVIDER_VERSION := 1.28.0
 export TERRAFORM_PROVIDER_DOWNLOAD_NAME := terraform-provider-confluent
+export TERRAFORM_PROVIDER_DOWNLOAD_URL_PREFIX ?= $(TERRAFORM_PROVIDER_REPO)/releases/download/v$(TERRAFORM_PROVIDER_VERSION)
 export TERRAFORM_NATIVE_PROVIDER_BINARY := terraform-provider-confluent_1.28.0
 export TERRAFORM_DOCS_PATH := docs/resources
 
@@ -51,7 +52,7 @@ GO111MODULE = on
 # ====================================================================================
 # Setup Kubernetes tools
 
-UP_VERSION = v0.13.0
+UP_VERSION = v0.19.0
 UP_CHANNEL = stable
 -include build/makelib/k8s_tools.mk
 
@@ -134,6 +135,15 @@ run: go.build
 	@$(INFO) Running Crossplane locally out-of-cluster . . .
 	@# To see other arguments that can be provided, run the command with --help instead
 	$(GO_OUT_DIR)/provider --debug
+
+pull-docs:
+	@if [ ! -d "$(WORK_DIR)/$(TERRAFORM_PROVIDER_SOURCE)" ]; then \
+  		mkdir -p "$(WORK_DIR)/$(TERRAFORM_PROVIDER_SOURCE)" && \
+		git clone -c advice.detachedHead=false --depth 1 --filter=blob:none --branch "v$(TERRAFORM_PROVIDER_VERSION)" --sparse "$(TERRAFORM_PROVIDER_REPO)" "$(WORK_DIR)/$(TERRAFORM_PROVIDER_SOURCE)"; \
+	fi
+	@git -C "$(WORK_DIR)/$(TERRAFORM_PROVIDER_SOURCE)" sparse-checkout set "$(TERRAFORM_DOCS_PATH)"
+
+generate.init: $(TERRAFORM_PROVIDER_SCHEMA) pull-docs
 
 .PHONY: cobertura manifests submodules fallthrough test-integration run crds.clean
 

@@ -1,0 +1,20 @@
+apiVersion: confluent.crossplane.io/v1alpha1
+kind: APIKey
+metadata:
+  name: test-service-account-api-key
+spec:
+  providerConfigRef:
+    name: confluent-provider-config
+  forProvider:
+    displayName: "test-service-account-api-key"
+    description: "test-service-account-api-key example description"
+    owner:
+      - apiVersion: iam/v2
+        kind: ServiceAccount
+        id: sa-naj2ki
+    managedResource:
+      - apiVersion: cmk/v2
+        kind: Cluster
+        id: lkc-xmwdjg
+        environment:
+        - id: env-nwy7zv

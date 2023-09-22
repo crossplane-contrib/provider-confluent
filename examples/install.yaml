@@ -3,4 +3,6 @@ kind: Provider
 metadata:
   name: provider-confluent
 spec:
-  package: crossplane-contrib/provider-confluent:v0.1.0
+   package: "provider-package"
+   packagePullSecrets:
+     - name: eureka-registry
