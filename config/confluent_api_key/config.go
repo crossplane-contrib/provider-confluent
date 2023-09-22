@@ -9,12 +9,11 @@ func Configure(p *config.Provider) {
 	p.AddResourceConfigurator("confluent_api_key", func(r *config.Resource) {
 		// We need to override the default group that upjet generated for
 		r.ShortGroup = "confluent"
-		r.UseAsync = true
 		r.Kind = "APIKey"
+		r.UseAsync = true
 
 		r.Sensitive.AdditionalConnectionDetailsFn = func(attr map[string]any) (map[string][]byte, error) {
 			conn := map[string][]byte{}
-
 			if apiKeyID, ok := attr["id"].(string); ok {
 				conn["api_key_id"] = []byte(apiKeyID)
 			}
