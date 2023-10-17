@@ -104,6 +104,7 @@ jobs:
         with:
           version: ${{ env.GOLANGCI_VERSION }}
           args: --timeout=15m
+          skip-cache: true
   check-diff:
     runs-on: ubuntu-22.04
     needs: detect-noop
