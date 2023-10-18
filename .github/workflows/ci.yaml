@@ -107,7 +107,7 @@ jobs:
           skip-cache: true
   check-diff:
     runs-on: ubuntu-22.04
-    needs: detect-noop
+    needs: [detect-noop, lint]
     if: needs.detect-noop.outputs.noop != 'true'
 
     steps:
