@@ -11,7 +11,7 @@ on:
 env:
   # Common versions
   GO_VERSION: '1.20'
-  GOLANGCI_VERSION: 'v1.50.0'
+  GOLANGCI_VERSION: 'v1.54.2'
   DOCKER_BUILDX_VERSION: 'v0.8.2'
 
   # Common users. We can't run a step 'if secrets.XXX != ""' but we can run a
@@ -100,11 +100,11 @@ jobs:
       # We could run 'make lint' but we prefer this action because it leaves
       # 'annotations' (i.e. it comments on PRs to point out linter violations).
       - name: Lint
-        uses: golangci/golangci-lint-action@v1.54.2
+        uses: golangci/golangci-lint-action@3a919529898de77ec3da873e3063ca4b10e7f5cc # v3
         with:
           version: ${{ env.GOLANGCI_VERSION }}
           args: --timeout=15m
-          skip-cache: true
+          skip-cache: true # We do our own caching.
   check-diff:
     runs-on: ubuntu-22.04
     needs: [detect-noop, lint]
