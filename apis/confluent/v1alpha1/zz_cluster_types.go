@@ -19,6 +19,19 @@ type BasicObservation struct {
 type BasicParameters struct {
 }
 
+type ByokKeyObservation struct {
+
+	// The ID of the Confluent key that is used to encrypt the data in the Kafka cluster.
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+}
+
+type ByokKeyParameters struct {
+
+	// The ID of the Confluent key that is used to encrypt the data in the Kafka cluster.
+	// +kubebuilder:validation:Required
+	ID *string `json:"id" tf:"id,omitempty"`
+}
+
 type ClusterEnvironmentObservation struct {
 
 	// The unique identifier for the environment.
@@ -54,6 +67,8 @@ type ClusterObservation struct {
 	// The bootstrap endpoint used by Kafka clients to connect to the Kafka cluster.
 	BootstrapEndpoint *string `json:"bootstrapEndpoint,omitempty" tf:"bootstrap_endpoint,omitempty"`
 
+	ByokKey []ByokKeyObservation `json:"byokKey,omitempty" tf:"byok_key,omitempty"`
+
 	// The cloud service provider that runs the Kafka cluster.
 	Cloud *string `json:"cloud,omitempty" tf:"cloud,omitempty"`
 
@@ -61,6 +76,8 @@ type ClusterObservation struct {
 
 	// The name of the Kafka cluster.
 	DisplayName *string `json:"displayName,omitempty" tf:"display_name,omitempty"`
+
+	Enterprise []EnterpriseParameters `json:"enterprise,omitempty" tf:"enterprise,omitempty"`
 
 	// Environment objects represent an isolated namespace for your Confluent resources for organizational purposes.
 	Environment []ClusterEnvironmentObservation `json:"environment,omitempty" tf:"environment,omitempty"`
@@ -94,6 +111,9 @@ type ClusterParameters struct {
 	// +kubebuilder:validation:Optional
 	Basic []BasicParameters `json:"basic,omitempty" tf:"basic,omitempty"`
 
+	// +kubebuilder:validation:Optional
+	ByokKey []ByokKeyParameters `json:"byokKey,omitempty" tf:"byok_key,omitempty"`
+
 	// The cloud service provider that runs the Kafka cluster.
 	// +kubebuilder:validation:Optional
 	Cloud *string `json:"cloud,omitempty" tf:"cloud,omitempty"`
@@ -104,6 +124,9 @@ type ClusterParameters struct {
 	// The name of the Kafka cluster.
 	// +kubebuilder:validation:Optional
 	DisplayName *string `json:"displayName,omitempty" tf:"display_name,omitempty"`
+
+	// +kubebuilder:validation:Optional
+	Enterprise []EnterpriseParameters `json:"enterprise,omitempty" tf:"enterprise,omitempty"`
 
 	// Environment objects represent an isolated namespace for your Confluent resources for organizational purposes.
 	// +kubebuilder:validation:Optional
@@ -128,6 +151,9 @@ type DedicatedObservation struct {
 
 	// The ID of the encryption key that is used to encrypt the data in the Kafka cluster.
 	EncryptionKey *string `json:"encryptionKey,omitempty" tf:"encryption_key,omitempty"`
+
+	// The list of zones the cluster is in.
+	Zones []*string `json:"zones,omitempty" tf:"zones,omitempty"`
 }
 
 type DedicatedParameters struct {
@@ -139,6 +165,12 @@ type DedicatedParameters struct {
 	// The ID of the encryption key that is used to encrypt the data in the Kafka cluster.
 	// +kubebuilder:validation:Optional
 	EncryptionKey *string `json:"encryptionKey,omitempty" tf:"encryption_key,omitempty"`
+}
+
+type EnterpriseObservation struct {
+}
+
+type EnterpriseParameters struct {
 }
 
 type NetworkObservation struct {
