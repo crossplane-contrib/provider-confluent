@@ -97,7 +97,7 @@ func main() {
 		o.SecretStoreConfigGVK = &v1alpha1.StoreConfigGroupVersionKind
 		log.Info("Alpha feature enabled", "flag", features.EnableAlphaExternalSecretStores)
 
-		o.ESSOptions = &xpcontroller.ESSOptions{}
+		o.ESSOptions = &tjcontroller.ESSOptions{}
 		if *essTLSCertsPath != "" {
 			log.Info("ESS TLS certificates path is set. Loading mTLS configuration.")
 			tCfg, err := certificates.LoadMTLSConfig(filepath.Join(*essTLSCertsPath, "ca.crt"), filepath.Join(*essTLSCertsPath, "tls.crt"), filepath.Join(*essTLSCertsPath, "tls.key"), false)

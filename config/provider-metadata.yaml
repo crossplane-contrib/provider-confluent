@@ -30,6 +30,73 @@ resources:
 
               # Option #2: Cloud API Key
               $ terraform import confluent_api_key.example_cloud_api_key "4UEXOMMWIBE5KZQG"
+    confluent_business_metadata Resource - terraform-provider-confluent:
+        subCategory: ""
+        name: confluent_business_metadata Resource - terraform-provider-confluent
+        title: confluent_business_metadata Resource - terraform-provider-confluent
+        argumentDocs:
+            applicableEntityTypes: '- (Optional String) The entity types that the attribute is applicable, it always returns [\"cf_entity\"].'
+            attribute_definition: '- (Optional List) The list of attribute definitions (see Business Metadata for more details):'
+            credentials: '(Optional Configuration Block) supports the following:'
+            default_value: '- (Optional String) The default value of this attribute.'
+            description: '- (Optional String) The description of this attribute.'
+            id: '- (Required String) The ID of the Schema Registry cluster, for example, lsrc-abc123.'
+            is_optional: '- (Optional Boolean) An optional flag to control whether the attribute should be optional or required. The default value is false.'
+            key: '- (Required String) The Schema Registry API Key.'
+            maxStrLength: '- (Optional String) The maximum length of the string value, it always returns 5000.'
+            name: '- (Required String) The name of the Business Metadata, for example, PII. The name must not be empty and consist of a letter followed by a sequence of letter, number, space, or _ characters.'
+            options: '- (Optional Map) Block for the attribute options:'
+            rest_endpoint: '- (Optional String) The REST endpoint of the Schema Registry cluster, for example, https://psrc-00000.us-central1.gcp.confluent.cloud:443).'
+            schema_registry_cluster: '- (Optional Configuration Block) supports the following:'
+            secret: '- (Required String, Sensitive) The Schema Registry API Secret.'
+            type: '- (Required String) The type of the attribute, it always returns string.'
+            version: '- (Required Integer) The version of the Business Metadata, for example, 1.'
+        importStatements:
+            - |-
+              $ export IMPORT_SCHEMA_REGISTRY_API_KEY="<schema_registry_api_key>"
+              $ export IMPORT_SCHEMA_REGISTRY_API_SECRET="<schema_registry_api_secret>"
+              $ export IMPORT_SCHEMA_REGISTRY_REST_ENDPOINT="<schema_registry_rest_endpoint>"
+              $ terraform import confluent_business_metadata.pii lsrc-8wrx70/PII
+    confluent_business_metadata_binding Resource - terraform-provider-confluent:
+        subCategory: ""
+        name: confluent_business_metadata_binding Resource - terraform-provider-confluent
+        title: confluent_business_metadata_binding Resource - terraform-provider-confluent
+        argumentDocs:
+            attributes: '- (Optional Map) The block of key-value pair attributes.'
+            business_metadata_name: '- (Required String) The name of the Business Metadata to be applied, for example, PII. The name must not be empty and consist of a letter followed by a sequence of letter, number, space, or _ characters.'
+            credentials: '(Optional Configuration Block) supports the following:'
+            entity_name: '- (Required String) The qualified name of the entity., for example, ${confluent_schema_registry_cluster.main.id}:.:${confluent_schema.purchase.schema_identifier}, ${confluent_schema_registry_cluster.main.id}:${confluent_kafka_cluster.basic.id}:${confluent_kafka_topic.purchase.topic_name}.'
+            entity_type: '- (Required String) The entity type, for example, sr_schema. Refer to the Entity types to learn more about entity types.'
+            id: '- (Required String) The ID of the Schema Registry cluster, for example, lsrc-abc123.'
+            key: '- (Required String) The Schema Registry API Key.'
+            rest_endpoint: '- (Optional String) The REST endpoint of the Schema Registry cluster, for example, https://psrc-00000.us-central1.gcp.confluent.cloud:443).'
+            schema_registry_cluster: '- (Optional Configuration Block) supports the following:'
+            secret: '- (Required String, Sensitive) The Schema Registry API Secret.'
+        importStatements:
+            - |-
+              $ export IMPORT_SCHEMA_REGISTRY_API_KEY="<schema_registry_api_key>"
+              $ export IMPORT_SCHEMA_REGISTRY_API_SECRET="<schema_registry_api_secret>"
+              $ export IMPORT_SCHEMA_REGISTRY_REST_ENDPOINT="<schema_registry_rest_endpoint>"
+              $ terraform import confluent_business_metadata_binding.main lsrc-8wrx70/PII/lsrc-8wrx70:.:100001/sr_schema
+    confluent_byok_key Resource - terraform-provider-confluent:
+        subCategory: ""
+        name: confluent_byok_key Resource - terraform-provider-confluent
+        title: confluent_byok_key Resource - terraform-provider-confluent
+        argumentDocs:
+            application_id: '- (Optional String) The Application ID created for this key-environment combination.'
+            aws: '(Optional Configuration Block) supports the following:'
+            azure: '(Optional Configuration Block) supports the following:'
+            id: '- (Required String) The ID of the BYOK key, for example, cck-abcde.'
+            key_arn: '- (Required String) The Amazon Resource Name (ARN) of an AWS KMS key.'
+            key_identifier: '- (Required String) The unique Key Object Identifier URL of an Azure Key Vault key.'
+            key_vault_id: '- (Required String) Key Vault ID containing the key.'
+            roles: '- (Optional List of Strings) The Amazon Resource Names (ARNs) of IAM Roles created for this key-environment'
+            tenant_id: '- (Required String) Tenant ID (uuid) hosting the Key Vault containing the key.'
+        importStatements:
+            - |-
+              $ export CONFLUENT_CLOUD_API_KEY="<cloud_api_key>"
+              $ export CONFLUENT_CLOUD_API_SECRET="<cloud_api_secret>"
+              $ terraform import confluent_byok_key.aws_key cck-abcde
     confluent_cluster_link Resource - terraform-provider-confluent:
         subCategory: ""
         name: confluent_cluster_link Resource - terraform-provider-confluent
@@ -39,18 +106,21 @@ resources:
             config: '- (Optional Map) The custom cluster link settings to set:'
             connection_mode: (Optional String) The connection mode of the cluster link. The supported values are "INBOUND" and "OUTBOUND". Defaults to "OUTBOUND".
             credentials: '(Optional Configuration Block) supports the following:'
-            destination_kafka_cluster: '- (Required Configuration Block) supports the following:'
+            destination_kafka_cluster: '- (Optional Configuration Block) supports the following:'
             id: '- (Required String) The ID of the source Kafka cluster, for example, lkc-abc123.'
             key: '- (Required String) The Kafka API Key.'
-            link_mode: (Optional String) The mode of the cluster link. The supported values are "DESTINATION" and "SOURCE". Defaults to "DESTINATION".
+            link_mode: (Optional String) The mode of the cluster link. The supported values are "DESTINATION", "SOURCE", and "BIDIRECTIONAL". Defaults to "DESTINATION".
             link_name: '- (Required String) The name of the cluster link, for example, my-cluster-link.'
+            local_kafka_cluster: '- (Optional Configuration Block) supports the following:'
             name: '- (Required String) The setting name, for example, acl.sync.ms.'
+            remote_kafka_cluster: '- (Optional Configuration Block) supports the following:'
             rest_endpoint: '- (Optional String) The REST endpoint of the source Kafka cluster, for example, https://pkc-00000.us-central1.gcp.confluent.cloud:443).'
             secret: '- (Required String, Sensitive) The Kafka API Secret.'
-            source_kafka_cluster: '- (Required Configuration Block) supports the following:'
+            source_kafka_cluster: '- (Optional Configuration Block) supports the following:'
             value: '- (Required String) The setting value, for example, 12345.'
         importStatements:
             - |-
+              # Option #1 when using source-initiated or destination-initiated cluster links
               $ export IMPORT_SOURCE_KAFKA_BOOTSTRAP_ENDPOINT="<source_kafka_bootstrap_endpoint>"
               $ export IMPORT_SOURCE_KAFKA_API_KEY="<source_kafka_api_key>"
               $ export IMPORT_SOURCE_KAFKA_API_SECRET="<source_kafka_api_secret>"
@@ -58,6 +128,15 @@ resources:
               $ export IMPORT_DESTINATION_KAFKA_API_KEY="<destination_kafka_api_key>"
               $ export IMPORT_DESTINATION_KAFKA_API_SECRET="<destination_kafka_api_secret>"
               $ terraform import confluent_cluster_link.my_cluster_link my-cluster-link/DESTINATION/OUTBOUND/lkc-abc123/lkc-xyz456
+            - |-
+              # Option #2 when using bidirectional cluster links
+              $ export IMPORT_LOCAL_KAFKA_BOOTSTRAP_ENDPOINT="<local_kafka_bootstrap_endpoint>"
+              $ export IMPORT_LOCAL_KAFKA_API_KEY="<local_kafka_api_key>"
+              $ export IMPORT_LOCAL_KAFKA_API_SECRET="<local_kafka_api_secret>"
+              $ export IMPORT_REMOTE_KAFKA_REST_ENDPOINT="<remote_kafka_rest_endpoint>"
+              $ export IMPORT_REMOTE_KAFKA_API_KEY="<remote_kafka_api_key>"
+              $ export IMPORT_REMOTE_KAFKA_API_SECRET="<remote_kafka_api_secret>"
+              $ terraform import confluent_cluster_link.my_cluster_link my-cluster-link/BIDIRECTIONAL/OUTBOUND/lkc-abc123/lkc-xyz456
     confluent_connector Resource - terraform-provider-confluent:
         subCategory: ""
         name: confluent_connector Resource - terraform-provider-confluent
@@ -76,6 +155,24 @@ resources:
               $ export CONFLUENT_CLOUD_API_KEY="<cloud_api_key>"
               $ export CONFLUENT_CLOUD_API_SECRET="<cloud_api_secret>"
               $ terraform import confluent_connector.my_connector "env-abc123/lkc-abc123/S3_SINKConnector_0"
+    confluent_custom_connector_plugin Resource - terraform-provider-confluent:
+        subCategory: ""
+        name: confluent_custom_connector_plugin Resource - terraform-provider-confluent
+        title: confluent_custom_connector_plugin Resource - terraform-provider-confluent
+        argumentDocs:
+            connector_class: '- (Required String) The Java class or alias for the connector. You can get the connector class from the connector documentation provided by the developer.'
+            connector_type: '- (Required String) The type of the Custom Connector Plugin. Accepted values are: SOURCE, SINK.'
+            description: '- (Optional String) The description of the Custom Connector Plugin.'
+            display_name: '- (Required String) The name of the Custom Connector Plugin.'
+            documentation_link: '- (Optional String) The documentation link of the Custom Connector Plugin.'
+            filename: '- (Required String) The path to the Custom Connector Plugin archive to be uploaded. Accepted archive formats are: .jar, .zip.'
+            id: '- (Required String) The ID of the Custom Connector Plugin, for example, ccp-abc123xyz.'
+            sensitive_config_properties: '- (Required String) The list of sensitive properties. A sensitive property is a connector configuration property that must be hidden after a user enters the property value when setting up the connector, for example, passwords, keys, and tokens. Refer to the developer documentation and add all required and optional sensitive properties that a user could potentially configure for the connector. Marking a property as sensitive ensures that these fields are handled appropriately within the Confluent infrastructure. This includes masking fields, for example in exception logging, and encrypting field values in the underlying data store. You must identify all sensitive properties. Failure to identify sensitive properties can result in the sensitive property value being stored in plain text rather than in encrypted format. Only add connector-specific sensitive properties. Kafka keys, passwords, and service account information should not be entered here.'
+        importStatements:
+            - |-
+              $ export CONFLUENT_CLOUD_API_KEY="<cloud_api_key>"
+              $ export CONFLUENT_CLOUD_API_SECRET="<cloud_api_secret>"
+              $ terraform import confluent_custom_connector_plugin.main ccp-abc123xyz
     confluent_environment Resource - terraform-provider-confluent:
         subCategory: ""
         name: confluent_environment Resource - terraform-provider-confluent
@@ -89,6 +186,27 @@ resources:
               $ export CONFLUENT_CLOUD_API_KEY="<cloud_api_key>"
               $ export CONFLUENT_CLOUD_API_SECRET="<cloud_api_secret>"
               $ terraform import confluent_environment.my_env env-abc123
+    confluent_flink_compute_pool Resource - terraform-provider-confluent:
+        subCategory: ""
+        name: confluent_flink_compute_pool Resource - terraform-provider-confluent
+        title: confluent_flink_compute_pool Resource - terraform-provider-confluent
+        argumentDocs:
+            api_version: '- (Required String) The API Version of the schema version of the Flink Compute Pool, for example, fcpm/v2.'
+            cloud: '- (Required String) The cloud service provider that runs the Flink Compute Pool.'
+            current_cfu: '- (Required Integer) The number of Confluent Flink Units (CFUs) currently allocated to this Flink compute pool.'
+            display_name: '- (Required String) The name of the Flink Compute Pool.'
+            environment: '(Required Configuration Block) supports the following:'
+            id: '- (Required String) The ID of the Environment that the Flink Compute Pool belongs to, for example, env-abc123.'
+            kind: '- (Required String) The kind of the Flink Compute Pool, for example, ComputePool.'
+            max_cfu: '- (Required Integer) Maximum number of Confluent Flink Units (CFUs) that the Flink compute pool should auto-scale to. The accepted values are: 5 and 10.'
+            region: '- (Required String) The cloud service provider region that hosts the Flink Compute Pool.'
+            resource_name: '- (Required String) The Confluent Resource Name of the Flink Compute Pool.'
+            rest_endpoint: '- (Required String) The API endpoint of the Flink Compute Pool.'
+        importStatements:
+            - |-
+              $ export CONFLUENT_CLOUD_API_KEY="<cloud_api_key>"
+              $ export CONFLUENT_CLOUD_API_SECRET="<cloud_api_secret>"
+              $ terraform import confluent_flink_compute_pool.main env-abc123/lfcp-abc123
     confluent_identity_pool Resource - terraform-provider-confluent:
         subCategory: ""
         name: confluent_identity_pool Resource - terraform-provider-confluent
@@ -120,6 +238,24 @@ resources:
               $ export CONFLUENT_CLOUD_API_KEY="<cloud_api_key>"
               $ export CONFLUENT_CLOUD_API_SECRET="<cloud_api_secret>"
               $ terraform import confluent_identity_provider.example op-abc123
+    confluent_invitation Resource - terraform-provider-confluent:
+        subCategory: ""
+        name: confluent_invitation Resource - terraform-provider-confluent
+        title: confluent_invitation Resource - terraform-provider-confluent
+        argumentDocs:
+            accepted_at: '- (Optional String) The timestamp that the invitation was accepted.'
+            auth_type: '- (Optional String) Accepted values are: AUTH_TYPE_LOCAL and AUTH_TYPE_SSO. The user/invitee''s authentication type. Note that only the OrganizationAdmin role can invite AUTH_TYPE_LOCAL users to SSO organizations. The user''s auth_type is set as AUTH_TYPE_SSO by default if the organization has SSO enabled. Otherwise, the user''s auth_type is AUTH_TYPE_LOCAL by default.'
+            creator: '- (Required Configuration Block) supports the following:'
+            email: '- (Required String) The user/invitee''s email address.'
+            expires_at: '- (Optional String) The timestamp that the invitation will expire.'
+            id: '- (Required String) The ID of the Invitation, for example, i-zyw30.'
+            status: '- (Optional String) The status of invitations. Accepted values are: INVITE_STATUS_SENT,INVITE_STATUS_STAGED,INVITE_STATUS_ACCEPTED,INVITE_STATUS_EXPIRED, and INVITE_STATUS_DEACTIVATED.'
+            user: '- (Required Configuration Block) supports the following:'
+        importStatements:
+            - |-
+              $ export CONFLUENT_CLOUD_API_KEY="<cloud_api_key>"
+              $ export CONFLUENT_CLOUD_API_SECRET="<cloud_api_secret>"
+              $ terraform import confluent_invitation.main i-gxxn1
     confluent_kafka_acl Resource - terraform-provider-confluent:
         subCategory: ""
         name: confluent_kafka_acl Resource - terraform-provider-confluent
@@ -130,19 +266,17 @@ resources:
             id: '- (Required String) The ID of the Kafka cluster, for example, lkc-abc123.'
             kafka_cluster: '- (Optional Configuration Block) supports the following:'
             key: '- (Required String) The Kafka API Key.'
-            operation: '- (Required String) The operation type for the ACL. Accepted values are: UNKNOWN, ANY, ALL, READ, WRITE, CREATE, DELETE, ALTER, DESCRIBE, CLUSTER_ACTION, DESCRIBE_CONFIGS, ALTER_CONFIGS, and IDEMPOTENT_WRITE.  See Authorization using ACLs to find mappings of (resource_type, operation) to one or more Kafka APIs or request types.'
+            operation: '- (Required String) The operation type for the ACL. Accepted values are: ALL, READ, WRITE, CREATE, DELETE, ALTER, DESCRIBE, CLUSTER_ACTION, DESCRIBE_CONFIGS, ALTER_CONFIGS, and IDEMPOTENT_WRITE.  See Authorization using ACLs to find mappings of (resource_type, operation) to one or more Kafka APIs or request types.'
             pattern_type: '- (Required String) The pattern type for the ACL. Accepted values are: LITERAL and PREFIXED.'
-            permission: '- (Required String) The permission for the ACL. Accepted values are: UNKNOWN, ANY, DENY, and ALLOW.'
+            permission: '- (Required String) The permission for the ACL. Accepted values are: DENY and ALLOW.'
             principal: '- (Required String) The principal for the ACL.'
             resource_name: '- (Required String) The resource name for the ACL. Must be kafka-cluster if resource_type equals to CLUSTER.'
-            resource_type: '- (Required String) The type of the resource. Accepted values are: UNKNOWN, ANY, TOPIC, GROUP, CLUSTER, TRANSACTIONAL_ID, DELEGATION_TOKEN. See Authorization using ACLs to find definitions of resource types and mappings of (resource_type, operation) to one or more Kafka APIs or request types.'
+            resource_type: '- (Required String) The type of the resource. Accepted values are: TOPIC, GROUP, CLUSTER, TRANSACTIONAL_ID, DELEGATION_TOKEN. See Authorization using ACLs to find definitions of resource types and mappings of (resource_type, operation) to one or more Kafka APIs or request types.'
             rest_endpoint: '- (Optional String) The REST endpoint of the Kafka cluster, for example, https://pkc-00000.us-central1.gcp.confluent.cloud:443.'
             secret: '- (Required String, Sensitive) The Kafka API Secret.'
         importStatements:
             - |-
               # Option #1: Manage multiple Kafka clusters in the same Terraform workspace
-              $ export CONFLUENT_CLOUD_API_KEY="<cloud_api_key>"
-              $ export CONFLUENT_CLOUD_API_SECRET="<cloud_api_secret>"
               $ export IMPORT_KAFKA_API_KEY="<kafka_api_key>"
               $ export IMPORT_KAFKA_API_SECRET="<kafka_api_secret>"
               $ export IMPORT_KAFKA_REST_ENDPOINT="<kafka_rest_endpoint>"
@@ -159,10 +293,10 @@ resources:
         argumentDocs:
             description: '- (Optional String) The description of the Kafka Client Quota.'
             display_name: '- (Required String) The name of the Kafka Client Quota.'
-            egress_byte_rate: '- (Optional String) The egress throughput limit in bytes per second.'
+            egress_byte_rate: '- (Required String) The egress throughput limit in bytes per second.'
             environment: '(Required Configuration Block) supports the following:'
             id: '- (Required String) The ID of the Kafka Cluster where the Kafka Client Quota is applied, for example, lkc-abc123.'
-            ingress_byte_rate: '- (Optional String) The ingress throughput limit in bytes per second.'
+            ingress_byte_rate: '- (Required String) The ingress throughput limit in bytes per second.'
             kafka_cluster: '(Required Configuration Block) supports the following:'
             principals: '- (Required Set of Strings) The list of principals (i.e., service accounts or identity pools) to apply the Kafka Client Quota to. Use the special name, "", to represent the default quota for all users and service accounts.'
             throughput: '(Required Configuration Block) supports the following:'
@@ -179,6 +313,7 @@ resources:
             api_version: '- (Required String) An API Version of the schema version of the Kafka cluster, for example, cmk/v2.'
             availability: '- (Required String) The availability zone configuration of the Kafka cluster. Accepted values are: SINGLE_ZONE and MULTI_ZONE.'
             basic: '- (Optional Configuration Block) The configuration of the Basic Kafka cluster.'
+            basic.byok_key: '(Optional Configuration Block) supports the following:'
             basic.environment: '(Required Configuration Block) supports the following:'
             basic.network: '(Optional Configuration Block) supports the following:'
             bootstrap_endpoint: '- (Required String) The bootstrap endpoint used by Kafka clients to connect to the Kafka cluster. (e.g., SASL_SSL://pkc-00000.us-central1.gcp.confluent.cloud:9092).'
@@ -186,13 +321,18 @@ resources:
             cloud: '- (Required String) The cloud service provider that runs the Kafka cluster. Accepted values are: AWS, AZURE, and GCP.'
             dedicated: '- (Optional Configuration Block) The configuration of the Dedicated Kafka cluster. It supports the following:'
             display_name: '- (Required String) The name of the Kafka cluster.'
-            encryption_key: '- (Optional String) The ID of the encryption key that is used to encrypt the data in the Kafka cluster, for example, arn:aws:kms:us-west-2:111122223333:key/1234abcd-12ab-34cd-56ef-1234567890ab (key Amazon Resource Name) for AWS or projects/my-test-project/locations/global/keyRings/test-byok/cryptoKeys/test for GCP. Append required permissions to the key policy before creating a Kafka cluster, see Encrypt Confluent Cloud Clusters using Self-Managed Keys for more details. At the moment, self-managed encryption keys are only available for the Dedicated clusters on AWS or GCP.'
+            enterprise: '- (Optional Configuration Block) The configuration of the Enterprise Kafka cluster.'
             id: '- (Required String) The ID of the Environment that the Kafka cluster belongs to, for example, env-abc123.'
             kind: '- (Required String) A kind of the Kafka cluster, for example, Cluster.'
             rbac_crn: '- (Required String) The Confluent Resource Name of the Kafka cluster, for example, crn://confluent.cloud/organization=1111aaaa-11aa-11aa-11aa-111111aaaaaa/environment=env-abc123/cloud-cluster=lkc-abc123.'
             region: '- (Required String) The cloud service provider region where the Kafka cluster is running, for example, us-west-2. See Cloud Providers and Regions for a full list of options for AWS, Azure, and GCP.'
             rest_endpoint: '- (Required String) The REST endpoint of the Kafka cluster (e.g., https://pkc-00000.us-central1.gcp.confluent.cloud:443).'
             standard: '- (Optional Configuration Block) The configuration of the Standard Kafka cluster.'
+            zones: |-
+                - (Required List of String) The list of zones the cluster is in.
+                On AWS, zones are AWS AZ IDs, for example, use1-az3.
+                On GCP, zones are GCP zones, for example, us-central1-c.
+                On Azure, zones are Confluent-chosen names (for example, 1, 2, 3) since Azure does not have universal zone identifiers.
         importStatements:
             - |-
               $ export CONFLUENT_CLOUD_API_KEY="<cloud_api_key>"
@@ -302,29 +442,33 @@ resources:
             account: '- (Required String) The AWS account ID associated with the Confluent Cloud VPC.'
             aws: '- (Optional Configuration Block) The AWS-specific network details if available. It supports the following:'
             azure: '- (Optional Configuration Block) The Azure-specific network details if available. It supports the following:'
-            cidr: '- (Required String) The IPv4 CIDR block to used for the network. Must be /16. Required for VPC peering and AWS TransitGateway.'
+            cidr: '- (Optional String) The IPv4 CIDR block to be used for the network. Must be /16. Required for VPC peering and AWS TransitGateway.'
             cloud: '- (Required String) The cloud service provider in which the network exists. Accepted values are: AWS, AZURE, and GCP.'
-            connection_types: '- (Required List of String) The list of connection types that may be used with the network. Accepted connection types are: PEERING, TRANSITGATEWAY, and PRIVATELINK.'
             display_name: '- (Required String) The name of the Network.'
-            dns_config: '(Optional Configuration Block) Network DNS config. It applies only to the PRIVATELINK network connection type. It supports the following:'
+            dns_config.resolution: |-
+                - (Required String) Network DNS resolution.
+                When resolution is CHASED_PRIVATE, clusters in this network require both public and private DNS to resolve cluster endpoints.
+                When resolution is PRIVATE, clusters in this network only require private DNS to resolve cluster endpoints.
             dns_domain: '- (Optional String) The root DNS domain for the network, for example, pr123a.us-east-2.aws.confluent.cloud if applicable. Present on Networks that support Private Link.'
-            environment: '(Required Configuration Block) supports the following:'
+            environment.id: '- (Required String) The ID of the Environment that the Network belongs to, for example, env-abc123.'
             gcp: '- (Optional Configuration Block) The GCP-specific network details if available. It supports the following:'
-            id: '- (Required String) The ID of the Environment that the Network belongs to, for example, env-abc123.'
+            id: '- (Required String) The ID of the Network, for example, n-abc123.'
             private_link_endpoint_service: '- (Optional String) The endpoint service of the Confluent Cloud VPC (used for PrivateLink) if available.'
             private_link_service_aliases: '- (Optional Map) The mapping of zones to Private Link Service Aliases if available. Keys are zone names, for example, 1 and values are Azure Private Link Service Aliases, for example, s-nk99e-privatelink-1.8c43dcd0-695c-1234-bc35-11fe6abb303a.centralus.azure.privatelinkservice.'
             private_service_connect_service_attachments: '- (Optional Map) The mapping of zones to Private Service Connect Service Attachments if available. Keys are zones and values are GCP Private Service Connect service attachment.'
             project: '- (Required String) The GCP Project ID associated with the Confluent Cloud VPC.'
             region: '- (Required String) The cloud provider region where the network exists.'
-            resolution: |-
-                - (Required String) Network DNS resolution.
-                When resolution is CHASED_PRIVATE, clusters in this network require both public and private DNS to resolve cluster endpoints.
-                When resolution is PRIVATE, clusters in this network only require private DNS to resolve cluster endpoints.
+            reserved_cidr: '- (Optional String) The reserved IPv4 CIDR block to be used for the network. Must be /24. If not specified, Confluent Cloud Network uses 172.20.255.0/24.'
             resource_name: '- (Required String) The Confluent Resource Name of the Network.'
             vpc: '- (Required String) The Confluent Cloud VPC ID.'
             vpc_network: '- (Required String) The network name of the Confluent Cloud VPC.'
             zonal_subdomains: '- (Optional Map) The DNS subdomain for each zone. Present on networks that support Private Link. Keys are zone names, for example, use2-az1 and values are DNS domains, for example, use2-az1.pr123a.us-east-2.aws.confluent.cloud.'
-            zones: |-
+            zone_id: '- (Required String) Cloud provider zone ID.'
+            zone_info: '(Optional Configuration Blocks) Each item represents information related to a single zone. It supports the following:'
+            zone_info.connection_types: '- (Required List of String) The list of connection types that may be used with the network. Accepted connection types are: PEERING, TRANSITGATEWAY, and PRIVATELINK.'
+            zone_info.dns_config: '(Optional Configuration Block) Network DNS config. It applies only to the PRIVATELINK network connection type. When omitted, resolution defaults to CHASED_PRIVATE. It supports the following:'
+            zone_info.environment: '(Required Configuration Block) supports the following:'
+            zone_info.zones: |-
                 - (Optional List of String) The 3 availability zones for this network. They can optionally be specified for AWS networks
                 used with PrivateLink, for GCP networks used with Private Service Connect, and for AWS and GCP
                 networks used with Peering. Otherwise, they are automatically chosen by Confluent Cloud.
@@ -336,6 +480,42 @@ resources:
               $ export CONFLUENT_CLOUD_API_KEY="<cloud_api_key>"
               $ export CONFLUENT_CLOUD_API_SECRET="<cloud_api_secret>"
               $ terraform import confluent_network.my_network env-abc123/n-abc123
+    confluent_network_link_endpoint Resource - terraform-provider-confluent:
+        subCategory: ""
+        name: confluent_network_link_endpoint Resource - terraform-provider-confluent
+        title: confluent_network_link_endpoint Resource - terraform-provider-confluent
+        argumentDocs:
+            description: '- (Optional String) The description of the Network Link Endpoint.'
+            display_name: '- (Optional String) The name of the Network Link Endpoint.'
+            environment: '(Required Configuration Block) supports the following:'
+            id: '- (Required String) The ID of the Network that the Network Link Endpoint belongs to, for example, n-abc123.'
+            network: '(Required Configuration Block) supports the following:'
+            network_link_service: '(Required Configuration Block) supports the following:'
+            resource_name: (Required String) The Confluent Resource Name of the Network Link Endpoint.
+        importStatements:
+            - |-
+              $ export CONFLUENT_CLOUD_API_KEY="<cloud_api_key>"
+              $ export CONFLUENT_CLOUD_API_SECRET="<cloud_api_secret>"
+              $ terraform import confluent_network_link_endpoint.my_nle env-abc123/nle-abc123
+    confluent_network_link_service Resource - terraform-provider-confluent:
+        subCategory: ""
+        name: confluent_network_link_service Resource - terraform-provider-confluent
+        title: confluent_network_link_service Resource - terraform-provider-confluent
+        argumentDocs:
+            accept: '(Optional Configuration Block) supports the following:'
+            description: '- (Optional String) The description of the Network Link Service.'
+            display_name: '- (Optional String) The name of the Network Link Service.'
+            environment: '(Required Configuration Block) supports the following:'
+            environments: '- (Optional List of Strings) List of environments ids from which connections can be accepted. All networks within the list of environment will be allowed.'
+            id: '- (Required String) The ID of the Environment that the Network Link Service belongs to, for example, env-abc123.'
+            network: '(Required Configuration Block) supports the following:'
+            networks: '- (Optional List of Strings) List of network ids from which connections can be accepted.'
+            resource_name: (Required String) The Confluent Resource Name of the Network Link Service.
+        importStatements:
+            - |-
+              $ export CONFLUENT_CLOUD_API_KEY="<cloud_api_key>"
+              $ export CONFLUENT_CLOUD_API_SECRET="<cloud_api_secret>"
+              $ terraform import confluent_network_link_service.my_nls env-abc123/nls-abc123
     confluent_peering Resource - terraform-provider-confluent:
         subCategory: ""
         name: confluent_peering Resource - terraform-provider-confluent
@@ -382,6 +562,42 @@ resources:
               $ export CONFLUENT_CLOUD_API_KEY="<cloud_api_key>"
               $ export CONFLUENT_CLOUD_API_SECRET="<cloud_api_secret>"
               $ terraform import confluent_private_link_access.my_pla env-abc123/pla-abc123
+    confluent_private_link_attachment Resource - terraform-provider-confluent:
+        subCategory: ""
+        name: confluent_private_link_attachment Resource - terraform-provider-confluent
+        title: confluent_private_link_attachment Resource - terraform-provider-confluent
+        argumentDocs:
+            aws: '- (Optional Configuration Block) supports the following:'
+            cloud: '- (Required String) The cloud service provider that hosts the resources to access with the Private Link Attachment.'
+            display_name: '- (Optional String) The name of the Private Link Attachment.'
+            dns_domain: '- (Required String) The root DNS domain for the Private Link Attachment, for example, `pr123a.us-east-2.aws.confluent.'
+            environment: '(Required Configuration Block) supports the following:'
+            id: '- (Required String) The ID of the Environment that the Private Link Attachment belongs to, for example env-xyz456.'
+            region: '- (Required String) The cloud service provider region where the resources to be accessed using the Private Link Attachment are located.'
+            resource_name: '- (Required String) The Confluent Resource Name of the Private Link Attachment, for example crn://confluent.cloud/organization=1111aaaa-11aa-11aa-11aa-111111aaaaaa/environment=env-75gxp2/private-link-attachment=platt-1q0ky0.'
+            vpc_endpoint_service_name: '- (Required String) AWS VPC Endpoint Service that can be used to establish connections for all zones, for example com.amazonaws.vpce.us-west-2.vpce-svc-0d3be37e21708ecd3.'
+        importStatements:
+            - |-
+              $ export CONFLUENT_CLOUD_API_KEY="<cloud_api_key>"
+              $ export CONFLUENT_CLOUD_API_SECRET="<cloud_api_secret>"
+              $ terraform import confluent_private_link_attachment.main env-abc123/platt-abc123
+    confluent_private_link_attachment_connection Resource - terraform-provider-confluent:
+        subCategory: ""
+        name: confluent_private_link_attachment_connection Resource - terraform-provider-confluent
+        title: confluent_private_link_attachment_connection Resource - terraform-provider-confluent
+        argumentDocs:
+            aws: '- (Optional Configuration Block) supports the following:'
+            display_name: '- (Optional String) The name of the Private Link Attachment Connection.'
+            environment: '(Required Configuration Block) supports the following:'
+            id: '- (Required String) The ID of the Environment that the Private Link Attachment Connection belongs to, for example env-xyz456.'
+            private_link_attachment: '(Required Configuration Block) supports the following:'
+            resource_name: '- (Required String) The Confluent Resource Name of the Private Link Attachment Connection, for example crn://confluent.cloud/organization=1111aaaa-11aa-11aa-11aa-111111aaaaaa/environment=env-75gxp2/private-link-attachment=platt-1q0ky0/private-link-attachment-connection=plattc-77zq2w.'
+            vpc_endpoint_id: '- (Required String) Id of a VPC Endpoint that is connected to the VPC Endpoint service.'
+        importStatements:
+            - |-
+              $ export CONFLUENT_CLOUD_API_KEY="<cloud_api_key>"
+              $ export CONFLUENT_CLOUD_API_SECRET="<cloud_api_secret>"
+              $ terraform import confluent_private_link_attachment_connection.main env-abc123/plattc-abc123
     confluent_role_binding Resource - terraform-provider-confluent:
         subCategory: ""
         name: confluent_role_binding Resource - terraform-provider-confluent
@@ -404,7 +620,7 @@ resources:
             credentials: '(Optional Configuration Block) supports the following:'
             credentials.format: '- (Required String) The format of the schema. Accepted values are: AVRO, PROTOBUF, and JSON.'
             credentials.hard_delete: '- (Optional Boolean) An optional flag to control whether a schema should be soft or hard deleted. Set it to true if you want to hard delete a schema on destroy (see Schema Deletion Guidelines for more details). Must be unset when importing. Defaults to false (soft delete).'
-            credentials.recreate_on_update: '- (Optional Boolean) An optional flag to control whether a schema should be recreated on an update. Set it to true if you want to manage different schema versions using different resource instances. Must be set to the target value when importing. Defaults to false (resource instance always points to the latest schema by supporting in-place updates).'
+            credentials.recreate_on_update: '- (Optional Boolean) An optional flag to control whether a schema should be recreated on an update. Set it to true if you want to manage different schema versions using different resource instances. Must be set to the target value when importing. Defaults to false, which manages the latest schema version only. The resource instance always points to the latest schema version by supporting in-place updates.'
             credentials.schema: '- (Required String) The schema string, for example, file("./schema_version_1.avsc").'
             credentials.schema_reference: '- (Optional List) The list of referenced schemas (see Schema References for more details):'
             credentials.subject_name: '- (Required String) The name of the subject (in other words, the namespace), representing the subject under which the schema will be registered, for example, test-subject. Schemas evolve safely, following a compatibility mode defined, under a subject name.'
@@ -423,13 +639,42 @@ resources:
               $ export IMPORT_SCHEMA_REGISTRY_API_KEY="<schema_registry_api_key>"
               $ export IMPORT_SCHEMA_REGISTRY_API_SECRET="<schema_registry_api_secret>"
               $ export IMPORT_SCHEMA_REGISTRY_REST_ENDPOINT="<schema_registry_rest_endpoint>"
+              $ export SCHEMA_CONTENT="<schema_content>" # for example, export SCHEMA_CONTENT=$(cat schemas/proto/purchase.proto)
               $ terraform import confluent_schema.my_schema_1 lsrc-abc123/test-subject/latest
 
               # Option B: recreate_on_update = true
               $ export IMPORT_SCHEMA_REGISTRY_API_KEY="<schema_registry_api_key>"
               $ export IMPORT_SCHEMA_REGISTRY_API_SECRET="<schema_registry_api_secret>"
               $ export IMPORT_SCHEMA_REGISTRY_REST_ENDPOINT="<schema_registry_rest_endpoint>"
+              $ export SCHEMA_CONTENT="<schema_content>" # for example, export SCHEMA_CONTENT=$(cat schemas/proto/purchase.proto)
               $ terraform import confluent_schema.my_schema_1 lsrc-abc123/test-subject/100003
+    confluent_schema_exporter Resource - terraform-provider-confluent:
+        subCategory: ""
+        name: confluent_schema_exporter Resource - terraform-provider-confluent
+        title: confluent_schema_exporter Resource - terraform-provider-confluent
+        argumentDocs:
+            config: '- (Optional Map) Block for custom nonsensitive configuration properties:'
+            context: '- (Optional String) Customized context of the exporter if context_type is set to CUSTOM.'
+            context_type: '- (Optional String) Context type of the exporter. Accepted values are: CUSTOM, NONE or AUTO. Defaults to AUTO.'
+            credentials: '(Optional Configuration Block) supports the following:'
+            destination_schema_registry_cluster: '- (Required Configuration Block) supports the following:'
+            id: '- (Required String) The ID of the Schema Registry cluster, for example, lsrc-abc123.'
+            key: '- (Required String) The Schema Registry API Key.'
+            name: '- (Required String) Name of the Schema Exporter.'
+            reset_on_update: '- (Optional Boolean) The flag to control whether to reset the exporter when updating configs. Defaults to false.'
+            rest_endpoint: '- (Optional String) The REST endpoint of the Schema Registry cluster, for example, https://psrc-00000.us-central1.gcp.confluent.cloud:443).'
+            schema_registry_cluster: '- (Optional Configuration Block) supports the following:'
+            secret: '- (Required String, Sensitive) The Schema Registry API Secret.'
+            status: '- (Optional String) The status of the schema exporter. Accepted values are: RUNNING and PAUSED.'
+            subject_rename_format: '- (Optional String) Format string for the subject name in the destination cluster, which may contain ${subject} as a placeholder for the originating subject name. For example, dc_${subject} for the subject orders will map to the destination subject name dc_orders.'
+            subjects: '- (Optional List of Strings) Name of each exporter subject.'
+            value: '- (Required String) The configuration setting value.'
+        importStatements:
+            - |-
+              $ export IMPORT_SCHEMA_REGISTRY_API_KEY="<schema_registry_api_key>"
+              $ export IMPORT_SCHEMA_REGISTRY_API_SECRET="<schema_registry_api_secret>"
+              $ export IMPORT_SCHEMA_REGISTRY_REST_ENDPOINT="<schema_registry_rest_endpoint>"
+              $ terraform import confluent_schema_exporter.main lsrc-8wrx70/test-exporter
     confluent_schema_registry_cluster Resource - terraform-provider-confluent:
         subCategory: ""
         name: confluent_schema_registry_cluster Resource - terraform-provider-confluent
@@ -538,6 +783,55 @@ resources:
               $ export IMPORT_SCHEMA_REGISTRY_API_SECRET="<schema_registry_api_secret>"
               $ export IMPORT_SCHEMA_REGISTRY_REST_ENDPOINT="<schema_registry_rest_endpoint>"
               $ terraform import confluent_subject_mode.example lsrc-abc123/test-subject
+    confluent_tag Resource - terraform-provider-confluent:
+        subCategory: ""
+        name: confluent_tag Resource - terraform-provider-confluent
+        title: confluent_tag Resource - terraform-provider-confluent
+        argumentDocs:
+            credentials: '(Optional Configuration Block) supports the following:'
+            description: '- (Optional String) The description of the tag.'
+            entity_types: '- (Optional List of String) The entity types of the tag, this always returns ["cf_entity"]. Refer to the Entity types to learn more about entity types.'
+            id: '- (Required String) The ID of the Schema Registry cluster, for example, lsrc-abc123.'
+            key: '- (Required String) The Schema Registry API Key.'
+            name: '- (Required String) The name of the tag, for example, PII. The name must not be empty and consist of a letter followed by a sequence of letter, number, space, or _ characters.'
+            rest_endpoint: '- (Optional String) The REST endpoint of the Schema Registry cluster, for example, https://psrc-00000.us-central1.gcp.confluent.cloud:443).'
+            schema_registry_cluster: '- (Optional Configuration Block) supports the following:'
+            secret: '- (Required String, Sensitive) The Schema Registry API Secret.'
+            version: '- (Optional Integer) The version, for example, 1.'
+        importStatements:
+            - |-
+              $ export IMPORT_SCHEMA_REGISTRY_API_KEY="<schema_registry_api_key>"
+              $ export IMPORT_SCHEMA_REGISTRY_API_SECRET="<schema_registry_api_secret>"
+              $ export IMPORT_SCHEMA_REGISTRY_REST_ENDPOINT="<schema_registry_rest_endpoint>"
+              $ terraform import confluent_tag.pii lsrc-8wrx70/PII
+    confluent_tag_binding Resource - terraform-provider-confluent:
+        subCategory: ""
+        name: confluent_tag_binding Resource - terraform-provider-confluent
+        title: confluent_tag_binding Resource - terraform-provider-confluent
+        argumentDocs:
+            credentials: '(Optional Configuration Block) supports the following:'
+            entity_name: '- (Required String) The qualified name of the entity., for example, ${confluent_schema_registry_cluster.main.id}:.:${confluent_schema.purchase.schema_identifier}, ${confluent_schema_registry_cluster.main.id}:${confluent_kafka_cluster.basic.id}:${confluent_kafka_topic.purchase.topic_name}.'
+            entity_type: '- (Required String) The entity type, for example, sr_schema. Refer to the Entity types to learn more about entity types.'
+            id: '- (Required String) The ID of the Schema Registry cluster, for example, lsrc-abc123.'
+            key: '- (Required String) The Schema Registry API Key.'
+            rest_endpoint: '- (Optional String) The REST endpoint of the Schema Registry cluster, for example, https://psrc-00000.us-central1.gcp.confluent.cloud:443).'
+            schema_registry_cluster: '- (Optional Configuration Block) supports the following:'
+            secret: '- (Required String, Sensitive) The Schema Registry API Secret.'
+            tag_name: '- (Required String) The name of the tag to be applied, for example, PII. The name must not be empty and consist of a letter followed by a sequence of letter, number, space, or _ characters.'
+        importStatements:
+            - |-
+              $ export IMPORT_SCHEMA_REGISTRY_API_KEY="<schema_registry_api_key>"
+              $ export IMPORT_SCHEMA_REGISTRY_API_SECRET="<schema_registry_api_secret>"
+              $ export IMPORT_SCHEMA_REGISTRY_REST_ENDPOINT="<schema_registry_rest_endpoint>"
+              $ terraform import confluent_tag_binding.main lsrc-8wrx70/PII/lsrc-8wrx70:.:100001/sr_schema
+    confluent_tf_importer Resource - terraform-provider-confluent:
+        subCategory: ""
+        name: confluent_tf_importer Resource - terraform-provider-confluent
+        title: confluent_tf_importer Resource - terraform-provider-confluent
+        argumentDocs:
+            output_path: '- (Optional Strings) An absolute path to a folder for outputting generated TF state and TF configuration files for your infrastructure. The folder is created if it doesn''t exist. Defaults to ./imported_confluent_infrastructure.'
+            resources: '- (Optional List of Strings) A list of resources names to export. Defaults to all exportable resources.'
+        importStatements: []
     confluent_transit_gateway_attachment Resource - terraform-provider-confluent:
         subCategory: ""
         name: confluent_transit_gateway_attachment Resource - terraform-provider-confluent

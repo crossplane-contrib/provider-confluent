@@ -75,6 +75,17 @@ spec:
                     items:
                       type: object
                     type: array
+                  byokKey:
+                    items:
+                      properties:
+                        id:
+                          description: The ID of the Confluent key that is used to
+                            encrypt the data in the Kafka cluster.
+                          type: string
+                      required:
+                      - id
+                      type: object
+                    type: array
                   cloud:
                     description: The cloud service provider that runs the Kafka cluster.
                     type: string
@@ -97,6 +108,10 @@ spec:
                   displayName:
                     description: The name of the Kafka cluster.
                     type: string
+                  enterprise:
+                    items:
+                      type: object
+                    type: array
                   environment:
                     description: Environment objects represent an isolated namespace
                       for your Confluent resources for organizational purposes.
@@ -424,6 +439,15 @@ spec:
                     description: The bootstrap endpoint used by Kafka clients to connect
                       to the Kafka cluster.
                     type: string
+                  byokKey:
+                    items:
+                      properties:
+                        id:
+                          description: The ID of the Confluent key that is used to
+                            encrypt the data in the Kafka cluster.
+                          type: string
+                      type: object
+                    type: array
                   cloud:
                     description: The cloud service provider that runs the Kafka cluster.
                     type: string
@@ -439,11 +463,20 @@ spec:
                           description: The ID of the encryption key that is used to
                             encrypt the data in the Kafka cluster.
                           type: string
+                        zones:
+                          description: The list of zones the cluster is in.
+                          items:
+                            type: string
+                          type: array
                       type: object
                     type: array
                   displayName:
                     description: The name of the Kafka cluster.
                     type: string
+                  enterprise:
+                    items:
+                      type: object
+                    type: array
                   environment:
                     description: Environment objects represent an isolated namespace
                       for your Confluent resources for organizational purposes.
