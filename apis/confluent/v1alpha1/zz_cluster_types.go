@@ -13,33 +13,50 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type BasicInitParameters struct {
+}
+
 type BasicObservation struct {
 }
 
 type BasicParameters struct {
 }
 
+type ByokKeyInitParameters struct {
+
+	// The ID of the Environment that the Kafka cluster belongs to, for example, env-abc123.
+	// The ID of the Confluent key that is used to encrypt the data in the Kafka cluster.
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+}
+
 type ByokKeyObservation struct {
 
+	// The ID of the Environment that the Kafka cluster belongs to, for example, env-abc123.
 	// The ID of the Confluent key that is used to encrypt the data in the Kafka cluster.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 }
 
 type ByokKeyParameters struct {
 
+	// The ID of the Environment that the Kafka cluster belongs to, for example, env-abc123.
 	// The ID of the Confluent key that is used to encrypt the data in the Kafka cluster.
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	ID *string `json:"id" tf:"id,omitempty"`
+}
+
+type ClusterEnvironmentInitParameters struct {
 }
 
 type ClusterEnvironmentObservation struct {
 
+	// The ID of the Environment that the Kafka cluster belongs to, for example, env-abc123.
 	// The unique identifier for the environment.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 }
 
 type ClusterEnvironmentParameters struct {
 
+	// The ID of the Environment that the Kafka cluster belongs to, for example, env-abc123.
 	// The unique identifier for the environment.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-confluent/apis/confluent/v1alpha1.Environment
 	// +kubebuilder:validation:Optional
@@ -54,98 +71,179 @@ type ClusterEnvironmentParameters struct {
 	IDSelector *v1.Selector `json:"idSelector,omitempty" tf:"-"`
 }
 
-type ClusterObservation struct {
+type ClusterInitParameters struct {
 
-	// API Version defines the schema version of this representation of a Kafka cluster.
-	APIVersion *string `json:"apiVersion,omitempty" tf:"api_version,omitempty"`
-
+	// The availability zone configuration of the Kafka cluster. Accepted values are: SINGLE_ZONE and MULTI_ZONE.
 	// The availability zone configuration of the Kafka cluster.
 	Availability *string `json:"availability,omitempty" tf:"availability,omitempty"`
 
-	Basic []BasicParameters `json:"basic,omitempty" tf:"basic,omitempty"`
+	// The configuration of the Basic Kafka cluster.
+	Basic []BasicInitParameters `json:"basic,omitempty" tf:"basic,omitempty"`
 
-	// The bootstrap endpoint used by Kafka clients to connect to the Kafka cluster.
-	BootstrapEndpoint *string `json:"bootstrapEndpoint,omitempty" tf:"bootstrap_endpoint,omitempty"`
+	// supports the following:
+	ByokKey []ByokKeyInitParameters `json:"byokKey,omitempty" tf:"byok_key,omitempty"`
 
-	ByokKey []ByokKeyObservation `json:"byokKey,omitempty" tf:"byok_key,omitempty"`
-
+	// The cloud service provider that runs the Kafka cluster. Accepted values are: AWS, AZURE, and GCP.
 	// The cloud service provider that runs the Kafka cluster.
 	Cloud *string `json:"cloud,omitempty" tf:"cloud,omitempty"`
 
-	Dedicated []DedicatedObservation `json:"dedicated,omitempty" tf:"dedicated,omitempty"`
+	// The configuration of the Dedicated Kafka cluster. It supports the following:
+	Dedicated []DedicatedInitParameters `json:"dedicated,omitempty" tf:"dedicated,omitempty"`
 
+	// The name of the Kafka cluster.
 	// The name of the Kafka cluster.
 	DisplayName *string `json:"displayName,omitempty" tf:"display_name,omitempty"`
 
-	Enterprise []EnterpriseParameters `json:"enterprise,omitempty" tf:"enterprise,omitempty"`
+	// The configuration of the Enterprise Kafka cluster.
+	Enterprise []EnterpriseInitParameters `json:"enterprise,omitempty" tf:"enterprise,omitempty"`
 
+	// supports the following:
 	// Environment objects represent an isolated namespace for your Confluent resources for organizational purposes.
-	Environment []ClusterEnvironmentObservation `json:"environment,omitempty" tf:"environment,omitempty"`
+	Environment []ClusterEnvironmentInitParameters `json:"environment,omitempty" tf:"environment,omitempty"`
 
-	ID *string `json:"id,omitempty" tf:"id,omitempty"`
-
-	// Kind defines the object Kafka cluster represents.
-	Kind *string `json:"kind,omitempty" tf:"kind,omitempty"`
-
+	// supports the following:
 	// Network represents a network (VPC) in Confluent Cloud. All Networks exist within Confluent-managed cloud provider accounts.
-	Network []NetworkObservation `json:"network,omitempty" tf:"network,omitempty"`
+	Network []NetworkInitParameters `json:"network,omitempty" tf:"network,omitempty"`
 
-	// The Confluent Resource Name of the Kafka cluster suitable for confluent_role_binding's crn_pattern.
-	RbacCrn *string `json:"rbacCrn,omitempty" tf:"rbac_crn,omitempty"`
-
+	// The cloud service provider region where the Kafka cluster is running, for example, us-west-2. See Cloud Providers and Regions for a full list of options for AWS, Azure, and GCP.
 	// The cloud service provider region where the Kafka cluster is running.
 	Region *string `json:"region,omitempty" tf:"region,omitempty"`
 
+	// The configuration of the Standard Kafka cluster.
+	Standard []StandardInitParameters `json:"standard,omitempty" tf:"standard,omitempty"`
+}
+
+type ClusterObservation struct {
+
+	// An API Version of the schema version of the Kafka cluster, for example, cmk/v2.
+	// API Version defines the schema version of this representation of a Kafka cluster.
+	APIVersion *string `json:"apiVersion,omitempty" tf:"api_version,omitempty"`
+
+	// The availability zone configuration of the Kafka cluster. Accepted values are: SINGLE_ZONE and MULTI_ZONE.
+	// The availability zone configuration of the Kafka cluster.
+	Availability *string `json:"availability,omitempty" tf:"availability,omitempty"`
+
+	// The configuration of the Basic Kafka cluster.
+	Basic []BasicParameters `json:"basic,omitempty" tf:"basic,omitempty"`
+
+	// The bootstrap endpoint used by Kafka clients to connect to the Kafka cluster. (e.g., SASL_SSL://pkc-00000.us-central1.gcp.confluent.cloud:9092).
+	// The bootstrap endpoint used by Kafka clients to connect to the Kafka cluster.
+	BootstrapEndpoint *string `json:"bootstrapEndpoint,omitempty" tf:"bootstrap_endpoint,omitempty"`
+
+	// supports the following:
+	ByokKey []ByokKeyObservation `json:"byokKey,omitempty" tf:"byok_key,omitempty"`
+
+	// The cloud service provider that runs the Kafka cluster. Accepted values are: AWS, AZURE, and GCP.
+	// The cloud service provider that runs the Kafka cluster.
+	Cloud *string `json:"cloud,omitempty" tf:"cloud,omitempty"`
+
+	// The configuration of the Dedicated Kafka cluster. It supports the following:
+	Dedicated []DedicatedObservation `json:"dedicated,omitempty" tf:"dedicated,omitempty"`
+
+	// The name of the Kafka cluster.
+	// The name of the Kafka cluster.
+	DisplayName *string `json:"displayName,omitempty" tf:"display_name,omitempty"`
+
+	// The configuration of the Enterprise Kafka cluster.
+	Enterprise []EnterpriseParameters `json:"enterprise,omitempty" tf:"enterprise,omitempty"`
+
+	// supports the following:
+	// Environment objects represent an isolated namespace for your Confluent resources for organizational purposes.
+	Environment []ClusterEnvironmentObservation `json:"environment,omitempty" tf:"environment,omitempty"`
+
+	// The ID of the Environment that the Kafka cluster belongs to, for example, env-abc123.
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// A kind of the Kafka cluster, for example, Cluster.
+	// Kind defines the object Kafka cluster represents.
+	Kind *string `json:"kind,omitempty" tf:"kind,omitempty"`
+
+	// supports the following:
+	// Network represents a network (VPC) in Confluent Cloud. All Networks exist within Confluent-managed cloud provider accounts.
+	Network []NetworkObservation `json:"network,omitempty" tf:"network,omitempty"`
+
+	// The Confluent Resource Name of the Kafka cluster, for example, crn://confluent.cloud/organization=1111aaaa-11aa-11aa-11aa-111111aaaaaa/environment=env-abc123/cloud-cluster=lkc-abc123.
+	// The Confluent Resource Name of the Kafka cluster suitable for confluent_role_binding's crn_pattern.
+	RbacCrn *string `json:"rbacCrn,omitempty" tf:"rbac_crn,omitempty"`
+
+	// The cloud service provider region where the Kafka cluster is running, for example, us-west-2. See Cloud Providers and Regions for a full list of options for AWS, Azure, and GCP.
+	// The cloud service provider region where the Kafka cluster is running.
+	Region *string `json:"region,omitempty" tf:"region,omitempty"`
+
+	// The REST endpoint of the Kafka cluster (e.g., https://pkc-00000.us-central1.gcp.confluent.cloud:443).
 	// The REST endpoint of the Kafka cluster.
 	RestEndpoint *string `json:"restEndpoint,omitempty" tf:"rest_endpoint,omitempty"`
 
+	// The configuration of the Standard Kafka cluster.
 	Standard []StandardParameters `json:"standard,omitempty" tf:"standard,omitempty"`
 }
 
 type ClusterParameters struct {
 
+	// The availability zone configuration of the Kafka cluster. Accepted values are: SINGLE_ZONE and MULTI_ZONE.
 	// The availability zone configuration of the Kafka cluster.
 	// +kubebuilder:validation:Optional
 	Availability *string `json:"availability,omitempty" tf:"availability,omitempty"`
 
+	// The configuration of the Basic Kafka cluster.
 	// +kubebuilder:validation:Optional
 	Basic []BasicParameters `json:"basic,omitempty" tf:"basic,omitempty"`
 
+	// supports the following:
 	// +kubebuilder:validation:Optional
 	ByokKey []ByokKeyParameters `json:"byokKey,omitempty" tf:"byok_key,omitempty"`
 
+	// The cloud service provider that runs the Kafka cluster. Accepted values are: AWS, AZURE, and GCP.
 	// The cloud service provider that runs the Kafka cluster.
 	// +kubebuilder:validation:Optional
 	Cloud *string `json:"cloud,omitempty" tf:"cloud,omitempty"`
 
+	// The configuration of the Dedicated Kafka cluster. It supports the following:
 	// +kubebuilder:validation:Optional
 	Dedicated []DedicatedParameters `json:"dedicated,omitempty" tf:"dedicated,omitempty"`
 
 	// The name of the Kafka cluster.
+	// The name of the Kafka cluster.
 	// +kubebuilder:validation:Optional
 	DisplayName *string `json:"displayName,omitempty" tf:"display_name,omitempty"`
 
+	// The configuration of the Enterprise Kafka cluster.
 	// +kubebuilder:validation:Optional
 	Enterprise []EnterpriseParameters `json:"enterprise,omitempty" tf:"enterprise,omitempty"`
 
+	// supports the following:
 	// Environment objects represent an isolated namespace for your Confluent resources for organizational purposes.
 	// +kubebuilder:validation:Optional
 	Environment []ClusterEnvironmentParameters `json:"environment,omitempty" tf:"environment,omitempty"`
 
+	// supports the following:
 	// Network represents a network (VPC) in Confluent Cloud. All Networks exist within Confluent-managed cloud provider accounts.
 	// +kubebuilder:validation:Optional
 	Network []NetworkParameters `json:"network,omitempty" tf:"network,omitempty"`
 
+	// The cloud service provider region where the Kafka cluster is running, for example, us-west-2. See Cloud Providers and Regions for a full list of options for AWS, Azure, and GCP.
 	// The cloud service provider region where the Kafka cluster is running.
 	// +kubebuilder:validation:Optional
 	Region *string `json:"region,omitempty" tf:"region,omitempty"`
 
+	// The configuration of the Standard Kafka cluster.
 	// +kubebuilder:validation:Optional
 	Standard []StandardParameters `json:"standard,omitempty" tf:"standard,omitempty"`
 }
 
+type DedicatedInitParameters struct {
+
+	// The number of Confluent Kafka Units (CKUs) for Dedicated cluster types. The minimum number of CKUs for SINGLE_ZONE dedicated clusters is 1 whereas MULTI_ZONE dedicated clusters must have more than 2 CKUs.
+	// The number of Confluent Kafka Units (CKUs) for Dedicated cluster types. MULTI_ZONE dedicated clusters must have at least two CKUs.
+	Cku *float64 `json:"cku,omitempty" tf:"cku,omitempty"`
+
+	// The ID of the encryption key that is used to encrypt the data in the Kafka cluster.
+	EncryptionKey *string `json:"encryptionKey,omitempty" tf:"encryption_key,omitempty"`
+}
+
 type DedicatedObservation struct {
 
+	// The number of Confluent Kafka Units (CKUs) for Dedicated cluster types. The minimum number of CKUs for SINGLE_ZONE dedicated clusters is 1 whereas MULTI_ZONE dedicated clusters must have more than 2 CKUs.
 	// The number of Confluent Kafka Units (CKUs) for Dedicated cluster types. MULTI_ZONE dedicated clusters must have at least two CKUs.
 	Cku *float64 `json:"cku,omitempty" tf:"cku,omitempty"`
 
@@ -153,18 +251,26 @@ type DedicatedObservation struct {
 	EncryptionKey *string `json:"encryptionKey,omitempty" tf:"encryption_key,omitempty"`
 
 	// The list of zones the cluster is in.
+	// On AWS, zones are AWS AZ IDs, for example, use1-az3.
+	// On GCP, zones are GCP zones, for example, us-central1-c.
+	// On Azure, zones are Confluent-chosen names (for example, 1, 2, 3) since Azure does not have universal zone identifiers.
+	// The list of zones the cluster is in.
 	Zones []*string `json:"zones,omitempty" tf:"zones,omitempty"`
 }
 
 type DedicatedParameters struct {
 
+	// The number of Confluent Kafka Units (CKUs) for Dedicated cluster types. The minimum number of CKUs for SINGLE_ZONE dedicated clusters is 1 whereas MULTI_ZONE dedicated clusters must have more than 2 CKUs.
 	// The number of Confluent Kafka Units (CKUs) for Dedicated cluster types. MULTI_ZONE dedicated clusters must have at least two CKUs.
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	Cku *float64 `json:"cku" tf:"cku,omitempty"`
 
 	// The ID of the encryption key that is used to encrypt the data in the Kafka cluster.
 	// +kubebuilder:validation:Optional
 	EncryptionKey *string `json:"encryptionKey,omitempty" tf:"encryption_key,omitempty"`
+}
+
+type EnterpriseInitParameters struct {
 }
 
 type EnterpriseObservation struct {
@@ -173,17 +279,29 @@ type EnterpriseObservation struct {
 type EnterpriseParameters struct {
 }
 
+type NetworkInitParameters struct {
+
+	// The ID of the Environment that the Kafka cluster belongs to, for example, env-abc123.
+	// The unique identifier for the network.
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+}
+
 type NetworkObservation struct {
 
+	// The ID of the Environment that the Kafka cluster belongs to, for example, env-abc123.
 	// The unique identifier for the network.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 }
 
 type NetworkParameters struct {
 
+	// The ID of the Environment that the Kafka cluster belongs to, for example, env-abc123.
 	// The unique identifier for the network.
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	ID *string `json:"id" tf:"id,omitempty"`
+}
+
+type StandardInitParameters struct {
 }
 
 type StandardObservation struct {
@@ -196,6 +314,18 @@ type StandardParameters struct {
 type ClusterSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     ClusterParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider ClusterInitParameters `json:"initProvider,omitempty"`
 }
 
 // ClusterStatus defines the observed state of Cluster.
@@ -206,7 +336,7 @@ type ClusterStatus struct {
 
 // +kubebuilder:object:root=true
 
-// Cluster is the Schema for the Clusters API. <no value>
+// Cluster is the Schema for the Clusters API.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
@@ -216,11 +346,11 @@ type ClusterStatus struct {
 type Cluster struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.availability)",message="availability is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.cloud)",message="cloud is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.displayName)",message="displayName is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.environment)",message="environment is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.region)",message="region is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.availability) || has(self.initProvider.availability)",message="availability is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.cloud) || has(self.initProvider.cloud)",message="cloud is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.displayName) || has(self.initProvider.displayName)",message="displayName is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.environment) || has(self.initProvider.environment)",message="environment is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.region) || has(self.initProvider.region)",message="region is a required parameter"
 	Spec   ClusterSpec   `json:"spec"`
 	Status ClusterStatus `json:"status,omitempty"`
 }

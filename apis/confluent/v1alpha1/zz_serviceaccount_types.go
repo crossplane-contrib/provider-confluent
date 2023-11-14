@@ -13,19 +13,35 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
-type ServiceAccountObservation struct {
+type ServiceAccountInitParameters struct {
 
-	// API Version defines the schema version of this representation of a Service Account.
-	APIVersion *string `json:"apiVersion,omitempty" tf:"api_version,omitempty"`
-
+	// A free-form description of the Service Account.
 	// A free-form description of the Service Account.
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
 	// A human-readable name for the Service Account.
+	// A human-readable name for the Service Account.
+	DisplayName *string `json:"displayName,omitempty" tf:"display_name,omitempty"`
+}
+
+type ServiceAccountObservation struct {
+
+	// An API Version of the schema version of the Service Account, for example, iam/v2.
+	// API Version defines the schema version of this representation of a Service Account.
+	APIVersion *string `json:"apiVersion,omitempty" tf:"api_version,omitempty"`
+
+	// A free-form description of the Service Account.
+	// A free-form description of the Service Account.
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// A human-readable name for the Service Account.
+	// A human-readable name for the Service Account.
 	DisplayName *string `json:"displayName,omitempty" tf:"display_name,omitempty"`
 
+	// The ID of the Service Account (e.g., sa-abc123).
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// A kind of the Service Account, for example, ServiceAccount.
 	// Kind defines the object Service Account represents.
 	Kind *string `json:"kind,omitempty" tf:"kind,omitempty"`
 }
@@ -33,9 +49,11 @@ type ServiceAccountObservation struct {
 type ServiceAccountParameters struct {
 
 	// A free-form description of the Service Account.
+	// A free-form description of the Service Account.
 	// +kubebuilder:validation:Optional
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
+	// A human-readable name for the Service Account.
 	// A human-readable name for the Service Account.
 	// +kubebuilder:validation:Optional
 	DisplayName *string `json:"displayName,omitempty" tf:"display_name,omitempty"`
@@ -45,6 +63,18 @@ type ServiceAccountParameters struct {
 type ServiceAccountSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     ServiceAccountParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider ServiceAccountInitParameters `json:"initProvider,omitempty"`
 }
 
 // ServiceAccountStatus defines the observed state of ServiceAccount.
@@ -55,7 +85,7 @@ type ServiceAccountStatus struct {
 
 // +kubebuilder:object:root=true
 
-// ServiceAccount is the Schema for the ServiceAccounts API. <no value>
+// ServiceAccount is the Schema for the ServiceAccounts API.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
@@ -65,7 +95,7 @@ type ServiceAccountStatus struct {
 type ServiceAccount struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.displayName)",message="displayName is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.displayName) || has(self.initProvider.displayName)",message="displayName is a required parameter"
 	Spec   ServiceAccountSpec   `json:"spec"`
 	Status ServiceAccountStatus `json:"status,omitempty"`
 }

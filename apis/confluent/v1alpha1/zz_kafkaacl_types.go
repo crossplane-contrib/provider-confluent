@@ -13,79 +13,140 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type CredentialsInitParameters struct {
+}
+
 type CredentialsObservation struct {
 }
 
 type CredentialsParameters struct {
 
+	// The Kafka API Key.
 	// The Cluster API Key for your Confluent Cloud cluster.
 	// +kubebuilder:validation:Required
 	KeySecretRef v1.SecretKeySelector `json:"keySecretRef" tf:"-"`
 
+	// The Kafka API Secret.
 	// The Cluster API Secret for your Confluent Cloud cluster.
 	// +kubebuilder:validation:Required
 	SecretSecretRef v1.SecretKeySelector `json:"secretSecretRef" tf:"-"`
 }
 
-type KafkaACLObservation struct {
+type KafkaACLInitParameters struct {
 
+	// supports the following:
 	// The Cluster API Credentials.
-	Credentials []CredentialsParameters `json:"credentials,omitempty" tf:"credentials,omitempty"`
+	Credentials []CredentialsInitParameters `json:"credentials,omitempty" tf:"credentials,omitempty"`
 
+	// The host for the ACL. Should be set to * for Confluent Cloud.
 	// The host for the ACL.
 	Host *string `json:"host,omitempty" tf:"host,omitempty"`
 
-	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+	// supports the following:
+	KafkaCluster []KafkaClusterInitParameters `json:"kafkaCluster,omitempty" tf:"kafka_cluster,omitempty"`
 
-	KafkaCluster []KafkaClusterObservation `json:"kafkaCluster,omitempty" tf:"kafka_cluster,omitempty"`
-
+	// The operation type for the ACL. Accepted values are: ALL, READ, WRITE, CREATE, DELETE, ALTER, DESCRIBE, CLUSTER_ACTION, DESCRIBE_CONFIGS, ALTER_CONFIGS, and IDEMPOTENT_WRITE.  See Authorization using ACLs to find mappings of (resource_type, operation) to one or more Kafka APIs or request types.
 	// The operation type for the ACL.
 	Operation *string `json:"operation,omitempty" tf:"operation,omitempty"`
 
+	// The pattern type for the ACL. Accepted values are: LITERAL and PREFIXED.
 	// The pattern type for the ACL.
 	PatternType *string `json:"patternType,omitempty" tf:"pattern_type,omitempty"`
 
+	// The permission for the ACL. Accepted values are: DENY and ALLOW.
+	// The permission for the ACL.
+	Permission *string `json:"permission,omitempty" tf:"permission,omitempty"`
+
+	// The resource name for the ACL. Must be kafka-cluster if resource_type equals to CLUSTER.
+	// The resource name for the ACL.
+	ResourceName *string `json:"resourceName,omitempty" tf:"resource_name,omitempty"`
+
+	// The type of the resource. Accepted values are: TOPIC, GROUP, CLUSTER, TRANSACTIONAL_ID, DELEGATION_TOKEN. See Authorization using ACLs to find definitions of resource types and mappings of (resource_type, operation) to one or more Kafka APIs or request types.
+	// The type of the resource.
+	ResourceType *string `json:"resourceType,omitempty" tf:"resource_type,omitempty"`
+
+	// The REST endpoint of the Kafka cluster, for example, https://pkc-00000.us-central1.gcp.confluent.cloud:443.
+	// The REST endpoint of the Kafka cluster (e.g., `https://pkc-00000.us-central1.gcp.confluent.cloud:443`).
+	RestEndpoint *string `json:"restEndpoint,omitempty" tf:"rest_endpoint,omitempty"`
+}
+
+type KafkaACLObservation struct {
+
+	// supports the following:
+	// The Cluster API Credentials.
+	Credentials []CredentialsParameters `json:"credentials,omitempty" tf:"credentials,omitempty"`
+
+	// The host for the ACL. Should be set to * for Confluent Cloud.
+	// The host for the ACL.
+	Host *string `json:"host,omitempty" tf:"host,omitempty"`
+
+	// The ID of the Kafka cluster, for example, lkc-abc123.
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// supports the following:
+	KafkaCluster []KafkaClusterObservation `json:"kafkaCluster,omitempty" tf:"kafka_cluster,omitempty"`
+
+	// The operation type for the ACL. Accepted values are: ALL, READ, WRITE, CREATE, DELETE, ALTER, DESCRIBE, CLUSTER_ACTION, DESCRIBE_CONFIGS, ALTER_CONFIGS, and IDEMPOTENT_WRITE.  See Authorization using ACLs to find mappings of (resource_type, operation) to one or more Kafka APIs or request types.
+	// The operation type for the ACL.
+	Operation *string `json:"operation,omitempty" tf:"operation,omitempty"`
+
+	// The pattern type for the ACL. Accepted values are: LITERAL and PREFIXED.
+	// The pattern type for the ACL.
+	PatternType *string `json:"patternType,omitempty" tf:"pattern_type,omitempty"`
+
+	// The permission for the ACL. Accepted values are: DENY and ALLOW.
 	// The permission for the ACL.
 	Permission *string `json:"permission,omitempty" tf:"permission,omitempty"`
 
 	// The principal for the ACL.
+	// The principal for the ACL.
 	Principal *string `json:"principal,omitempty" tf:"principal,omitempty"`
 
+	// The resource name for the ACL. Must be kafka-cluster if resource_type equals to CLUSTER.
 	// The resource name for the ACL.
 	ResourceName *string `json:"resourceName,omitempty" tf:"resource_name,omitempty"`
 
+	// The type of the resource. Accepted values are: TOPIC, GROUP, CLUSTER, TRANSACTIONAL_ID, DELEGATION_TOKEN. See Authorization using ACLs to find definitions of resource types and mappings of (resource_type, operation) to one or more Kafka APIs or request types.
 	// The type of the resource.
 	ResourceType *string `json:"resourceType,omitempty" tf:"resource_type,omitempty"`
 
+	// The REST endpoint of the Kafka cluster, for example, https://pkc-00000.us-central1.gcp.confluent.cloud:443.
 	// The REST endpoint of the Kafka cluster (e.g., `https://pkc-00000.us-central1.gcp.confluent.cloud:443`).
 	RestEndpoint *string `json:"restEndpoint,omitempty" tf:"rest_endpoint,omitempty"`
 }
 
 type KafkaACLParameters struct {
 
+	// supports the following:
 	// The Cluster API Credentials.
 	// +kubebuilder:validation:Optional
 	Credentials []CredentialsParameters `json:"credentials,omitempty" tf:"credentials,omitempty"`
 
+	// The host for the ACL. Should be set to * for Confluent Cloud.
 	// The host for the ACL.
 	// +kubebuilder:validation:Optional
 	Host *string `json:"host,omitempty" tf:"host,omitempty"`
 
+	// supports the following:
 	// +kubebuilder:validation:Optional
 	KafkaCluster []KafkaClusterParameters `json:"kafkaCluster,omitempty" tf:"kafka_cluster,omitempty"`
 
+	// The operation type for the ACL. Accepted values are: ALL, READ, WRITE, CREATE, DELETE, ALTER, DESCRIBE, CLUSTER_ACTION, DESCRIBE_CONFIGS, ALTER_CONFIGS, and IDEMPOTENT_WRITE.  See Authorization using ACLs to find mappings of (resource_type, operation) to one or more Kafka APIs or request types.
 	// The operation type for the ACL.
 	// +kubebuilder:validation:Optional
 	Operation *string `json:"operation,omitempty" tf:"operation,omitempty"`
 
+	// The pattern type for the ACL. Accepted values are: LITERAL and PREFIXED.
 	// The pattern type for the ACL.
 	// +kubebuilder:validation:Optional
 	PatternType *string `json:"patternType,omitempty" tf:"pattern_type,omitempty"`
 
+	// The permission for the ACL. Accepted values are: DENY and ALLOW.
 	// The permission for the ACL.
 	// +kubebuilder:validation:Optional
 	Permission *string `json:"permission,omitempty" tf:"permission,omitempty"`
 
+	// The principal for the ACL.
 	// The principal for the ACL.
 	// +crossplane:generate:reference:type=ServiceAccount
 	// +crossplane:generate:reference:extractor=github.com/crossplane-contrib/provider-confluent/config/confluent_kafka_acl.ExtractResourceID()
@@ -100,27 +161,35 @@ type KafkaACLParameters struct {
 	// +kubebuilder:validation:Optional
 	PrincipalSelector *v1.Selector `json:"principalSelector,omitempty" tf:"-"`
 
+	// The resource name for the ACL. Must be kafka-cluster if resource_type equals to CLUSTER.
 	// The resource name for the ACL.
 	// +kubebuilder:validation:Optional
 	ResourceName *string `json:"resourceName,omitempty" tf:"resource_name,omitempty"`
 
+	// The type of the resource. Accepted values are: TOPIC, GROUP, CLUSTER, TRANSACTIONAL_ID, DELEGATION_TOKEN. See Authorization using ACLs to find definitions of resource types and mappings of (resource_type, operation) to one or more Kafka APIs or request types.
 	// The type of the resource.
 	// +kubebuilder:validation:Optional
 	ResourceType *string `json:"resourceType,omitempty" tf:"resource_type,omitempty"`
 
+	// The REST endpoint of the Kafka cluster, for example, https://pkc-00000.us-central1.gcp.confluent.cloud:443.
 	// The REST endpoint of the Kafka cluster (e.g., `https://pkc-00000.us-central1.gcp.confluent.cloud:443`).
 	// +kubebuilder:validation:Optional
 	RestEndpoint *string `json:"restEndpoint,omitempty" tf:"rest_endpoint,omitempty"`
 }
 
+type KafkaClusterInitParameters struct {
+}
+
 type KafkaClusterObservation struct {
 
+	// The ID of the Kafka cluster, for example, lkc-abc123.
 	// The Kafka cluster ID (e.g., `lkc-12345`).
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 }
 
 type KafkaClusterParameters struct {
 
+	// The ID of the Kafka cluster, for example, lkc-abc123.
 	// The Kafka cluster ID (e.g., `lkc-12345`).
 	// +crossplane:generate:reference:type=Cluster
 	// +kubebuilder:validation:Optional
@@ -139,6 +208,18 @@ type KafkaClusterParameters struct {
 type KafkaACLSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     KafkaACLParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider KafkaACLInitParameters `json:"initProvider,omitempty"`
 }
 
 // KafkaACLStatus defines the observed state of KafkaACL.
@@ -149,7 +230,7 @@ type KafkaACLStatus struct {
 
 // +kubebuilder:object:root=true
 
-// KafkaACL is the Schema for the KafkaACLs API. <no value>
+// KafkaACL is the Schema for the KafkaACLs API.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
@@ -159,12 +240,12 @@ type KafkaACLStatus struct {
 type KafkaACL struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.host)",message="host is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.operation)",message="operation is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.patternType)",message="patternType is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.permission)",message="permission is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.resourceName)",message="resourceName is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.resourceType)",message="resourceType is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.host) || has(self.initProvider.host)",message="host is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.operation) || has(self.initProvider.operation)",message="operation is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.patternType) || has(self.initProvider.patternType)",message="patternType is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.permission) || has(self.initProvider.permission)",message="permission is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.resourceName) || has(self.initProvider.resourceName)",message="resourceName is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.resourceType) || has(self.initProvider.resourceType)",message="resourceType is a required parameter"
 	Spec   KafkaACLSpec   `json:"spec"`
 	Status KafkaACLStatus `json:"status,omitempty"`
 }

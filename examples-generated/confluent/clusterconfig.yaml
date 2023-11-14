@@ -1,0 +1,25 @@
+apiVersion: confluent.crossplane.io/v1alpha1
+kind: ClusterConfig
+metadata:
+  annotations:
+    meta.upbound.io/example-id: confluent/v1alpha1/clusterconfig
+  labels:
+    testing.upbound.io/example-name: orders
+  name: orders
+spec:
+  forProvider:
+    config:
+      auto.create.topics.enable: "true"
+      log.retention.ms: "604800123"
+    credentials:
+    - keySecretRef:
+        key: attribute.id
+        name: example-api-key
+        namespace: upbound-system
+      secretSecretRef:
+        key: attribute.secret
+        name: example-api-key
+        namespace: upbound-system
+    kafkaCluster:
+    - id: ${confluent_kafka_cluster.dedicated.id}
+    restEndpoint: ${confluent_kafka_cluster.dedicated.rest_endpoint}

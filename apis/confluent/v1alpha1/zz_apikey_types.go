@@ -13,57 +13,96 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
-type APIKeyObservation struct {
+type APIKeyInitParameters struct {
 
+	// A free-form description of the API Account.
 	// A free-form description of the API key.
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
+	// An optional flag to disable wait-for-readiness on create. Its primary use case is for Cluster API Keys for private networking options when readiness check fails. Must be unset when importing. Defaults to false.
 	// Defaults to `false`.
 	DisableWaitForReady *bool `json:"disableWaitForReady,omitempty" tf:"disable_wait_for_ready,omitempty"`
 
+	// A human-readable name for the API Key.
 	// A human-readable name for the API key.
 	DisplayName *string `json:"displayName,omitempty" tf:"display_name,omitempty"`
 
+	// This block must be set for Cluster API Keys and must be omitted for Cloud API Keys. It supports the following:
+	// The resource associated with this object. The only resource that is supported is 'cmk.v2.Cluster', 'srcm.v2.Cluster'.
+	ManagedResource []ManagedResourceInitParameters `json:"managedResource,omitempty" tf:"managed_resource,omitempty"`
+
+	// supports the following:
+	// The owner to which the API Key belongs. The owner can be one of 'iam.v2.User', 'iam.v2.ServiceAccount'.
+	Owner []OwnerInitParameters `json:"owner,omitempty" tf:"owner,omitempty"`
+}
+
+type APIKeyObservation struct {
+
+	// A free-form description of the API Account.
+	// A free-form description of the API key.
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// An optional flag to disable wait-for-readiness on create. Its primary use case is for Cluster API Keys for private networking options when readiness check fails. Must be unset when importing. Defaults to false.
+	// Defaults to `false`.
+	DisableWaitForReady *bool `json:"disableWaitForReady,omitempty" tf:"disable_wait_for_ready,omitempty"`
+
+	// A human-readable name for the API Key.
+	// A human-readable name for the API key.
+	DisplayName *string `json:"displayName,omitempty" tf:"display_name,omitempty"`
+
+	// The ID of the owner that the API Key belongs to, for example, sa-abc123 or u-abc123.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// This block must be set for Cluster API Keys and must be omitted for Cloud API Keys. It supports the following:
 	// The resource associated with this object. The only resource that is supported is 'cmk.v2.Cluster', 'srcm.v2.Cluster'.
 	ManagedResource []ManagedResourceObservation `json:"managedResource,omitempty" tf:"managed_resource,omitempty"`
 
+	// supports the following:
 	// The owner to which the API Key belongs. The owner can be one of 'iam.v2.User', 'iam.v2.ServiceAccount'.
 	Owner []OwnerObservation `json:"owner,omitempty" tf:"owner,omitempty"`
 }
 
 type APIKeyParameters struct {
 
+	// A free-form description of the API Account.
 	// A free-form description of the API key.
 	// +kubebuilder:validation:Optional
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
+	// An optional flag to disable wait-for-readiness on create. Its primary use case is for Cluster API Keys for private networking options when readiness check fails. Must be unset when importing. Defaults to false.
 	// Defaults to `false`.
 	// +kubebuilder:validation:Optional
 	DisableWaitForReady *bool `json:"disableWaitForReady,omitempty" tf:"disable_wait_for_ready,omitempty"`
 
+	// A human-readable name for the API Key.
 	// A human-readable name for the API key.
 	// +kubebuilder:validation:Optional
 	DisplayName *string `json:"displayName,omitempty" tf:"display_name,omitempty"`
 
+	// This block must be set for Cluster API Keys and must be omitted for Cloud API Keys. It supports the following:
 	// The resource associated with this object. The only resource that is supported is 'cmk.v2.Cluster', 'srcm.v2.Cluster'.
 	// +kubebuilder:validation:Optional
 	ManagedResource []ManagedResourceParameters `json:"managedResource,omitempty" tf:"managed_resource,omitempty"`
 
+	// supports the following:
 	// The owner to which the API Key belongs. The owner can be one of 'iam.v2.User', 'iam.v2.ServiceAccount'.
 	// +kubebuilder:validation:Optional
 	Owner []OwnerParameters `json:"owner,omitempty" tf:"owner,omitempty"`
 }
 
+type EnvironmentInitParameters struct {
+}
+
 type EnvironmentObservation struct {
 
+	// The ID of the owner that the API Key belongs to, for example, sa-abc123 or u-abc123.
 	// The unique identifier for the environment.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 }
 
 type EnvironmentParameters struct {
 
+	// The ID of the owner that the API Key belongs to, for example, sa-abc123 or u-abc123.
 	// The unique identifier for the environment.
 	// +crossplane:generate:reference:type=Environment
 	// +kubebuilder:validation:Optional
@@ -78,31 +117,53 @@ type EnvironmentParameters struct {
 	IDSelector *v1.Selector `json:"idSelector,omitempty" tf:"-"`
 }
 
-type ManagedResourceObservation struct {
+type ManagedResourceInitParameters struct {
 
+	// The API group and version of the owner that the API Key belongs to, for example, iam/v2.
 	// The API version of the referred owner.
 	APIVersion *string `json:"apiVersion,omitempty" tf:"api_version,omitempty"`
 
+	// supports the following:
+	// Environment objects represent an isolated namespace for your Confluent resources for organizational purposes.
+	Environment []EnvironmentInitParameters `json:"environment,omitempty" tf:"environment,omitempty"`
+
+	// The kind of the owner that the API Key belongs to, for example, ServiceAccount or User.
+	// The kind of the referred resource.
+	Kind *string `json:"kind,omitempty" tf:"kind,omitempty"`
+}
+
+type ManagedResourceObservation struct {
+
+	// The API group and version of the owner that the API Key belongs to, for example, iam/v2.
+	// The API version of the referred owner.
+	APIVersion *string `json:"apiVersion,omitempty" tf:"api_version,omitempty"`
+
+	// supports the following:
 	// Environment objects represent an isolated namespace for your Confluent resources for organizational purposes.
 	Environment []EnvironmentObservation `json:"environment,omitempty" tf:"environment,omitempty"`
 
+	// The ID of the owner that the API Key belongs to, for example, sa-abc123 or u-abc123.
 	// The unique identifier for the referred resource.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// The kind of the owner that the API Key belongs to, for example, ServiceAccount or User.
 	// The kind of the referred resource.
 	Kind *string `json:"kind,omitempty" tf:"kind,omitempty"`
 }
 
 type ManagedResourceParameters struct {
 
+	// The API group and version of the owner that the API Key belongs to, for example, iam/v2.
 	// The API version of the referred owner.
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	APIVersion *string `json:"apiVersion" tf:"api_version,omitempty"`
 
+	// supports the following:
 	// Environment objects represent an isolated namespace for your Confluent resources for organizational purposes.
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	Environment []EnvironmentParameters `json:"environment" tf:"environment,omitempty"`
 
+	// The ID of the owner that the API Key belongs to, for example, sa-abc123 or u-abc123.
 	// The unique identifier for the referred resource.
 	// +crossplane:generate:reference:type=Cluster
 	// +kubebuilder:validation:Optional
@@ -116,29 +177,46 @@ type ManagedResourceParameters struct {
 	// +kubebuilder:validation:Optional
 	IDSelector *v1.Selector `json:"idSelector,omitempty" tf:"-"`
 
+	// The kind of the owner that the API Key belongs to, for example, ServiceAccount or User.
 	// The kind of the referred resource.
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	Kind *string `json:"kind" tf:"kind,omitempty"`
+}
+
+type OwnerInitParameters struct {
+
+	// The API group and version of the owner that the API Key belongs to, for example, iam/v2.
+	// The API version of the referred owner.
+	APIVersion *string `json:"apiVersion,omitempty" tf:"api_version,omitempty"`
+
+	// The kind of the owner that the API Key belongs to, for example, ServiceAccount or User.
+	// The kind of the referred owner.
+	Kind *string `json:"kind,omitempty" tf:"kind,omitempty"`
 }
 
 type OwnerObservation struct {
 
+	// The API group and version of the owner that the API Key belongs to, for example, iam/v2.
 	// The API version of the referred owner.
 	APIVersion *string `json:"apiVersion,omitempty" tf:"api_version,omitempty"`
 
+	// The ID of the owner that the API Key belongs to, for example, sa-abc123 or u-abc123.
 	// The unique identifier for the referred owner.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// The kind of the owner that the API Key belongs to, for example, ServiceAccount or User.
 	// The kind of the referred owner.
 	Kind *string `json:"kind,omitempty" tf:"kind,omitempty"`
 }
 
 type OwnerParameters struct {
 
+	// The API group and version of the owner that the API Key belongs to, for example, iam/v2.
 	// The API version of the referred owner.
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	APIVersion *string `json:"apiVersion" tf:"api_version,omitempty"`
 
+	// The ID of the owner that the API Key belongs to, for example, sa-abc123 or u-abc123.
 	// The unique identifier for the referred owner.
 	// +crossplane:generate:reference:type=ServiceAccount
 	// +kubebuilder:validation:Optional
@@ -152,8 +230,9 @@ type OwnerParameters struct {
 	// +kubebuilder:validation:Optional
 	IDSelector *v1.Selector `json:"idSelector,omitempty" tf:"-"`
 
+	// The kind of the owner that the API Key belongs to, for example, ServiceAccount or User.
 	// The kind of the referred owner.
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	Kind *string `json:"kind" tf:"kind,omitempty"`
 }
 
@@ -161,6 +240,18 @@ type OwnerParameters struct {
 type APIKeySpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     APIKeyParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider APIKeyInitParameters `json:"initProvider,omitempty"`
 }
 
 // APIKeyStatus defines the observed state of APIKey.
@@ -171,7 +262,7 @@ type APIKeyStatus struct {
 
 // +kubebuilder:object:root=true
 
-// APIKey is the Schema for the APIKeys API. <no value>
+// APIKey is the Schema for the APIKeys API.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
@@ -181,7 +272,7 @@ type APIKeyStatus struct {
 type APIKey struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.owner)",message="owner is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.owner) || has(self.initProvider.owner)",message="owner is a required parameter"
 	Spec   APIKeySpec   `json:"spec"`
 	Status APIKeyStatus `json:"status,omitempty"`
 }

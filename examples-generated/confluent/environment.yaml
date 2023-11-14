@@ -1,0 +1,11 @@
+apiVersion: confluent.crossplane.io/v1alpha1
+kind: Environment
+metadata:
+  annotations:
+    meta.upbound.io/example-id: confluent/v1alpha1/environment
+  labels:
+    testing.upbound.io/example-name: prod
+  name: prod
+spec:
+  forProvider:
+    displayName: Production

@@ -1,9 +1,146 @@
 name: confluentinc/confluent
 resources:
-    confluent_api_key Resource - terraform-provider-confluent:
+    confluent_api_key:
         subCategory: ""
-        name: confluent_api_key Resource - terraform-provider-confluent
+        name: confluent_api_key
         title: confluent_api_key Resource - terraform-provider-confluent
+        examples:
+            - name: app-manager-kafka-api-key
+              manifest: |-
+                {
+                  "description": "Kafka API Key that is owned by 'app-manager' service account",
+                  "display_name": "app-manager-kafka-api-key",
+                  "lifecycle": [
+                    {
+                      "prevent_destroy": true
+                    }
+                  ],
+                  "managed_resource": [
+                    {
+                      "api_version": "${confluent_kafka_cluster.basic.api_version}",
+                      "environment": [
+                        {
+                          "id": "${confluent_environment.staging.id}"
+                        }
+                      ],
+                      "id": "${confluent_kafka_cluster.basic.id}",
+                      "kind": "${confluent_kafka_cluster.basic.kind}"
+                    }
+                  ],
+                  "owner": [
+                    {
+                      "api_version": "${confluent_service_account.app-manager.api_version}",
+                      "id": "${confluent_service_account.app-manager.id}",
+                      "kind": "${confluent_service_account.app-manager.kind}"
+                    }
+                  ]
+                }
+              references:
+                managed_resource.api_version: confluent_kafka_cluster.basic.api_version
+                managed_resource.environment.id: confluent_environment.staging.id
+                managed_resource.id: confluent_kafka_cluster.basic.id
+                managed_resource.kind: confluent_kafka_cluster.basic.kind
+                owner.api_version: confluent_service_account.app-manager.api_version
+                owner.id: confluent_service_account.app-manager.id
+                owner.kind: confluent_service_account.app-manager.kind
+            - name: ksqldb-api-key
+              manifest: |-
+                {
+                  "description": "KsqlDB API Key that is owned by 'app-manager' service account",
+                  "display_name": "ksqldb-api-key",
+                  "lifecycle": [
+                    {
+                      "prevent_destroy": true
+                    }
+                  ],
+                  "managed_resource": [
+                    {
+                      "api_version": "${confluent_ksql_cluster.main.api_version}",
+                      "environment": [
+                        {
+                          "id": "${confluent_environment.staging.id}"
+                        }
+                      ],
+                      "id": "${confluent_ksql_cluster.main.id}",
+                      "kind": "${confluent_ksql_cluster.main.kind}"
+                    }
+                  ],
+                  "owner": [
+                    {
+                      "api_version": "${confluent_service_account.app-manager.api_version}",
+                      "id": "${confluent_service_account.app-manager.id}",
+                      "kind": "${confluent_service_account.app-manager.kind}"
+                    }
+                  ]
+                }
+              references:
+                managed_resource.api_version: confluent_ksql_cluster.main.api_version
+                managed_resource.environment.id: confluent_environment.staging.id
+                managed_resource.id: confluent_ksql_cluster.main.id
+                managed_resource.kind: confluent_ksql_cluster.main.kind
+                owner.api_version: confluent_service_account.app-manager.api_version
+                owner.id: confluent_service_account.app-manager.id
+                owner.kind: confluent_service_account.app-manager.kind
+            - name: env-manager-schema-registry-api-key
+              manifest: |-
+                {
+                  "description": "Schema Registry API Key that is owned by 'env-manager' service account",
+                  "display_name": "env-manager-schema-registry-api-key",
+                  "lifecycle": [
+                    {
+                      "prevent_destroy": true
+                    }
+                  ],
+                  "managed_resource": [
+                    {
+                      "api_version": "${confluent_schema_registry_cluster.essentials.api_version}",
+                      "environment": [
+                        {
+                          "id": "${confluent_environment.staging.id}"
+                        }
+                      ],
+                      "id": "${confluent_schema_registry_cluster.essentials.id}",
+                      "kind": "${confluent_schema_registry_cluster.essentials.kind}"
+                    }
+                  ],
+                  "owner": [
+                    {
+                      "api_version": "${confluent_service_account.env-manager.api_version}",
+                      "id": "${confluent_service_account.env-manager.id}",
+                      "kind": "${confluent_service_account.env-manager.kind}"
+                    }
+                  ]
+                }
+              references:
+                managed_resource.api_version: confluent_schema_registry_cluster.essentials.api_version
+                managed_resource.environment.id: confluent_environment.staging.id
+                managed_resource.id: confluent_schema_registry_cluster.essentials.id
+                managed_resource.kind: confluent_schema_registry_cluster.essentials.kind
+                owner.api_version: confluent_service_account.env-manager.api_version
+                owner.id: confluent_service_account.env-manager.id
+                owner.kind: confluent_service_account.env-manager.kind
+            - name: env-manager-cloud-api-key
+              manifest: |-
+                {
+                  "description": "Cloud API Key that is owned by 'env-manager' service account",
+                  "display_name": "env-manager-cloud-api-key",
+                  "lifecycle": [
+                    {
+                      "prevent_destroy": true
+                    }
+                  ],
+                  "owner": [
+                    {
+                      "api_version": "${confluent_service_account.env-manager.api_version}",
+                      "id": "${confluent_service_account.env-manager.id}",
+                      "kind": "${confluent_service_account.env-manager.kind}"
+                    }
+                  ]
+                }
+              references:
+                owner.api_version: confluent_service_account.env-manager.api_version
+                owner.id: confluent_service_account.env-manager.id
+                owner.kind: confluent_service_account.env-manager.kind
         argumentDocs:
             api_version: '- (Required String) The API group and version of the owner that the API Key belongs to, for example, iam/v2.'
             description: '- (Optional String) A free-form description of the API Account.'
@@ -30,10 +167,64 @@ resources:
 
               # Option #2: Cloud API Key
               $ terraform import confluent_api_key.example_cloud_api_key "4UEXOMMWIBE5KZQG"
-    confluent_business_metadata Resource - terraform-provider-confluent:
+    confluent_business_metadata:
         subCategory: ""
-        name: confluent_business_metadata Resource - terraform-provider-confluent
+        name: confluent_business_metadata
         title: confluent_business_metadata Resource - terraform-provider-confluent
+        examples:
+            - name: pii
+              manifest: |-
+                {
+                  "attribute_definition": [
+                    {
+                      "name": "team"
+                    },
+                    {
+                      "name": "email"
+                    }
+                  ],
+                  "credentials": [
+                    {
+                      "key": "\u003cSchema Registry API Key for confluent_schema_registry_cluster.essentials\u003e",
+                      "secret": "\u003cSchema Registry API Secret for confluent_schema_registry_cluster.essentials\u003e"
+                    }
+                  ],
+                  "description": "PII metadata",
+                  "lifecycle": [
+                    {
+                      "prevent_destroy": true
+                    }
+                  ],
+                  "name": "PII",
+                  "rest_endpoint": "${confluent_schema_registry_cluster.essentials.rest_endpoint}",
+                  "schema_registry_cluster": [
+                    {
+                      "id": "${confluent_schema_registry_cluster.essentials.id}"
+                    }
+                  ]
+                }
+              references:
+                rest_endpoint: confluent_schema_registry_cluster.essentials.rest_endpoint
+                schema_registry_cluster.id: confluent_schema_registry_cluster.essentials.id
+            - name: pii
+              manifest: |-
+                {
+                  "attribute_definition": [
+                    {
+                      "name": "team"
+                    },
+                    {
+                      "name": "email"
+                    }
+                  ],
+                  "description": "PII metadata",
+                  "lifecycle": [
+                    {
+                      "prevent_destroy": true
+                    }
+                  ],
+                  "name": "PII"
+                }
         argumentDocs:
             applicableEntityTypes: '- (Optional String) The entity types that the attribute is applicable, it always returns [\"cf_entity\"].'
             attribute_definition: '- (Optional List) The list of attribute definitions (see Business Metadata for more details):'
@@ -57,10 +248,61 @@ resources:
               $ export IMPORT_SCHEMA_REGISTRY_API_SECRET="<schema_registry_api_secret>"
               $ export IMPORT_SCHEMA_REGISTRY_REST_ENDPOINT="<schema_registry_rest_endpoint>"
               $ terraform import confluent_business_metadata.pii lsrc-8wrx70/PII
-    confluent_business_metadata_binding Resource - terraform-provider-confluent:
+    confluent_business_metadata_binding:
         subCategory: ""
-        name: confluent_business_metadata_binding Resource - terraform-provider-confluent
+        name: confluent_business_metadata_binding
         title: confluent_business_metadata_binding Resource - terraform-provider-confluent
+        examples:
+            - name: main
+              manifest: |-
+                {
+                  "attributes": {
+                    "email": "team@company.com",
+                    "team": "teamName"
+                  },
+                  "business_metadata_name": "${confluent_business_metadata.pii.name}",
+                  "credentials": [
+                    {
+                      "key": "\u003cSchema Registry API Key for confluent_schema_registry_cluster.essentials\u003e",
+                      "secret": "\u003cSchema Registry API Secret for confluent_schema_registry_cluster.essentials\u003e"
+                    }
+                  ],
+                  "entity_name": "${var.schema_registry_id}:${var.kafka_id}:${data.confluent_kafka_topic.main.topic_name}",
+                  "entity_type": "kafka_topic",
+                  "lifecycle": [
+                    {
+                      "prevent_destroy": true
+                    }
+                  ],
+                  "rest_endpoint": "${confluent_schema_registry_cluster.essentials.rest_endpoint}",
+                  "schema_registry_cluster": [
+                    {
+                      "id": "${confluent_schema_registry_cluster.essentials.id}"
+                    }
+                  ]
+                }
+              references:
+                business_metadata_name: confluent_business_metadata.pii.name
+                rest_endpoint: confluent_schema_registry_cluster.essentials.rest_endpoint
+                schema_registry_cluster.id: confluent_schema_registry_cluster.essentials.id
+            - name: main
+              manifest: |-
+                {
+                  "attributes": {
+                    "email": "team@company.com",
+                    "team": "teamName"
+                  },
+                  "business_metadata_name": "${confluent_business_metadata.pii.name}",
+                  "entity_name": "${var.schema_registry_id}:${var.kafka_id}:${data.confluent_kafka_topic.main.topic_name}",
+                  "entity_type": "kafka_topic",
+                  "lifecycle": [
+                    {
+                      "prevent_destroy": true
+                    }
+                  ]
+                }
+              references:
+                business_metadata_name: confluent_business_metadata.pii.name
         argumentDocs:
             attributes: '- (Optional Map) The block of key-value pair attributes.'
             business_metadata_name: '- (Required String) The name of the Business Metadata to be applied, for example, PII. The name must not be empty and consist of a letter followed by a sequence of letter, number, space, or _ characters.'
@@ -78,10 +320,31 @@ resources:
               $ export IMPORT_SCHEMA_REGISTRY_API_SECRET="<schema_registry_api_secret>"
               $ export IMPORT_SCHEMA_REGISTRY_REST_ENDPOINT="<schema_registry_rest_endpoint>"
               $ terraform import confluent_business_metadata_binding.main lsrc-8wrx70/PII/lsrc-8wrx70:.:100001/sr_schema
-    confluent_byok_key Resource - terraform-provider-confluent:
+    confluent_byok_key:
         subCategory: ""
-        name: confluent_byok_key Resource - terraform-provider-confluent
+        name: confluent_byok_key
         title: confluent_byok_key Resource - terraform-provider-confluent
+        examples:
+            - name: aws_key
+              manifest: |-
+                {
+                  "aws": [
+                    {
+                      "key_arn": "arn:aws:kms:us-west-2:111111111111:key/11111111-1111-1111-1111-111111111111"
+                    }
+                  ]
+                }
+            - name: azure_key
+              manifest: |-
+                {
+                  "azure": [
+                    {
+                      "key_identifier": "https://test-vault.vault.azure.net/keys/test-key",
+                      "key_vault_id": "/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/test-vault/providers/Microsoft.KeyVault/vaults/test-vault",
+                      "tenant_id": "11111111-1111-1111-1111-111111111111"
+                    }
+                  ]
+                }
         argumentDocs:
             application_id: '- (Optional String) The Application ID created for this key-environment combination.'
             aws: '(Optional Configuration Block) supports the following:'
@@ -97,10 +360,99 @@ resources:
               $ export CONFLUENT_CLOUD_API_KEY="<cloud_api_key>"
               $ export CONFLUENT_CLOUD_API_SECRET="<cloud_api_secret>"
               $ terraform import confluent_byok_key.aws_key cck-abcde
-    confluent_cluster_link Resource - terraform-provider-confluent:
+    confluent_cluster_link:
         subCategory: ""
-        name: confluent_cluster_link Resource - terraform-provider-confluent
+        name: confluent_cluster_link
         title: confluent_cluster_link Resource - terraform-provider-confluent
+        examples:
+            - name: east-to-west
+              manifest: |-
+                {
+                  "lifecycle": [
+                    {
+                      "prevent_destroy": true
+                    }
+                  ],
+                  "link_mode": "BIDIRECTIONAL",
+                  "link_name": "bidirectional-link",
+                  "local_kafka_cluster": [
+                    {
+                      "credentials": [
+                        {
+                          "key": "${confluent_api_key.app-manager-east-cluster-api-key.id}",
+                          "secret": "${confluent_api_key.app-manager-east-cluster-api-key.secret}"
+                        }
+                      ],
+                      "id": "${data.confluent_kafka_cluster.east.id}",
+                      "rest_endpoint": "${data.confluent_kafka_cluster.east.rest_endpoint}"
+                    }
+                  ],
+                  "remote_kafka_cluster": [
+                    {
+                      "bootstrap_endpoint": "${data.confluent_kafka_cluster.west.bootstrap_endpoint}",
+                      "credentials": [
+                        {
+                          "key": "${confluent_api_key.app-manager-west-cluster-api-key.id}",
+                          "secret": "${confluent_api_key.app-manager-west-cluster-api-key.secret}"
+                        }
+                      ],
+                      "id": "${data.confluent_kafka_cluster.west.id}"
+                    }
+                  ]
+                }
+              references:
+                local_kafka_cluster.credentials.key: confluent_api_key.app-manager-east-cluster-api-key.id
+                local_kafka_cluster.credentials.secret: confluent_api_key.app-manager-east-cluster-api-key.secret
+                local_kafka_cluster.id: data.confluent_kafka_cluster.east.id
+                local_kafka_cluster.rest_endpoint: data.confluent_kafka_cluster.east.rest_endpoint
+                remote_kafka_cluster.bootstrap_endpoint: data.confluent_kafka_cluster.west.bootstrap_endpoint
+                remote_kafka_cluster.credentials.key: confluent_api_key.app-manager-west-cluster-api-key.id
+                remote_kafka_cluster.credentials.secret: confluent_api_key.app-manager-west-cluster-api-key.secret
+                remote_kafka_cluster.id: data.confluent_kafka_cluster.west.id
+            - name: west-to-east
+              manifest: |-
+                {
+                  "lifecycle": [
+                    {
+                      "prevent_destroy": true
+                    }
+                  ],
+                  "link_mode": "BIDIRECTIONAL",
+                  "link_name": "bidirectional-link",
+                  "local_kafka_cluster": [
+                    {
+                      "credentials": [
+                        {
+                          "key": "${confluent_api_key.app-manager-west-cluster-api-key.id}",
+                          "secret": "${confluent_api_key.app-manager-west-cluster-api-key.secret}"
+                        }
+                      ],
+                      "id": "${data.confluent_kafka_cluster.west.id}",
+                      "rest_endpoint": "${data.confluent_kafka_cluster.west.rest_endpoint}"
+                    }
+                  ],
+                  "remote_kafka_cluster": [
+                    {
+                      "bootstrap_endpoint": "${data.confluent_kafka_cluster.east.bootstrap_endpoint}",
+                      "credentials": [
+                        {
+                          "key": "${confluent_api_key.app-manager-east-cluster-api-key.id}",
+                          "secret": "${confluent_api_key.app-manager-east-cluster-api-key.secret}"
+                        }
+                      ],
+                      "id": "${data.confluent_kafka_cluster.east.id}"
+                    }
+                  ]
+                }
+              references:
+                local_kafka_cluster.credentials.key: confluent_api_key.app-manager-west-cluster-api-key.id
+                local_kafka_cluster.credentials.secret: confluent_api_key.app-manager-west-cluster-api-key.secret
+                local_kafka_cluster.id: data.confluent_kafka_cluster.west.id
+                local_kafka_cluster.rest_endpoint: data.confluent_kafka_cluster.west.rest_endpoint
+                remote_kafka_cluster.bootstrap_endpoint: data.confluent_kafka_cluster.east.bootstrap_endpoint
+                remote_kafka_cluster.credentials.key: confluent_api_key.app-manager-east-cluster-api-key.id
+                remote_kafka_cluster.credentials.secret: confluent_api_key.app-manager-east-cluster-api-key.secret
+                remote_kafka_cluster.id: data.confluent_kafka_cluster.east.id
         argumentDocs:
             bootstrap_endpoint: '- (Optional String) The bootstrap endpoint of the source Kafka cluster, for example, SASL_SSL://pkc-00000.us-central1.gcp.confluent.cloud:9092 or pkc-00000.us-central1.gcp.confluent.cloud:9092).'
             config: '- (Optional Map) The custom cluster link settings to set:'
@@ -137,10 +489,180 @@ resources:
               $ export IMPORT_REMOTE_KAFKA_API_KEY="<remote_kafka_api_key>"
               $ export IMPORT_REMOTE_KAFKA_API_SECRET="<remote_kafka_api_secret>"
               $ terraform import confluent_cluster_link.my_cluster_link my-cluster-link/BIDIRECTIONAL/OUTBOUND/lkc-abc123/lkc-xyz456
-    confluent_connector Resource - terraform-provider-confluent:
+    confluent_connector:
         subCategory: ""
-        name: confluent_connector Resource - terraform-provider-confluent
+        name: confluent_connector
         title: confluent_connector Resource - terraform-provider-confluent
+        examples:
+            - name: source
+              manifest: |-
+                {
+                  "config_nonsensitive": {
+                    "connector.class": "DatagenSource",
+                    "kafka.auth.mode": "SERVICE_ACCOUNT",
+                    "kafka.service.account.id": "${confluent_service_account.app-connector.id}",
+                    "kafka.topic": "${confluent_kafka_topic.orders.topic_name}",
+                    "name": "DatagenSourceConnector_0",
+                    "output.data.format": "JSON",
+                    "quickstart": "ORDERS",
+                    "tasks.max": "1"
+                  },
+                  "config_sensitive": {},
+                  "depends_on": [
+                    "${confluent_kafka_acl.app-connector-describe-on-cluster}",
+                    "${confluent_kafka_acl.app-connector-write-on-target-topic}",
+                    "${confluent_kafka_acl.app-connector-create-on-data-preview-topics}",
+                    "${confluent_kafka_acl.app-connector-write-on-data-preview-topics}"
+                  ],
+                  "environment": [
+                    {
+                      "id": "${confluent_environment.staging.id}"
+                    }
+                  ],
+                  "kafka_cluster": [
+                    {
+                      "id": "${confluent_kafka_cluster.basic.id}"
+                    }
+                  ],
+                  "lifecycle": [
+                    {
+                      "prevent_destroy": true
+                    }
+                  ]
+                }
+              references:
+                environment.id: confluent_environment.staging.id
+                kafka_cluster.id: confluent_kafka_cluster.basic.id
+            - name: sink
+              manifest: |-
+                {
+                  "config_nonsensitive": {
+                    "connector.class": "S3_SINK",
+                    "flush.size": "1000",
+                    "input.data.format": "JSON",
+                    "kafka.auth.mode": "SERVICE_ACCOUNT",
+                    "kafka.service.account.id": "${confluent_service_account.app-connector.id}",
+                    "name": "S3_SINKConnector_0",
+                    "output.data.format": "JSON",
+                    "s3.bucket.name": "\u003cs3-bucket-name\u003e",
+                    "tasks.max": "1",
+                    "time.interval": "DAILY",
+                    "topics": "${confluent_kafka_topic.orders.topic_name}"
+                  },
+                  "config_sensitive": {
+                    "aws.access.key.id": "***REDACTED***",
+                    "aws.secret.access.key": "***REDACTED***"
+                  },
+                  "depends_on": [
+                    "${confluent_kafka_acl.app-connector-describe-on-cluster}",
+                    "${confluent_kafka_acl.app-connector-read-on-target-topic}",
+                    "${confluent_kafka_acl.app-connector-create-on-dlq-lcc-topics}",
+                    "${confluent_kafka_acl.app-connector-write-on-dlq-lcc-topics}",
+                    "${confluent_kafka_acl.app-connector-create-on-success-lcc-topics}",
+                    "${confluent_kafka_acl.app-connector-write-on-success-lcc-topics}",
+                    "${confluent_kafka_acl.app-connector-create-on-error-lcc-topics}",
+                    "${confluent_kafka_acl.app-connector-write-on-error-lcc-topics}",
+                    "${confluent_kafka_acl.app-connector-read-on-connect-lcc-group}"
+                  ],
+                  "environment": [
+                    {
+                      "id": "${confluent_environment.staging.id}"
+                    }
+                  ],
+                  "kafka_cluster": [
+                    {
+                      "id": "${confluent_kafka_cluster.basic.id}"
+                    }
+                  ],
+                  "lifecycle": [
+                    {
+                      "prevent_destroy": true
+                    }
+                  ]
+                }
+              references:
+                environment.id: confluent_environment.staging.id
+                kafka_cluster.id: confluent_kafka_cluster.basic.id
+            - name: sink
+              manifest: |-
+                {
+                  "config_nonsensitive": {
+                    "aws.dynamodb.pk.hash": "value.userid",
+                    "aws.dynamodb.pk.sort": "value.pageid",
+                    "connector.class": "DynamoDbSink",
+                    "input.data.format": "JSON",
+                    "kafka.auth.mode": "SERVICE_ACCOUNT",
+                    "kafka.service.account.id": "${confluent_service_account.app-connector.id}",
+                    "name": "DynamoDbSinkConnector_0",
+                    "tasks.max": "1",
+                    "topics": "${confluent_kafka_topic.orders.topic_name}"
+                  },
+                  "config_sensitive": {
+                    "aws.access.key.id": "***REDACTED***",
+                    "aws.secret.access.key": "***REDACTED***"
+                  },
+                  "depends_on": [
+                    "${confluent_kafka_acl.app-connector-describe-on-cluster}",
+                    "${confluent_kafka_acl.app-connector-read-on-target-topic}",
+                    "${confluent_kafka_acl.app-connector-create-on-dlq-lcc-topics}",
+                    "${confluent_kafka_acl.app-connector-write-on-dlq-lcc-topics}",
+                    "${confluent_kafka_acl.app-connector-create-on-success-lcc-topics}",
+                    "${confluent_kafka_acl.app-connector-write-on-success-lcc-topics}",
+                    "${confluent_kafka_acl.app-connector-create-on-error-lcc-topics}",
+                    "${confluent_kafka_acl.app-connector-write-on-error-lcc-topics}",
+                    "${confluent_kafka_acl.app-connector-read-on-connect-lcc-group}"
+                  ],
+                  "environment": [
+                    {
+                      "id": "${confluent_environment.staging.id}"
+                    }
+                  ],
+                  "kafka_cluster": [
+                    {
+                      "id": "${confluent_kafka_cluster.basic.id}"
+                    }
+                  ]
+                }
+              references:
+                environment.id: confluent_environment.staging.id
+                kafka_cluster.id: confluent_kafka_cluster.basic.id
+            - name: source
+              manifest: |-
+                {
+                  "config_nonsensitive": {
+                    "confluent.connector.type": "CUSTOM",
+                    "confluent.custom.plugin.id": "${confluent_custom_connector_plugin.source.id}",
+                    "connector.class": "${confluent_custom_connector_plugin.source.connector_class}",
+                    "kafka.auth.mode": "KAFKA_API_KEY",
+                    "kafka.topic": "${confluent_kafka_topic.orders.topic_name}",
+                    "max.interval": "2000",
+                    "min.interval": "1000",
+                    "name": "DatagenConnectorExampleName",
+                    "output.data.format": "JSON",
+                    "quickstart": "ORDERS",
+                    "tasks.max": "1"
+                  },
+                  "config_sensitive": {
+                    "kafka.api.key": "***REDACTED***",
+                    "kafka.api.secret": "***REDACTED***"
+                  },
+                  "depends_on": [
+                    "${confluent_role_binding.app-manager-kafka-cluster-admin}"
+                  ],
+                  "environment": [
+                    {
+                      "id": "${confluent_environment.staging.id}"
+                    }
+                  ],
+                  "kafka_cluster": [
+                    {
+                      "id": "${confluent_kafka_cluster.basic.id}"
+                    }
+                  ]
+                }
+              references:
+                environment.id: confluent_environment.staging.id
+                kafka_cluster.id: confluent_kafka_cluster.basic.id
         argumentDocs:
             config_nonsensitive: '- (Required Map) Block for custom nonsensitive configuration properties that are not labelled with "Type: password" under "Configuration Properties" section in the docs:'
             config_sensitive: '- (Required Map) Block for custom sensitive configuration properties that are labelled with "Type: password" under "Configuration Properties" section in the docs:'
@@ -155,10 +677,21 @@ resources:
               $ export CONFLUENT_CLOUD_API_KEY="<cloud_api_key>"
               $ export CONFLUENT_CLOUD_API_SECRET="<cloud_api_secret>"
               $ terraform import confluent_connector.my_connector "env-abc123/lkc-abc123/S3_SINKConnector_0"
-    confluent_custom_connector_plugin Resource - terraform-provider-confluent:
+    confluent_custom_connector_plugin:
         subCategory: ""
-        name: confluent_custom_connector_plugin Resource - terraform-provider-confluent
+        name: confluent_custom_connector_plugin
         title: confluent_custom_connector_plugin Resource - terraform-provider-confluent
+        examples:
+            - name: source
+              manifest: |-
+                {
+                  "connector_class": "io.confluent.kafka.connect.datagen.DatagenConnector",
+                  "connector_type": "SOURCE",
+                  "display_name": "Datagen Source Connector Plugin",
+                  "documentation_link": "https://www.confluent.io/hub/confluentinc/kafka-connect-datagen",
+                  "filename": "confluentinc-kafka-connect-datagen-0.6.2.zip",
+                  "sensitive_config_properties": []
+                }
         argumentDocs:
             connector_class: '- (Required String) The Java class or alias for the connector. You can get the connector class from the connector documentation provided by the developer.'
             connector_type: '- (Required String) The type of the Custom Connector Plugin. Accepted values are: SOURCE, SINK.'
@@ -173,10 +706,21 @@ resources:
               $ export CONFLUENT_CLOUD_API_KEY="<cloud_api_key>"
               $ export CONFLUENT_CLOUD_API_SECRET="<cloud_api_secret>"
               $ terraform import confluent_custom_connector_plugin.main ccp-abc123xyz
-    confluent_environment Resource - terraform-provider-confluent:
+    confluent_environment:
         subCategory: ""
-        name: confluent_environment Resource - terraform-provider-confluent
+        name: confluent_environment
         title: confluent_environment Resource - terraform-provider-confluent
+        examples:
+            - name: prod
+              manifest: |-
+                {
+                  "display_name": "Production",
+                  "lifecycle": [
+                    {
+                      "prevent_destroy": true
+                    }
+                  ]
+                }
         argumentDocs:
             display_name: '- (Required String) A human-readable name for the Environment. Start and end the name with alphanumeric characters, for example, "Development". The name can contain hyphens and underscores.'
             id: '- (Required String) The ID of the Environment, for example, env-abc123.'
@@ -186,10 +730,31 @@ resources:
               $ export CONFLUENT_CLOUD_API_KEY="<cloud_api_key>"
               $ export CONFLUENT_CLOUD_API_SECRET="<cloud_api_secret>"
               $ terraform import confluent_environment.my_env env-abc123
-    confluent_flink_compute_pool Resource - terraform-provider-confluent:
+    confluent_flink_compute_pool:
         subCategory: ""
-        name: confluent_flink_compute_pool Resource - terraform-provider-confluent
+        name: confluent_flink_compute_pool
         title: confluent_flink_compute_pool Resource - terraform-provider-confluent
+        examples:
+            - name: main
+              manifest: |-
+                {
+                  "cloud": "AWS",
+                  "display_name": "standard_compute_pool",
+                  "environment": [
+                    {
+                      "id": "${confluent_environment.development.id}"
+                    }
+                  ],
+                  "max_cfu": 5,
+                  "region": "us-east-1"
+                }
+              references:
+                environment.id: confluent_environment.development.id
+              dependencies:
+                confluent_environment.development: |-
+                    {
+                      "display_name": "Development"
+                    }
         argumentDocs:
             api_version: '- (Required String) The API Version of the schema version of the Flink Compute Pool, for example, fcpm/v2.'
             cloud: '- (Required String) The cloud service provider that runs the Flink Compute Pool.'
@@ -207,10 +772,57 @@ resources:
               $ export CONFLUENT_CLOUD_API_KEY="<cloud_api_key>"
               $ export CONFLUENT_CLOUD_API_SECRET="<cloud_api_secret>"
               $ terraform import confluent_flink_compute_pool.main env-abc123/lfcp-abc123
-    confluent_identity_pool Resource - terraform-provider-confluent:
+    confluent_identity_pool:
         subCategory: ""
-        name: confluent_identity_pool Resource - terraform-provider-confluent
+        name: confluent_identity_pool
         title: confluent_identity_pool Resource - terraform-provider-confluent
+        examples:
+            - name: example
+              manifest: |-
+                {
+                  "description": "Prod Access to Kafka clusters to Release Engineering",
+                  "display_name": "My Identity Pool",
+                  "filter": "claims.aud==\"confluent\" \u0026\u0026 claims.group!=\"invalid_group\"",
+                  "identity_claim": "claims.sub",
+                  "identity_provider": [
+                    {
+                      "id": "${confluent_identity_provider.azure.id}"
+                    }
+                  ]
+                }
+              references:
+                identity_provider.id: confluent_identity_provider.azure.id
+              dependencies:
+                confluent_identity_provider.azure: |-
+                    {
+                      "description": "My description",
+                      "display_name": "My OIDC Provider: Azure AD",
+                      "issuer": "https://login.microsoftonline.com/{tenant_id}/v2.0",
+                      "jwks_uri": "https://login.microsoftonline.com/common/discovery/v2.0/keys"
+                    }
+            - name: example
+              manifest: |-
+                {
+                  "description": "Prod Access to Kafka clusters to Release Engineering",
+                  "display_name": "My Identity Pool",
+                  "filter": "claims.aud==\"confluent\" \u0026\u0026 claims.group!=\"invalid_group\"",
+                  "identity_claim": "claims.sub",
+                  "identity_provider": [
+                    {
+                      "id": "${confluent_identity_provider.okta.id}"
+                    }
+                  ]
+                }
+              references:
+                identity_provider.id: confluent_identity_provider.okta.id
+              dependencies:
+                confluent_identity_provider.okta: |-
+                    {
+                      "description": "My description",
+                      "display_name": "My OIDC Provider: Okta",
+                      "issuer": "https://mycompany.okta.com/oauth2/default",
+                      "jwks_uri": "https://mycompany.okta.com/oauth2/default/v1/keys"
+                    }
         argumentDocs:
             description: '- (Required String) A description for the Identity Pool.'
             display_name: '- (Required String) A human-readable name for the Identity Pool.'
@@ -223,10 +835,27 @@ resources:
               $ export CONFLUENT_CLOUD_API_KEY="<cloud_api_key>"
               $ export CONFLUENT_CLOUD_API_SECRET="<cloud_api_secret>"
               $ terraform import confluent_identity_pool.example op-abc123/pool-xyz456
-    confluent_identity_provider Resource - terraform-provider-confluent:
+    confluent_identity_provider:
         subCategory: ""
-        name: confluent_identity_provider Resource - terraform-provider-confluent
+        name: confluent_identity_provider
         title: confluent_identity_provider Resource - terraform-provider-confluent
+        examples:
+            - name: azure
+              manifest: |-
+                {
+                  "description": "My description",
+                  "display_name": "My OIDC Provider: Azure AD",
+                  "issuer": "https://login.microsoftonline.com/{tenant_id}/v2.0",
+                  "jwks_uri": "https://login.microsoftonline.com/common/discovery/v2.0/keys"
+                }
+            - name: okta
+              manifest: |-
+                {
+                  "description": "My description",
+                  "display_name": "My OIDC Provider: Okta",
+                  "issuer": "https://mycompany.okta.com/oauth2/default",
+                  "jwks_uri": "https://mycompany.okta.com/oauth2/default/v1/keys"
+                }
         argumentDocs:
             description: '- (Required String) A description for the Identity Provider.'
             display_name: '- (Required String) A human-readable name for the Identity Provider.'
@@ -238,10 +867,22 @@ resources:
               $ export CONFLUENT_CLOUD_API_KEY="<cloud_api_key>"
               $ export CONFLUENT_CLOUD_API_SECRET="<cloud_api_secret>"
               $ terraform import confluent_identity_provider.example op-abc123
-    confluent_invitation Resource - terraform-provider-confluent:
+    confluent_invitation:
         subCategory: ""
-        name: confluent_invitation Resource - terraform-provider-confluent
+        name: confluent_invitation
         title: confluent_invitation Resource - terraform-provider-confluent
+        examples:
+            - name: main
+              manifest: |-
+                {
+                  "email": ""
+                }
+            - name: main2
+              manifest: |-
+                {
+                  "auth_type": "AUTH_TYPE_LOCAL",
+                  "email": ""
+                }
         argumentDocs:
             accepted_at: '- (Optional String) The timestamp that the invitation was accepted.'
             auth_type: '- (Optional String) Accepted values are: AUTH_TYPE_LOCAL and AUTH_TYPE_SSO. The user/invitee''s authentication type. Note that only the OrganizationAdmin role can invite AUTH_TYPE_LOCAL users to SSO organizations. The user''s auth_type is set as AUTH_TYPE_SSO by default if the organization has SSO enabled. Otherwise, the user''s auth_type is AUTH_TYPE_LOCAL by default.'
@@ -256,10 +897,60 @@ resources:
               $ export CONFLUENT_CLOUD_API_KEY="<cloud_api_key>"
               $ export CONFLUENT_CLOUD_API_SECRET="<cloud_api_secret>"
               $ terraform import confluent_invitation.main i-gxxn1
-    confluent_kafka_acl Resource - terraform-provider-confluent:
+    confluent_kafka_acl:
         subCategory: ""
-        name: confluent_kafka_acl Resource - terraform-provider-confluent
+        name: confluent_kafka_acl
         title: confluent_kafka_acl Resource - terraform-provider-confluent
+        examples:
+            - name: describe-basic-cluster
+              manifest: |-
+                {
+                  "credentials": [
+                    {
+                      "key": "${confluent_api_key.app-manager-kafka-api-key.id}",
+                      "secret": "${confluent_api_key.app-manager-kafka-api-key.secret}"
+                    }
+                  ],
+                  "host": "*",
+                  "kafka_cluster": [
+                    {
+                      "id": "${confluent_kafka_cluster.basic-cluster.id}"
+                    }
+                  ],
+                  "lifecycle": [
+                    {
+                      "prevent_destroy": true
+                    }
+                  ],
+                  "operation": "DESCRIBE",
+                  "pattern_type": "LITERAL",
+                  "permission": "ALLOW",
+                  "principal": "User:sa-xyz123",
+                  "resource_name": "kafka-cluster",
+                  "resource_type": "CLUSTER",
+                  "rest_endpoint": "${confluent_kafka_cluster.basic-cluster.rest_endpoint}"
+                }
+              references:
+                credentials.key: confluent_api_key.app-manager-kafka-api-key.id
+                credentials.secret: confluent_api_key.app-manager-kafka-api-key.secret
+                kafka_cluster.id: confluent_kafka_cluster.basic-cluster.id
+                rest_endpoint: confluent_kafka_cluster.basic-cluster.rest_endpoint
+            - name: describe-basic-cluster
+              manifest: |-
+                {
+                  "host": "*",
+                  "lifecycle": [
+                    {
+                      "prevent_destroy": true
+                    }
+                  ],
+                  "operation": "DESCRIBE",
+                  "pattern_type": "LITERAL",
+                  "permission": "ALLOW",
+                  "principal": "User:sa-xyz123",
+                  "resource_name": "kafka-cluster",
+                  "resource_type": "CLUSTER"
+                }
         argumentDocs:
             credentials: '(Optional Configuration Block) supports the following:'
             host: '- (Required String) The host for the ACL. Should be set to * for Confluent Cloud.'
@@ -286,10 +977,45 @@ resources:
               $ export CONFLUENT_CLOUD_API_KEY="<cloud_api_key>"
               $ export CONFLUENT_CLOUD_API_SECRET="<cloud_api_secret>"
               $ terraform import confluent_kafka_acl.describe-cluster "lkc-12345/CLUSTER#kafka-cluster#LITERAL#User:sa-xyz123#*#DESCRIBE#ALLOW"
-    confluent_kafka_client_quota Resource - terraform-provider-confluent:
+    confluent_kafka_client_quota:
         subCategory: ""
-        name: confluent_kafka_client_quota Resource - terraform-provider-confluent
+        name: confluent_kafka_client_quota
         title: confluent_kafka_client_quota Resource - terraform-provider-confluent
+        examples:
+            - name: example
+              manifest: |-
+                {
+                  "description": "Test Quota",
+                  "display_name": "test-quota",
+                  "environment": [
+                    {
+                      "id": "${confluent_environment.development.id}"
+                    }
+                  ],
+                  "kafka_cluster": [
+                    {
+                      "id": "${confluent_kafka_cluster.dedicated.id}"
+                    }
+                  ],
+                  "lifecycle": [
+                    {
+                      "prevent_destroy": true
+                    }
+                  ],
+                  "principals": [
+                    "${confluent_service_account.app_manager.id}",
+                    "${confluent_service_account.app_manager_2.id}"
+                  ],
+                  "throughput": [
+                    {
+                      "egress_byte_rate": "200",
+                      "ingress_byte_rate": "100"
+                    }
+                  ]
+                }
+              references:
+                environment.id: confluent_environment.development.id
+                kafka_cluster.id: confluent_kafka_cluster.dedicated.id
         argumentDocs:
             description: '- (Optional String) The description of the Kafka Client Quota.'
             display_name: '- (Required String) The name of the Kafka Client Quota.'
@@ -305,10 +1031,299 @@ resources:
               $ export CONFLUENT_CLOUD_API_KEY="<cloud_api_key>"
               $ export CONFLUENT_CLOUD_API_SECRET="<cloud_api_secret>"
               $ terraform import confluent_kafka_client_quota.example cq-abc123
-    confluent_kafka_cluster Resource - terraform-provider-confluent:
+    confluent_kafka_cluster:
         subCategory: ""
-        name: confluent_kafka_cluster Resource - terraform-provider-confluent
+        name: confluent_kafka_cluster
         title: confluent_kafka_cluster Resource - terraform-provider-confluent
+        examples:
+            - name: basic
+              manifest: |-
+                {
+                  "availability": "SINGLE_ZONE",
+                  "basic": [
+                    {}
+                  ],
+                  "cloud": "AWS",
+                  "display_name": "basic_kafka_cluster",
+                  "environment": [
+                    {
+                      "id": "${confluent_environment.development.id}"
+                    }
+                  ],
+                  "lifecycle": [
+                    {
+                      "prevent_destroy": true
+                    }
+                  ],
+                  "region": "us-east-2"
+                }
+              references:
+                environment.id: confluent_environment.development.id
+              dependencies:
+                confluent_environment.development: |-
+                    {
+                      "display_name": "Development",
+                      "lifecycle": [
+                        {
+                          "prevent_destroy": true
+                        }
+                      ]
+                    }
+            - name: standard
+              manifest: |-
+                {
+                  "availability": "SINGLE_ZONE",
+                  "cloud": "AWS",
+                  "display_name": "standard_kafka_cluster",
+                  "environment": [
+                    {
+                      "id": "${confluent_environment.development.id}"
+                    }
+                  ],
+                  "lifecycle": [
+                    {
+                      "prevent_destroy": true
+                    }
+                  ],
+                  "region": "us-east-2",
+                  "standard": [
+                    {}
+                  ]
+                }
+              references:
+                environment.id: confluent_environment.development.id
+              dependencies:
+                confluent_environment.development: |-
+                    {
+                      "display_name": "Development",
+                      "lifecycle": [
+                        {
+                          "prevent_destroy": true
+                        }
+                      ]
+                    }
+            - name: dedicated
+              manifest: |-
+                {
+                  "availability": "MULTI_ZONE",
+                  "cloud": "AWS",
+                  "dedicated": [
+                    {
+                      "cku": 2
+                    }
+                  ],
+                  "display_name": "dedicated_kafka_cluster",
+                  "environment": [
+                    {
+                      "id": "${confluent_environment.development.id}"
+                    }
+                  ],
+                  "lifecycle": [
+                    {
+                      "prevent_destroy": true
+                    }
+                  ],
+                  "region": "us-east-2"
+                }
+              references:
+                environment.id: confluent_environment.development.id
+              dependencies:
+                confluent_environment.development: |-
+                    {
+                      "display_name": "Development",
+                      "lifecycle": [
+                        {
+                          "prevent_destroy": true
+                        }
+                      ]
+                    }
+            - name: basic
+              manifest: |-
+                {
+                  "availability": "SINGLE_ZONE",
+                  "basic": [
+                    {}
+                  ],
+                  "cloud": "AZURE",
+                  "display_name": "basic_kafka_cluster",
+                  "environment": [
+                    {
+                      "id": "${confluent_environment.development.id}"
+                    }
+                  ],
+                  "lifecycle": [
+                    {
+                      "prevent_destroy": true
+                    }
+                  ],
+                  "region": "centralus"
+                }
+              references:
+                environment.id: confluent_environment.development.id
+              dependencies:
+                confluent_environment.development: |-
+                    {
+                      "display_name": "Development",
+                      "lifecycle": [
+                        {
+                          "prevent_destroy": true
+                        }
+                      ]
+                    }
+            - name: standard
+              manifest: |-
+                {
+                  "availability": "SINGLE_ZONE",
+                  "cloud": "AZURE",
+                  "display_name": "standard_kafka_cluster",
+                  "environment": [
+                    {
+                      "id": "${confluent_environment.development.id}"
+                    }
+                  ],
+                  "lifecycle": [
+                    {
+                      "prevent_destroy": true
+                    }
+                  ],
+                  "region": "centralus",
+                  "standard": [
+                    {}
+                  ]
+                }
+              references:
+                environment.id: confluent_environment.development.id
+              dependencies:
+                confluent_environment.development: |-
+                    {
+                      "display_name": "Development",
+                      "lifecycle": [
+                        {
+                          "prevent_destroy": true
+                        }
+                      ]
+                    }
+            - name: dedicated
+              manifest: |-
+                {
+                  "availability": "MULTI_ZONE",
+                  "cloud": "AZURE",
+                  "dedicated": [
+                    {
+                      "cku": 2
+                    }
+                  ],
+                  "display_name": "dedicated_kafka_cluster",
+                  "environment": [
+                    {
+                      "id": "${confluent_environment.development.id}"
+                    }
+                  ],
+                  "lifecycle": [
+                    {
+                      "prevent_destroy": true
+                    }
+                  ],
+                  "region": "centralus"
+                }
+              references:
+                environment.id: confluent_environment.development.id
+              dependencies:
+                confluent_environment.development: |-
+                    {
+                      "display_name": "Development",
+                      "lifecycle": [
+                        {
+                          "prevent_destroy": true
+                        }
+                      ]
+                    }
+            - name: basic
+              manifest: |-
+                {
+                  "availability": "SINGLE_ZONE",
+                  "basic": [
+                    {}
+                  ],
+                  "cloud": "GCP",
+                  "display_name": "basic_kafka_cluster",
+                  "environment": [
+                    {
+                      "id": "${confluent_environment.development.id}"
+                    }
+                  ],
+                  "lifecycle": [
+                    {
+                      "prevent_destroy": true
+                    }
+                  ],
+                  "region": "us-central1"
+                }
+              references:
+                environment.id: confluent_environment.development.id
+              dependencies:
+                confluent_environment.development: |-
+                    {
+                      "display_name": "Development"
+                    }
+            - name: standard
+              manifest: |-
+                {
+                  "availability": "SINGLE_ZONE",
+                  "cloud": "GCP",
+                  "display_name": "standard_kafka_cluster",
+                  "environment": [
+                    {
+                      "id": "${confluent_environment.development.id}"
+                    }
+                  ],
+                  "lifecycle": [
+                    {
+                      "prevent_destroy": true
+                    }
+                  ],
+                  "region": "us-central1",
+                  "standard": [
+                    {}
+                  ]
+                }
+              references:
+                environment.id: confluent_environment.development.id
+              dependencies:
+                confluent_environment.development: |-
+                    {
+                      "display_name": "Development"
+                    }
+            - name: dedicated
+              manifest: |-
+                {
+                  "availability": "MULTI_ZONE",
+                  "cloud": "GCP",
+                  "dedicated": [
+                    {
+                      "cku": 2
+                    }
+                  ],
+                  "display_name": "dedicated_kafka_cluster",
+                  "environment": [
+                    {
+                      "id": "${confluent_environment.development.id}"
+                    }
+                  ],
+                  "lifecycle": [
+                    {
+                      "prevent_destroy": true
+                    }
+                  ],
+                  "region": "us-central1"
+                }
+              references:
+                environment.id: confluent_environment.development.id
+              dependencies:
+                confluent_environment.development: |-
+                    {
+                      "display_name": "Development"
+                    }
         argumentDocs:
             api_version: '- (Required String) An API Version of the schema version of the Kafka cluster, for example, cmk/v2.'
             availability: '- (Required String) The availability zone configuration of the Kafka cluster. Accepted values are: SINGLE_ZONE and MULTI_ZONE.'
@@ -338,10 +1353,44 @@ resources:
               $ export CONFLUENT_CLOUD_API_KEY="<cloud_api_key>"
               $ export CONFLUENT_CLOUD_API_SECRET="<cloud_api_secret>"
               $ terraform import confluent_kafka_cluster.my_kafka env-abc123/lkc-abc123
-    confluent_kafka_cluster_config Resource - terraform-provider-confluent:
+    confluent_kafka_cluster_config:
         subCategory: ""
-        name: confluent_kafka_cluster_config Resource - terraform-provider-confluent
+        name: confluent_kafka_cluster_config
         title: confluent_kafka_cluster_config Resource - terraform-provider-confluent
+        examples:
+            - name: orders
+              manifest: |-
+                {
+                  "config": {
+                    "auto.create.topics.enable": "true",
+                    "log.retention.ms": "604800123"
+                  },
+                  "credentials": [
+                    {
+                      "key": "${confluent_api_key.app-manager-kafka-api-key.id}",
+                      "secret": "${confluent_api_key.app-manager-kafka-api-key.secret}"
+                    }
+                  ],
+                  "kafka_cluster": [
+                    {
+                      "id": "${confluent_kafka_cluster.dedicated.id}"
+                    }
+                  ],
+                  "rest_endpoint": "${confluent_kafka_cluster.dedicated.rest_endpoint}"
+                }
+              references:
+                credentials.key: confluent_api_key.app-manager-kafka-api-key.id
+                credentials.secret: confluent_api_key.app-manager-kafka-api-key.secret
+                kafka_cluster.id: confluent_kafka_cluster.dedicated.id
+                rest_endpoint: confluent_kafka_cluster.dedicated.rest_endpoint
+            - name: orders
+              manifest: |-
+                {
+                  "config": {
+                    "auto.create.topics.enable": "true",
+                    "log.retention.ms": "604800123"
+                  }
+                }
         argumentDocs:
             credentials: '(Optional Configuration Block) supports the following:'
             credentials.config: '- (Optional Map) The custom cluster settings to set:'
@@ -362,10 +1411,48 @@ resources:
 
               # Option #2: Manage a single Kafka cluster in the same Terraform workspace
               $ terraform import confluent_kafka_cluster_config.test lkc-abc123
-    confluent_kafka_mirror_topic Resource - terraform-provider-confluent:
+    confluent_kafka_mirror_topic:
         subCategory: ""
-        name: confluent_kafka_mirror_topic Resource - terraform-provider-confluent
+        name: confluent_kafka_mirror_topic
         title: confluent_kafka_mirror_topic Resource - terraform-provider-confluent
+        examples:
+            - name: example
+              manifest: |-
+                {
+                  "cluster_link": [
+                    {
+                      "link_name": "${confluent_cluster_link.source-outbound.link_name}"
+                    }
+                  ],
+                  "kafka_cluster": [
+                    {
+                      "credentials": [
+                        {
+                          "key": "${confluent_api_key.app-manager-destination-cluster-api-key.id}",
+                          "secret": "${confluent_api_key.app-manager-destination-cluster-api-key.secret}"
+                        }
+                      ],
+                      "id": "${data.confluent_kafka_cluster.destination.id}",
+                      "rest_endpoint": "${data.confluent_kafka_cluster.destination.rest_endpoint}"
+                    }
+                  ],
+                  "lifecycle": [
+                    {
+                      "prevent_destroy": true
+                    }
+                  ],
+                  "source_kafka_topic": [
+                    {
+                      "topic_name": "orders"
+                    }
+                  ]
+                }
+              references:
+                cluster_link.link_name: confluent_cluster_link.source-outbound.link_name
+                kafka_cluster.credentials.key: confluent_api_key.app-manager-destination-cluster-api-key.id
+                kafka_cluster.credentials.secret: confluent_api_key.app-manager-destination-cluster-api-key.secret
+                kafka_cluster.id: data.confluent_kafka_cluster.destination.id
+                kafka_cluster.rest_endpoint: data.confluent_kafka_cluster.destination.rest_endpoint
         argumentDocs:
             cluster_link: '- (Required Configuration Block) supports the following:'
             credentials: '(Optional Configuration Block) supports the following:'
@@ -385,10 +1472,48 @@ resources:
               $ export IMPORT_KAFKA_API_SECRET="<kafka_api_secret>"
               $ export IMPORT_KAFKA_REST_ENDPOINT="<kafka_rest_endpoint>"
               $ terraform import confluent_kafka_mirror_topic.my_mirror_topic lkc-abc123/my-cluster-link/orders-123
-    confluent_kafka_topic Resource - terraform-provider-confluent:
+    confluent_kafka_topic:
         subCategory: ""
-        name: confluent_kafka_topic Resource - terraform-provider-confluent
+        name: confluent_kafka_topic
         title: confluent_kafka_topic Resource - terraform-provider-confluent
+        examples:
+            - name: orders
+              manifest: |-
+                {
+                  "credentials": [
+                    {
+                      "key": "${confluent_api_key.app-manager-kafka-api-key.id}",
+                      "secret": "${confluent_api_key.app-manager-kafka-api-key.secret}"
+                    }
+                  ],
+                  "kafka_cluster": [
+                    {
+                      "id": "${confluent_kafka_cluster.basic-cluster.id}"
+                    }
+                  ],
+                  "lifecycle": [
+                    {
+                      "prevent_destroy": true
+                    }
+                  ],
+                  "rest_endpoint": "${confluent_kafka_cluster.basic-cluster.rest_endpoint}",
+                  "topic_name": "orders"
+                }
+              references:
+                credentials.key: confluent_api_key.app-manager-kafka-api-key.id
+                credentials.secret: confluent_api_key.app-manager-kafka-api-key.secret
+                kafka_cluster.id: confluent_kafka_cluster.basic-cluster.id
+                rest_endpoint: confluent_kafka_cluster.basic-cluster.rest_endpoint
+            - name: orders
+              manifest: |-
+                {
+                  "lifecycle": [
+                    {
+                      "prevent_destroy": true
+                    }
+                  ],
+                  "topic_name": "orders"
+                }
         argumentDocs:
             credentials: '(Optional Configuration Block) supports the following:'
             credentials.config: '- (Optional Map) The custom topic settings to set:'
@@ -411,10 +1536,127 @@ resources:
 
               # Option #2: Manage a single Kafka cluster in the same Terraform workspace
               $ terraform import confluent_kafka_topic.my_topic lkc-abc123/orders-123
-    confluent_ksql_cluster Resource - terraform-provider-confluent:
+    confluent_ksql_cluster:
         subCategory: ""
-        name: confluent_ksql_cluster Resource - terraform-provider-confluent
+        name: confluent_ksql_cluster
         title: confluent_ksql_cluster Resource - terraform-provider-confluent
+        examples:
+            - name: example
+              manifest: |-
+                {
+                  "credential_identity": [
+                    {
+                      "id": "${confluent_service_account.app-ksql.id}"
+                    }
+                  ],
+                  "csu": 1,
+                  "depends_on": [
+                    "${confluent_role_binding.app-ksql-kafka-cluster-admin}",
+                    "${confluent_role_binding.app-ksql-schema-registry-resource-owner}",
+                    "${confluent_schema_registry_cluster.essentials}"
+                  ],
+                  "display_name": "example",
+                  "environment": [
+                    {
+                      "id": "${confluent_environment.development.id}"
+                    }
+                  ],
+                  "kafka_cluster": [
+                    {
+                      "id": "${confluent_kafka_cluster.basic.id}"
+                    }
+                  ],
+                  "lifecycle": [
+                    {
+                      "prevent_destroy": true
+                    }
+                  ]
+                }
+              references:
+                credential_identity.id: confluent_service_account.app-ksql.id
+                environment.id: confluent_environment.development.id
+                kafka_cluster.id: confluent_kafka_cluster.basic.id
+              dependencies:
+                confluent_environment.development: |-
+                    {
+                      "display_name": "Development",
+                      "lifecycle": [
+                        {
+                          "prevent_destroy": true
+                        }
+                      ]
+                    }
+                confluent_kafka_cluster.basic: |-
+                    {
+                      "availability": "SINGLE_ZONE",
+                      "basic": [
+                        {}
+                      ],
+                      "cloud": "AWS",
+                      "display_name": "basic_kafka_cluster",
+                      "environment": [
+                        {
+                          "id": "${confluent_environment.development.id}"
+                        }
+                      ],
+                      "lifecycle": [
+                        {
+                          "prevent_destroy": true
+                        }
+                      ],
+                      "region": "us-east-1"
+                    }
+                confluent_role_binding.app-ksql-kafka-cluster-admin: |-
+                    {
+                      "crn_pattern": "${confluent_kafka_cluster.basic.rbac_crn}",
+                      "lifecycle": [
+                        {
+                          "prevent_destroy": true
+                        }
+                      ],
+                      "principal": "User:${confluent_service_account.app-ksql.id}",
+                      "role_name": "CloudClusterAdmin"
+                    }
+                confluent_role_binding.app-ksql-schema-registry-resource-owner: |-
+                    {
+                      "crn_pattern": "${format(\"%s/%s\", confluent_schema_registry_cluster.essentials.resource_name, \"subject=*\")}",
+                      "lifecycle": [
+                        {
+                          "prevent_destroy": true
+                        }
+                      ],
+                      "principal": "User:${confluent_service_account.app-ksql.id}",
+                      "role_name": "ResourceOwner"
+                    }
+                confluent_schema_registry_cluster.essentials: |-
+                    {
+                      "environment": [
+                        {
+                          "id": "${confluent_environment.development.id}"
+                        }
+                      ],
+                      "lifecycle": [
+                        {
+                          "prevent_destroy": true
+                        }
+                      ],
+                      "package": "ESSENTIALS",
+                      "region": [
+                        {
+                          "id": "sgreg-1"
+                        }
+                      ]
+                    }
+                confluent_service_account.app-ksql: |-
+                    {
+                      "description": "Service account to manage 'example' ksqlDB cluster",
+                      "display_name": "app-ksql",
+                      "lifecycle": [
+                        {
+                          "prevent_destroy": true
+                        }
+                      ]
+                    }
         argumentDocs:
             api_version: '- (Required String) An API Version of the schema version of the ksqlDB cluster, for example, ksqldbcm/v2.'
             credential_identity: '(Required Configuration Block) supports the following:'
@@ -434,10 +1676,146 @@ resources:
               $ export CONFLUENT_CLOUD_API_KEY="<cloud_api_key>"
               $ export CONFLUENT_CLOUD_API_SECRET="<cloud_api_secret>"
               $ terraform import confluent_ksql_cluster.example env-abc123/lksqlc-abc123
-    confluent_network Resource - terraform-provider-confluent:
+    confluent_network:
         subCategory: ""
-        name: confluent_network Resource - terraform-provider-confluent
+        name: confluent_network
         title: confluent_network Resource - terraform-provider-confluent
+        examples:
+            - name: aws-private-link
+              manifest: |-
+                {
+                  "cloud": "AWS",
+                  "connection_types": [
+                    "PRIVATELINK"
+                  ],
+                  "display_name": "AWS Private Link Network",
+                  "environment": [
+                    {
+                      "id": "${confluent_environment.development.id}"
+                    }
+                  ],
+                  "region": "us-east-1",
+                  "zones": [
+                    "use1-az1",
+                    "use1-az2",
+                    "use1-az6"
+                  ]
+                }
+              references:
+                environment.id: confluent_environment.development.id
+              dependencies:
+                confluent_environment.development: |-
+                    {
+                      "display_name": "Development"
+                    }
+            - name: azure-peering
+              manifest: |-
+                {
+                  "cidr": "10.10.0.0/16",
+                  "cloud": "AZURE",
+                  "connection_types": [
+                    "PEERING"
+                  ],
+                  "display_name": "Azure Peering Network",
+                  "environment": [
+                    {
+                      "id": "${confluent_environment.development.id}"
+                    }
+                  ],
+                  "lifecycle": [
+                    {
+                      "prevent_destroy": true
+                    }
+                  ],
+                  "region": "eastus2"
+                }
+              references:
+                environment.id: confluent_environment.development.id
+              dependencies:
+                confluent_environment.development: |-
+                    {
+                      "display_name": "Development",
+                      "lifecycle": [
+                        {
+                          "prevent_destroy": true
+                        }
+                      ]
+                    }
+            - name: gcp-private-service-connect
+              manifest: |-
+                {
+                  "cloud": "GCP",
+                  "connection_types": [
+                    "PRIVATELINK"
+                  ],
+                  "display_name": "GCP Private Service Connect Network",
+                  "dns_config": [
+                    {
+                      "resolution": "PRIVATE"
+                    }
+                  ],
+                  "environment": [
+                    {
+                      "id": "${confluent_environment.development.id}"
+                    }
+                  ],
+                  "lifecycle": [
+                    {
+                      "prevent_destroy": true
+                    }
+                  ],
+                  "region": "us-central1",
+                  "zones": [
+                    "us-central1-a",
+                    "us-central1-b",
+                    "us-central1-c"
+                  ]
+                }
+              references:
+                environment.id: confluent_environment.development.id
+              dependencies:
+                confluent_environment.development: |-
+                    {
+                      "display_name": "Development",
+                      "lifecycle": [
+                        {
+                          "prevent_destroy": true
+                        }
+                      ]
+                    }
+            - name: aws-transit-gateway-attachment
+              manifest: |-
+                {
+                  "cidr": "10.10.0.0/16",
+                  "cloud": "AWS",
+                  "connection_types": [
+                    "TRANSITGATEWAY"
+                  ],
+                  "display_name": "AWS Transit Gateway Attachment Network",
+                  "environment": [
+                    {
+                      "id": "${confluent_environment.development.id}"
+                    }
+                  ],
+                  "lifecycle": [
+                    {
+                      "prevent_destroy": true
+                    }
+                  ],
+                  "region": "us-east-1"
+                }
+              references:
+                environment.id: confluent_environment.development.id
+              dependencies:
+                confluent_environment.development: |-
+                    {
+                      "display_name": "Development",
+                      "lifecycle": [
+                        {
+                          "prevent_destroy": true
+                        }
+                      ]
+                    }
         argumentDocs:
             account: '- (Required String) The AWS account ID associated with the Confluent Cloud VPC.'
             aws: '- (Optional Configuration Block) The AWS-specific network details if available. It supports the following:'
@@ -480,10 +1858,32 @@ resources:
               $ export CONFLUENT_CLOUD_API_KEY="<cloud_api_key>"
               $ export CONFLUENT_CLOUD_API_SECRET="<cloud_api_secret>"
               $ terraform import confluent_network.my_network env-abc123/n-abc123
-    confluent_network_link_endpoint Resource - terraform-provider-confluent:
+    confluent_network_link_endpoint:
         subCategory: ""
-        name: confluent_network_link_endpoint Resource - terraform-provider-confluent
+        name: confluent_network_link_endpoint
         title: confluent_network_link_endpoint Resource - terraform-provider-confluent
+        examples:
+            - name: nle
+              manifest: |-
+                {
+                  "description": "TEST-NLE1",
+                  "display_name": "nle1",
+                  "environment": [
+                    {
+                      "id": "env-xyz456"
+                    }
+                  ],
+                  "network": [
+                    {
+                      "id": "n-abc123"
+                    }
+                  ],
+                  "network_link_service": [
+                    {
+                      "id": "nls-g3e1ox"
+                    }
+                  ]
+                }
         argumentDocs:
             description: '- (Optional String) The description of the Network Link Endpoint.'
             display_name: '- (Optional String) The name of the Network Link Endpoint.'
@@ -497,10 +1897,75 @@ resources:
               $ export CONFLUENT_CLOUD_API_KEY="<cloud_api_key>"
               $ export CONFLUENT_CLOUD_API_SECRET="<cloud_api_secret>"
               $ terraform import confluent_network_link_endpoint.my_nle env-abc123/nle-abc123
-    confluent_network_link_service Resource - terraform-provider-confluent:
+    confluent_network_link_service:
         subCategory: ""
-        name: confluent_network_link_service Resource - terraform-provider-confluent
+        name: confluent_network_link_service
         title: confluent_network_link_service Resource - terraform-provider-confluent
+        examples:
+            - name: aws_nls
+              manifest: |-
+                {
+                  "accept": [
+                    {
+                      "environments": [
+                        "env-5678",
+                        "env-0923"
+                      ],
+                      "networks": [
+                        "n-1234"
+                      ]
+                    }
+                  ],
+                  "description": "Test NL service",
+                  "display_name": "AWS Private Link network link service",
+                  "environment": [
+                    {
+                      "id": "${confluent_environment.development.id}"
+                    }
+                  ],
+                  "lifecycle": [
+                    {
+                      "prevent_destroy": true
+                    }
+                  ],
+                  "network": [
+                    {
+                      "id": "${confluent_network.aws-private-link.id}"
+                    }
+                  ]
+                }
+              references:
+                environment.id: confluent_environment.development.id
+                network.id: confluent_network.aws-private-link.id
+              dependencies:
+                confluent_environment.development: |-
+                    {
+                      "display_name": "Development"
+                    }
+                confluent_network.aws-private-link: |-
+                    {
+                      "cloud": "AWS",
+                      "connection_types": [
+                        "PRIVATELINK"
+                      ],
+                      "display_name": "AWS Private Link Network",
+                      "environment": [
+                        {
+                          "id": "${confluent_environment.development.id}"
+                        }
+                      ],
+                      "lifecycle": [
+                        {
+                          "prevent_destroy": true
+                        }
+                      ],
+                      "region": "us-east-1",
+                      "zones": [
+                        "use1-az1",
+                        "use1-az2",
+                        "use1-az6"
+                      ]
+                    }
         argumentDocs:
             accept: '(Optional Configuration Block) supports the following:'
             description: '- (Optional String) The description of the Network Link Service.'
@@ -516,10 +1981,184 @@ resources:
               $ export CONFLUENT_CLOUD_API_KEY="<cloud_api_key>"
               $ export CONFLUENT_CLOUD_API_SECRET="<cloud_api_secret>"
               $ terraform import confluent_network_link_service.my_nls env-abc123/nls-abc123
-    confluent_peering Resource - terraform-provider-confluent:
+    confluent_peering:
         subCategory: ""
-        name: confluent_peering Resource - terraform-provider-confluent
+        name: confluent_peering
         title: confluent_peering Resource - terraform-provider-confluent
+        examples:
+            - name: aws
+              manifest: |-
+                {
+                  "aws": [
+                    {
+                      "account": "012345678901",
+                      "customer_region": "us-east-2",
+                      "routes": [
+                        "172.31.0.0/16"
+                      ],
+                      "vpc": "vpc-abcdef0123456789a"
+                    }
+                  ],
+                  "display_name": "AWS Peering",
+                  "environment": [
+                    {
+                      "id": "${confluent_environment.development.id}"
+                    }
+                  ],
+                  "lifecycle": [
+                    {
+                      "prevent_destroy": true
+                    }
+                  ],
+                  "network": [
+                    {
+                      "id": "${confluent_network.aws-peering.id}"
+                    }
+                  ]
+                }
+              references:
+                environment.id: confluent_environment.development.id
+                network.id: confluent_network.aws-peering.id
+              dependencies:
+                confluent_environment.development: |-
+                    {
+                      "display_name": "Development"
+                    }
+                confluent_network.aws-peering: |-
+                    {
+                      "cidr": "10.10.0.0/16",
+                      "cloud": "AWS",
+                      "connection_types": [
+                        "PEERING"
+                      ],
+                      "display_name": "AWS Peering Network",
+                      "environment": [
+                        {
+                          "id": "${confluent_environment.development.id}"
+                        }
+                      ],
+                      "lifecycle": [
+                        {
+                          "prevent_destroy": true
+                        }
+                      ],
+                      "region": "us-east-2"
+                    }
+            - name: azure
+              manifest: |-
+                {
+                  "azure": [
+                    {
+                      "customer_region": "centralus",
+                      "tenant": "1111tttt-1111-1111-1111-111111tttttt",
+                      "vnet": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/my-rg/providers/Microsoft.Network/virtualNetworks/my-vnet"
+                    }
+                  ],
+                  "display_name": "Azure Peering",
+                  "environment": [
+                    {
+                      "id": "${confluent_environment.development.id}"
+                    }
+                  ],
+                  "lifecycle": [
+                    {
+                      "prevent_destroy": true
+                    }
+                  ],
+                  "network": [
+                    {
+                      "id": "${confluent_network.azure-peering.id}"
+                    }
+                  ]
+                }
+              references:
+                environment.id: confluent_environment.development.id
+                network.id: confluent_network.azure-peering.id
+              dependencies:
+                confluent_environment.development: |-
+                    {
+                      "display_name": "Development"
+                    }
+                confluent_network.azure-peering: |-
+                    {
+                      "cidr": "10.10.0.0/16",
+                      "cloud": "AZURE",
+                      "connection_types": [
+                        "PEERING"
+                      ],
+                      "display_name": "Azure Peering Network",
+                      "environment": [
+                        {
+                          "id": "${confluent_environment.development.id}"
+                        }
+                      ],
+                      "lifecycle": [
+                        {
+                          "prevent_destroy": true
+                        }
+                      ],
+                      "region": "centralus"
+                    }
+            - name: gcp
+              manifest: |-
+                {
+                  "display_name": "GCP Peering",
+                  "environment": [
+                    {
+                      "id": "${confluent_environment.development.id}"
+                    }
+                  ],
+                  "gcp": [
+                    {
+                      "customer_region": "us-west4",
+                      "project": "temp-gear-123456",
+                      "vpc_network": "customer-test-vpc-network"
+                    }
+                  ],
+                  "lifecycle": [
+                    {
+                      "prevent_destroy": true
+                    }
+                  ],
+                  "network": [
+                    {
+                      "id": "${confluent_network.gcp-peering.id}"
+                    }
+                  ]
+                }
+              references:
+                environment.id: confluent_environment.development.id
+                network.id: confluent_network.gcp-peering.id
+              dependencies:
+                confluent_environment.development: |-
+                    {
+                      "display_name": "Development",
+                      "lifecycle": [
+                        {
+                          "prevent_destroy": true
+                        }
+                      ]
+                    }
+                confluent_network.gcp-peering: |-
+                    {
+                      "cidr": "10.10.0.0/16",
+                      "cloud": "GCP",
+                      "connection_types": [
+                        "PEERING"
+                      ],
+                      "display_name": "GCP Peering Network",
+                      "environment": [
+                        {
+                          "id": "${confluent_environment.development.id}"
+                        }
+                      ],
+                      "lifecycle": [
+                        {
+                          "prevent_destroy": true
+                        }
+                      ],
+                      "region": "us-west4"
+                    }
         argumentDocs:
             account: '- (Required String) The AWS Account ID of the peer VPC owner. You can find your AWS Account ID here under My Account section of the AWS Management Console. Must be a 12 character string.'
             aws: '- (Optional Configuration Block) The AWS-specific Peering details if available. It supports the following:'
@@ -542,10 +2181,177 @@ resources:
               $ export CONFLUENT_CLOUD_API_KEY="<cloud_api_key>"
               $ export CONFLUENT_CLOUD_API_SECRET="<cloud_api_secret>"
               $ terraform import confluent_peering.my_peer env-abc123/peer-abc123
-    confluent_private_link_access Resource - terraform-provider-confluent:
+    confluent_private_link_access:
         subCategory: ""
-        name: confluent_private_link_access Resource - terraform-provider-confluent
+        name: confluent_private_link_access
         title: confluent_private_link_access Resource - terraform-provider-confluent
+        examples:
+            - name: aws
+              manifest: |-
+                {
+                  "aws": [
+                    {
+                      "account": "012345678901"
+                    }
+                  ],
+                  "display_name": "AWS Private Link Access",
+                  "environment": [
+                    {
+                      "id": "${confluent_environment.development.id}"
+                    }
+                  ],
+                  "lifecycle": [
+                    {
+                      "prevent_destroy": true
+                    }
+                  ],
+                  "network": [
+                    {
+                      "id": "${confluent_network.aws-private-link.id}"
+                    }
+                  ]
+                }
+              references:
+                environment.id: confluent_environment.development.id
+                network.id: confluent_network.aws-private-link.id
+              dependencies:
+                confluent_environment.development: |-
+                    {
+                      "display_name": "Development"
+                    }
+                confluent_network.aws-private-link: |-
+                    {
+                      "cloud": "AWS",
+                      "connection_types": [
+                        "PRIVATELINK"
+                      ],
+                      "display_name": "AWS Private Link Network",
+                      "environment": [
+                        {
+                          "id": "${confluent_environment.development.id}"
+                        }
+                      ],
+                      "lifecycle": [
+                        {
+                          "prevent_destroy": true
+                        }
+                      ],
+                      "region": "us-east-1",
+                      "zones": [
+                        "use1-az1",
+                        "use1-az2",
+                        "use1-az6"
+                      ]
+                    }
+            - name: azure
+              manifest: |-
+                {
+                  "azure": [
+                    {
+                      "subscription": "1234abcd-12ab-34cd-1234-123456abcdef"
+                    }
+                  ],
+                  "display_name": "Azure Private Link Access",
+                  "environment": [
+                    {
+                      "id": "${confluent_environment.development.id}"
+                    }
+                  ],
+                  "lifecycle": [
+                    {
+                      "prevent_destroy": true
+                    }
+                  ],
+                  "network": [
+                    {
+                      "id": "${confluent_network.azure-private-link.id}"
+                    }
+                  ]
+                }
+              references:
+                environment.id: confluent_environment.development.id
+                network.id: confluent_network.azure-private-link.id
+              dependencies:
+                confluent_environment.development: |-
+                    {
+                      "display_name": "Development"
+                    }
+                confluent_network.azure-private-link: |-
+                    {
+                      "cloud": "AZURE",
+                      "connection_types": [
+                        "PRIVATELINK"
+                      ],
+                      "display_name": "Azure Private Link Network",
+                      "environment": [
+                        {
+                          "id": "${confluent_environment.development.id}"
+                        }
+                      ],
+                      "lifecycle": [
+                        {
+                          "prevent_destroy": true
+                        }
+                      ],
+                      "region": "centralus"
+                    }
+            - name: gcp
+              manifest: |-
+                {
+                  "display_name": "GCP Private Service Connect",
+                  "environment": [
+                    {
+                      "id": "${confluent_environment.development.id}"
+                    }
+                  ],
+                  "gcp": [
+                    {
+                      "project": "temp-gear-123456"
+                    }
+                  ],
+                  "lifecycle": [
+                    {
+                      "prevent_destroy": true
+                    }
+                  ],
+                  "network": [
+                    {
+                      "id": "${confluent_network.gcp-private-service-connect.id}"
+                    }
+                  ]
+                }
+              references:
+                environment.id: confluent_environment.development.id
+                network.id: confluent_network.gcp-private-service-connect.id
+              dependencies:
+                confluent_environment.development: |-
+                    {
+                      "display_name": "Development"
+                    }
+                confluent_network.gcp-private-service-connect: |-
+                    {
+                      "cloud": "GCP",
+                      "connection_types": [
+                        "PRIVATELINK"
+                      ],
+                      "display_name": "GCP Private Service Connect Network",
+                      "environment": [
+                        {
+                          "id": "${confluent_environment.development.id}"
+                        }
+                      ],
+                      "lifecycle": [
+                        {
+                          "prevent_destroy": true
+                        }
+                      ],
+                      "region": "us-central1",
+                      "zones": [
+                        "us-central1-a",
+                        "us-central1-b",
+                        "us-central1-c"
+                      ]
+                    }
         argumentDocs:
             account: '- (Required String) The AWS account ID to enable for the Private Link Access. You can find your AWS account ID [here] (https://console.aws.amazon.com/billing/home?#/account) under My Account in your AWS Management Console. Must be a 12 character string.'
             aws: '- (Optional Configuration Block) The AWS-specific Private Link Access details if available. It supports the following:'
@@ -562,10 +2368,23 @@ resources:
               $ export CONFLUENT_CLOUD_API_KEY="<cloud_api_key>"
               $ export CONFLUENT_CLOUD_API_SECRET="<cloud_api_secret>"
               $ terraform import confluent_private_link_access.my_pla env-abc123/pla-abc123
-    confluent_private_link_attachment Resource - terraform-provider-confluent:
+    confluent_private_link_attachment:
         subCategory: ""
-        name: confluent_private_link_attachment Resource - terraform-provider-confluent
+        name: confluent_private_link_attachment
         title: confluent_private_link_attachment Resource - terraform-provider-confluent
+        examples:
+            - name: main
+              manifest: |-
+                {
+                  "cloud": "AWS",
+                  "display_name": "staging-platt",
+                  "environment": [
+                    {
+                      "id": "env-3732nw"
+                    }
+                  ],
+                  "region": "us-west-2"
+                }
         argumentDocs:
             aws: '- (Optional Configuration Block) supports the following:'
             cloud: '- (Required String) The cloud service provider that hosts the resources to access with the Private Link Attachment.'
@@ -581,10 +2400,31 @@ resources:
               $ export CONFLUENT_CLOUD_API_KEY="<cloud_api_key>"
               $ export CONFLUENT_CLOUD_API_SECRET="<cloud_api_secret>"
               $ terraform import confluent_private_link_attachment.main env-abc123/platt-abc123
-    confluent_private_link_attachment_connection Resource - terraform-provider-confluent:
+    confluent_private_link_attachment_connection:
         subCategory: ""
-        name: confluent_private_link_attachment_connection Resource - terraform-provider-confluent
+        name: confluent_private_link_attachment_connection
         title: confluent_private_link_attachment_connection Resource - terraform-provider-confluent
+        examples:
+            - name: main
+              manifest: |-
+                {
+                  "aws": [
+                    {
+                      "vpc_endpoint_id": "vpce-0ed4d51f5d6ef9b6d"
+                    }
+                  ],
+                  "display_name": "my_endpoint",
+                  "environment": [
+                    {
+                      "id": "env-8gv0v5"
+                    }
+                  ],
+                  "private_link_attachment": [
+                    {
+                      "id": "platt-plyvyl"
+                    }
+                  ]
+                }
         argumentDocs:
             aws: '- (Optional Configuration Block) supports the following:'
             display_name: '- (Optional String) The name of the Private Link Attachment Connection.'
@@ -598,10 +2438,112 @@ resources:
               $ export CONFLUENT_CLOUD_API_KEY="<cloud_api_key>"
               $ export CONFLUENT_CLOUD_API_SECRET="<cloud_api_secret>"
               $ terraform import confluent_private_link_attachment_connection.main env-abc123/plattc-abc123
-    confluent_role_binding Resource - terraform-provider-confluent:
+    confluent_role_binding:
         subCategory: ""
-        name: confluent_role_binding Resource - terraform-provider-confluent
+        name: confluent_role_binding
         title: confluent_role_binding Resource - terraform-provider-confluent
+        examples:
+            - name: org-example-rb
+              manifest: |-
+                {
+                  "crn_pattern": "${data.confluent_organization.demo.resource_name}",
+                  "principal": "User:${confluent_service_account.test.id}",
+                  "role_name": "MetricsViewer"
+                }
+              references:
+                crn_pattern: data.confluent_organization.demo.resource_name
+            - name: environment-example-rb
+              manifest: |-
+                {
+                  "crn_pattern": "${confluent_environment.stag.resource_name}",
+                  "principal": "User:${confluent_service_account.test.id}",
+                  "role_name": "EnvironmentAdmin"
+                }
+              references:
+                crn_pattern: confluent_environment.stag.resource_name
+            - name: environment-example-rb-2
+              manifest: |-
+                {
+                  "crn_pattern": "${confluent_environment.stag.resource_name}",
+                  "principal": "User:${confluent_identity_pool.test.id}",
+                  "role_name": "EnvironmentAdmin"
+                }
+              references:
+                crn_pattern: confluent_environment.stag.resource_name
+            - name: network-example-rb
+              manifest: |-
+                {
+                  "crn_pattern": "${data.confluent_organization.demo.resource_name}",
+                  "principal": "User:${confluent_service_account.test.id}",
+                  "role_name": "NetworkAdmin"
+                }
+              references:
+                crn_pattern: data.confluent_organization.demo.resource_name
+            - name: cluster-example-rb
+              manifest: |-
+                {
+                  "crn_pattern": "${confluent_kafka_cluster.basic.rbac_crn}",
+                  "principal": "User:${confluent_service_account.test.id}",
+                  "role_name": "CloudClusterAdmin"
+                }
+              references:
+                crn_pattern: confluent_kafka_cluster.basic.rbac_crn
+            - name: topic-example-rb
+              manifest: |-
+                {
+                  "crn_pattern": "${confluent_kafka_cluster.standard.rbac_crn}/kafka=${confluent_kafka_cluster.standard.id}/topic=${confluent_kafka_topic.orders.topic_name}",
+                  "principal": "User:${confluent_service_account.test.id}",
+                  "role_name": "DeveloperWrite"
+                }
+            - name: topic-example-rb-2
+              manifest: |-
+                {
+                  "crn_pattern": "${confluent_kafka_cluster.standard.rbac_crn}/kafka=${confluent_kafka_cluster.standard.id}/topic=${confluent_kafka_topic.orders.topic_name}",
+                  "principal": "User:${confluent_identity_pool.test.id}",
+                  "role_name": "DeveloperWrite"
+                }
+            - name: group-example-rb
+              manifest: |-
+                {
+                  "crn_pattern": "${confluent_kafka_cluster.basic.rbac_crn}/kafka=${confluent_kafka_cluster.standard.id}/group=confluent_cli_consumer_*",
+                  "principal": "User:${confluent_service_account.test.id}",
+                  "role_name": "DeveloperRead"
+                }
+            - name: transaction-example-rb
+              manifest: |-
+                {
+                  "crn_pattern": "${confluent_kafka_cluster.basic.rbac_crn}/kafka=${confluent_kafka_cluster.standard.id}/transactional-id=my_transaction",
+                  "principal": "User:${confluent_service_account.test.id}",
+                  "role_name": "DeveloperRead"
+                }
+            - name: connector-example-rb
+              manifest: |-
+                {
+                  "crn_pattern": "${confluent_kafka_cluster.standard.rbac_crn}/connector=${local.connector_name}",
+                  "principal": "User:${confluent_service_account.test.id}",
+                  "role_name": "DeveloperRead"
+                }
+            - name: all-subjects-example-rb
+              manifest: |-
+                {
+                  "crn_pattern": "${confluent_schema_registry_cluster.example.resource_name}/subject=*",
+                  "principal": "User:${confluent_service_account.test.id}",
+                  "role_name": "DeveloperRead"
+                }
+            - name: subject-foo-example-rb
+              manifest: |-
+                {
+                  "crn_pattern": "${confluent_schema_registry_cluster.example.resource_name}/subject=foo",
+                  "principal": "User:${confluent_service_account.test.id}",
+                  "role_name": "DeveloperRead"
+                }
+            - name: subject-with-abc-prefix-example-rb
+              manifest: |-
+                {
+                  "crn_pattern": "${confluent_schema_registry_cluster.example.resource_name}/subject=abc*",
+                  "principal": "User:${confluent_service_account.test.id}",
+                  "role_name": "DeveloperRead"
+                }
         argumentDocs:
             crn_pattern: '- (Required String) A Confluent Resource Name(CRN) that specifies the scope and resource patterns necessary for the role to bind.'
             id: '- (Required String) The ID of the Role Binding (e.g., rb-f3a90de).'
@@ -612,10 +2554,101 @@ resources:
               $ export CONFLUENT_CLOUD_API_KEY="<cloud_api_key>"
               $ export CONFLUENT_CLOUD_API_SECRET="<cloud_api_secret>"
               $ terraform import confluent_role_binding.my_rb rb-f3a90de
-    confluent_schema Resource - terraform-provider-confluent:
+    confluent_schema:
         subCategory: ""
-        name: confluent_schema Resource - terraform-provider-confluent
+        name: confluent_schema
         title: confluent_schema Resource - terraform-provider-confluent
+        examples:
+            - name: avro-purchase
+              manifest: |-
+                {
+                  "credentials": [
+                    {
+                      "key": "\u003cSchema Registry API Key for confluent_schema_registry_cluster.essentials\u003e",
+                      "secret": "\u003cSchema Registry API Secret for confluent_schema_registry_cluster.essentials\u003e"
+                    }
+                  ],
+                  "format": "AVRO",
+                  "lifecycle": [
+                    {
+                      "prevent_destroy": true
+                    }
+                  ],
+                  "rest_endpoint": "${confluent_schema_registry_cluster.essentials.rest_endpoint}",
+                  "schema": "${file(\"./schemas/avro/purchase.avsc\")}",
+                  "schema_registry_cluster": [
+                    {
+                      "id": "${confluent_schema_registry_cluster.essentials.id}"
+                    }
+                  ],
+                  "subject_name": "avro-purchase-value"
+                }
+              references:
+                rest_endpoint: confluent_schema_registry_cluster.essentials.rest_endpoint
+                schema_registry_cluster.id: confluent_schema_registry_cluster.essentials.id
+            - name: avro-purchase
+              manifest: |-
+                {
+                  "format": "AVRO",
+                  "lifecycle": [
+                    {
+                      "prevent_destroy": true
+                    }
+                  ],
+                  "schema": "${file(\"./schemas/avro/purchase.avsc\")}",
+                  "subject_name": "avro-purchase-value"
+                }
+            - name: avro-purchase
+              manifest: |-
+                {
+                  "format": "AVRO",
+                  "lifecycle": [
+                    {
+                      "prevent_destroy": true
+                    }
+                  ],
+                  "schema": "${file(\"./schemas/avro/purchase.avsc\")}",
+                  "subject_name": "avro-purchase-value"
+                }
+            - name: avro-purchase-v1
+              manifest: |-
+                {
+                  "format": "AVRO",
+                  "lifecycle": [
+                    {
+                      "prevent_destroy": true
+                    }
+                  ],
+                  "recreate_on_update": true,
+                  "schema": "${file(\"./schemas/avro/purchase_v1.avsc\")}",
+                  "subject_name": "avro-purchase-value"
+                }
+            - name: avro-purchase-v1
+              manifest: |-
+                {
+                  "format": "AVRO",
+                  "lifecycle": [
+                    {
+                      "prevent_destroy": true
+                    }
+                  ],
+                  "recreate_on_update": true,
+                  "schema": "${file(\"./schemas/avro/purchase_v1.avsc\")}",
+                  "subject_name": "avro-purchase-value"
+                }
+            - name: avro-purchase-v2
+              manifest: |-
+                {
+                  "format": "AVRO",
+                  "lifecycle": [
+                    {
+                      "prevent_destroy": true
+                    }
+                  ],
+                  "recreate_on_update": true,
+                  "schema": "${file(\"./schemas/avro/purchase_v2.avsc\")}",
+                  "subject_name": "avro-purchase-value"
+                }
         argumentDocs:
             credentials: '(Optional Configuration Block) supports the following:'
             credentials.format: '- (Required String) The format of the schema. Accepted values are: AVRO, PROTOBUF, and JSON.'
@@ -648,10 +2681,67 @@ resources:
               $ export IMPORT_SCHEMA_REGISTRY_REST_ENDPOINT="<schema_registry_rest_endpoint>"
               $ export SCHEMA_CONTENT="<schema_content>" # for example, export SCHEMA_CONTENT=$(cat schemas/proto/purchase.proto)
               $ terraform import confluent_schema.my_schema_1 lsrc-abc123/test-subject/100003
-    confluent_schema_exporter Resource - terraform-provider-confluent:
+    confluent_schema_exporter:
         subCategory: ""
-        name: confluent_schema_exporter Resource - terraform-provider-confluent
+        name: confluent_schema_exporter
         title: confluent_schema_exporter Resource - terraform-provider-confluent
+        examples:
+            - name: main
+              manifest: |-
+                {
+                  "credentials": [
+                    {
+                      "key": "\u003cSchema Registry API Key for confluent_schema_registry_cluster.essentials\u003e",
+                      "secret": "\u003cSchema Registry API Secret for confluent_schema_registry_cluster.essentials\u003e"
+                    }
+                  ],
+                  "destination_schema_registry_cluster": [
+                    {
+                      "credentials": [
+                        {
+                          "key": "\u003cSchema Registry API Key for confluent_schema_registry_cluster.destination\u003e",
+                          "secret": "\u003cSchema Registry API Secret for confluent_schema_registry_cluster.destination\u003e"
+                        }
+                      ],
+                      "rest_endpoint": "${confluent_schema_registry_cluster.destination.rest_endpoint}"
+                    }
+                  ],
+                  "name": "test-exporter",
+                  "rest_endpoint": "${confluent_schema_registry_cluster.essentials.rest_endpoint}",
+                  "schema_registry_cluster": [
+                    {
+                      "id": "${confluent_schema_registry_cluster.essentials.id}"
+                    }
+                  ],
+                  "subjects": [
+                    "foo"
+                  ]
+                }
+              references:
+                destination_schema_registry_cluster.rest_endpoint: confluent_schema_registry_cluster.destination.rest_endpoint
+                rest_endpoint: confluent_schema_registry_cluster.essentials.rest_endpoint
+                schema_registry_cluster.id: confluent_schema_registry_cluster.essentials.id
+            - name: main
+              manifest: |-
+                {
+                  "destination_schema_registry_cluster": [
+                    {
+                      "credentials": [
+                        {
+                          "key": "\u003cSchema Registry API Key for confluent_schema_registry_cluster.destination\u003e",
+                          "secret": "\u003cSchema Registry API Secret for confluent_schema_registry_cluster.destination\u003e"
+                        }
+                      ],
+                      "rest_endpoint": "${confluent_schema_registry_cluster.destination.rest_endpoint}"
+                    }
+                  ],
+                  "name": "test-exporter",
+                  "subjects": [
+                    "foo"
+                  ]
+                }
+              references:
+                destination_schema_registry_cluster.rest_endpoint: confluent_schema_registry_cluster.destination.rest_endpoint
         argumentDocs:
             config: '- (Optional Map) Block for custom nonsensitive configuration properties:'
             context: '- (Optional String) Customized context of the exporter if context_type is set to CUSTOM.'
@@ -675,10 +2765,45 @@ resources:
               $ export IMPORT_SCHEMA_REGISTRY_API_SECRET="<schema_registry_api_secret>"
               $ export IMPORT_SCHEMA_REGISTRY_REST_ENDPOINT="<schema_registry_rest_endpoint>"
               $ terraform import confluent_schema_exporter.main lsrc-8wrx70/test-exporter
-    confluent_schema_registry_cluster Resource - terraform-provider-confluent:
+    confluent_schema_registry_cluster:
         subCategory: ""
-        name: confluent_schema_registry_cluster Resource - terraform-provider-confluent
+        name: confluent_schema_registry_cluster
         title: confluent_schema_registry_cluster Resource - terraform-provider-confluent
+        examples:
+            - name: essentials
+              manifest: |-
+                {
+                  "environment": [
+                    {
+                      "id": "${confluent_environment.development.id}"
+                    }
+                  ],
+                  "lifecycle": [
+                    {
+                      "prevent_destroy": true
+                    }
+                  ],
+                  "package": "${data.confluent_schema_registry_region.example.package}",
+                  "region": [
+                    {
+                      "id": "${data.confluent_schema_registry_region.example.id}"
+                    }
+                  ]
+                }
+              references:
+                environment.id: confluent_environment.development.id
+                package: data.confluent_schema_registry_region.example.package
+                region.id: data.confluent_schema_registry_region.example.id
+              dependencies:
+                confluent_environment.development: |-
+                    {
+                      "display_name": "Development",
+                      "lifecycle": [
+                        {
+                          "prevent_destroy": true
+                        }
+                      ]
+                    }
         argumentDocs:
             api_version: '- (Required String) An API Version of the schema version of the Schema Registry cluster, for example, srcm/v2.'
             display_name: '- (Required String) The name of the Schema Registry cluster, for example, Stream Governance Package.'
@@ -694,10 +2819,46 @@ resources:
               $ export CONFLUENT_CLOUD_API_KEY="<cloud_api_key>"
               $ export CONFLUENT_CLOUD_API_SECRET="<cloud_api_secret>"
               $ terraform import confluent_schema_registry_cluster.example env-abc123/lsrc-abc123
-    confluent_schema_registry_cluster_config Resource - terraform-provider-confluent:
+    confluent_schema_registry_cluster_config:
         subCategory: ""
-        name: confluent_schema_registry_cluster_config Resource - terraform-provider-confluent
+        name: confluent_schema_registry_cluster_config
         title: confluent_schema_registry_cluster_config Resource - terraform-provider-confluent
+        examples:
+            - name: example
+              manifest: |-
+                {
+                  "compatibility_level": "FULL",
+                  "credentials": [
+                    {
+                      "key": "\u003cSchema Registry API Key for confluent_schema_registry_cluster.essentials\u003e",
+                      "secret": "\u003cSchema Registry API Secret for confluent_schema_registry_cluster.essentials\u003e"
+                    }
+                  ],
+                  "lifecycle": [
+                    {
+                      "prevent_destroy": true
+                    }
+                  ],
+                  "rest_endpoint": "${confluent_schema_registry_cluster.essentials.rest_endpoint}",
+                  "schema_registry_cluster": [
+                    {
+                      "id": "${confluent_schema_registry_cluster.essentials.id}"
+                    }
+                  ]
+                }
+              references:
+                rest_endpoint: confluent_schema_registry_cluster.essentials.rest_endpoint
+                schema_registry_cluster.id: confluent_schema_registry_cluster.essentials.id
+            - name: example
+              manifest: |-
+                {
+                  "compatibility_level": "FULL",
+                  "lifecycle": [
+                    {
+                      "prevent_destroy": true
+                    }
+                  ]
+                }
         argumentDocs:
             credentials: '(Optional Configuration Block) supports the following:'
             credentials.compatibility_level: '- (Optional String) The global Schema Registry compatibility level. Accepted values are: BACKWARD, BACKWARD_TRANSITIVE, FORWARD, FORWARD_TRANSITIVE, FULL, FULL_TRANSITIVE, and NONE. See the Compatibility Types for more details.'
@@ -712,10 +2873,46 @@ resources:
               $ export IMPORT_SCHEMA_REGISTRY_API_SECRET="<schema_registry_api_secret>"
               $ export IMPORT_SCHEMA_REGISTRY_REST_ENDPOINT="<schema_registry_rest_endpoint>"
               $ terraform import confluent_schema_registry_cluster_config.example lsrc-abc123
-    confluent_schema_registry_cluster_mode Resource - terraform-provider-confluent:
+    confluent_schema_registry_cluster_mode:
         subCategory: ""
-        name: confluent_schema_registry_cluster_mode Resource - terraform-provider-confluent
+        name: confluent_schema_registry_cluster_mode
         title: confluent_schema_registry_cluster_mode Resource - terraform-provider-confluent
+        examples:
+            - name: example
+              manifest: |-
+                {
+                  "credentials": [
+                    {
+                      "key": "\u003cSchema Registry API Key for confluent_schema_registry_cluster.essentials\u003e",
+                      "secret": "\u003cSchema Registry API Secret for confluent_schema_registry_cluster.essentials\u003e"
+                    }
+                  ],
+                  "lifecycle": [
+                    {
+                      "prevent_destroy": true
+                    }
+                  ],
+                  "mode": "READONLY",
+                  "rest_endpoint": "${confluent_schema_registry_cluster.essentials.rest_endpoint}",
+                  "schema_registry_cluster": [
+                    {
+                      "id": "${confluent_schema_registry_cluster.essentials.id}"
+                    }
+                  ]
+                }
+              references:
+                rest_endpoint: confluent_schema_registry_cluster.essentials.rest_endpoint
+                schema_registry_cluster.id: confluent_schema_registry_cluster.essentials.id
+            - name: example
+              manifest: |-
+                {
+                  "lifecycle": [
+                    {
+                      "prevent_destroy": true
+                    }
+                  ],
+                  "mode": "READONLY"
+                }
         argumentDocs:
             credentials: '(Optional Configuration Block) supports the following:'
             credentials.mode: '- (Optional String) The global Schema Registry mode. Accepted values are: READWRITE, READONLY, READONLY_OVERRIDE, and IMPORT.'
@@ -730,10 +2927,17 @@ resources:
               $ export IMPORT_SCHEMA_REGISTRY_API_SECRET="<schema_registry_api_secret>"
               $ export IMPORT_SCHEMA_REGISTRY_REST_ENDPOINT="<schema_registry_rest_endpoint>"
               $ terraform import confluent_schema_registry_cluster_mode.example lsrc-abc123
-    confluent_service_account Resource - terraform-provider-confluent:
+    confluent_service_account:
         subCategory: ""
-        name: confluent_service_account Resource - terraform-provider-confluent
+        name: confluent_service_account
         title: confluent_service_account Resource - terraform-provider-confluent
+        examples:
+            - name: example-sa
+              manifest: |-
+                {
+                  "description": "Service Account for orders app",
+                  "display_name": "orders-app-sa"
+                }
         argumentDocs:
             api_version: '- (Required String) An API Version of the schema version of the Service Account, for example, iam/v2.'
             description: '- (Optional String) A free-form description of the Service Account.'
@@ -745,10 +2949,48 @@ resources:
               $ export CONFLUENT_CLOUD_API_KEY="<cloud_api_key>"
               $ export CONFLUENT_CLOUD_API_SECRET="<cloud_api_secret>"
               $ terraform import confluent_service_account.my_sa sa-abc123
-    confluent_subject_config Resource - terraform-provider-confluent:
+    confluent_subject_config:
         subCategory: ""
-        name: confluent_subject_config Resource - terraform-provider-confluent
+        name: confluent_subject_config
         title: confluent_subject_config Resource - terraform-provider-confluent
+        examples:
+            - name: example
+              manifest: |-
+                {
+                  "compatibility_level": "BACKWARD",
+                  "credentials": [
+                    {
+                      "key": "\u003cSchema Registry API Key for confluent_schema_registry_cluster.essentials\u003e",
+                      "secret": "\u003cSchema Registry API Secret for confluent_schema_registry_cluster.essentials\u003e"
+                    }
+                  ],
+                  "lifecycle": [
+                    {
+                      "prevent_destroy": true
+                    }
+                  ],
+                  "rest_endpoint": "${confluent_schema_registry_cluster.essentials.rest_endpoint}",
+                  "schema_registry_cluster": [
+                    {
+                      "id": "${confluent_schema_registry_region.essentials.id}"
+                    }
+                  ],
+                  "subject_name": "proto-purchase-value"
+                }
+              references:
+                rest_endpoint: confluent_schema_registry_cluster.essentials.rest_endpoint
+                schema_registry_cluster.id: confluent_schema_registry_region.essentials.id
+            - name: example
+              manifest: |-
+                {
+                  "compatibility_level": "BACKWARD",
+                  "lifecycle": [
+                    {
+                      "prevent_destroy": true
+                    }
+                  ],
+                  "subject_name": "proto-purchase-value"
+                }
         argumentDocs:
             credentials: '(Optional Configuration Block) supports the following:'
             credentials.compatibility_level: '- (Optional String) The Compatibility Level of the specified subject. Accepted values are: BACKWARD, BACKWARD_TRANSITIVE, FORWARD, FORWARD_TRANSITIVE, FULL, FULL_TRANSITIVE, and NONE. See the Compatibility Types for more details.'
@@ -764,10 +3006,48 @@ resources:
               $ export IMPORT_SCHEMA_REGISTRY_API_SECRET="<schema_registry_api_secret>"
               $ export IMPORT_SCHEMA_REGISTRY_REST_ENDPOINT="<schema_registry_rest_endpoint>"
               $ terraform import confluent_subject_config.example lsrc-abc123/test-subject
-    confluent_subject_mode Resource - terraform-provider-confluent:
+    confluent_subject_mode:
         subCategory: ""
-        name: confluent_subject_mode Resource - terraform-provider-confluent
+        name: confluent_subject_mode
         title: confluent_subject_mode Resource - terraform-provider-confluent
+        examples:
+            - name: example
+              manifest: |-
+                {
+                  "credentials": [
+                    {
+                      "key": "\u003cSchema Registry API Key for confluent_schema_registry_cluster.essentials\u003e",
+                      "secret": "\u003cSchema Registry API Secret for confluent_schema_registry_cluster.essentials\u003e"
+                    }
+                  ],
+                  "lifecycle": [
+                    {
+                      "prevent_destroy": true
+                    }
+                  ],
+                  "mode": "READONLY",
+                  "rest_endpoint": "${confluent_schema_registry_cluster.essentials.rest_endpoint}",
+                  "schema_registry_cluster": [
+                    {
+                      "id": "${confluent_schema_registry_cluster.essentials.id}"
+                    }
+                  ],
+                  "subject_name": "proto-purchase-value"
+                }
+              references:
+                rest_endpoint: confluent_schema_registry_cluster.essentials.rest_endpoint
+                schema_registry_cluster.id: confluent_schema_registry_cluster.essentials.id
+            - name: example
+              manifest: |-
+                {
+                  "lifecycle": [
+                    {
+                      "prevent_destroy": true
+                    }
+                  ],
+                  "mode": "READONLY",
+                  "subject_name": "proto-purchase-value"
+                }
         argumentDocs:
             credentials: '(Optional Configuration Block) supports the following:'
             credentials.mode: '- (Optional String) The mode of the specified subject. Accepted values are: READWRITE, READONLY, READONLY_OVERRIDE, and IMPORT.'
@@ -783,10 +3063,48 @@ resources:
               $ export IMPORT_SCHEMA_REGISTRY_API_SECRET="<schema_registry_api_secret>"
               $ export IMPORT_SCHEMA_REGISTRY_REST_ENDPOINT="<schema_registry_rest_endpoint>"
               $ terraform import confluent_subject_mode.example lsrc-abc123/test-subject
-    confluent_tag Resource - terraform-provider-confluent:
+    confluent_tag:
         subCategory: ""
-        name: confluent_tag Resource - terraform-provider-confluent
+        name: confluent_tag
         title: confluent_tag Resource - terraform-provider-confluent
+        examples:
+            - name: pii
+              manifest: |-
+                {
+                  "credentials": [
+                    {
+                      "key": "\u003cSchema Registry API Key for confluent_schema_registry_cluster.essentials\u003e",
+                      "secret": "\u003cSchema Registry API Secret for confluent_schema_registry_cluster.essentials\u003e"
+                    }
+                  ],
+                  "description": "PII tag",
+                  "lifecycle": [
+                    {
+                      "prevent_destroy": true
+                    }
+                  ],
+                  "name": "PII",
+                  "rest_endpoint": "${confluent_schema_registry_cluster.essentials.rest_endpoint}",
+                  "schema_registry_cluster": [
+                    {
+                      "id": "${confluent_schema_registry_cluster.essentials.id}"
+                    }
+                  ]
+                }
+              references:
+                rest_endpoint: confluent_schema_registry_cluster.essentials.rest_endpoint
+                schema_registry_cluster.id: confluent_schema_registry_cluster.essentials.id
+            - name: pii
+              manifest: |-
+                {
+                  "description": "PII tag",
+                  "lifecycle": [
+                    {
+                      "prevent_destroy": true
+                    }
+                  ],
+                  "name": "PII"
+                }
         argumentDocs:
             credentials: '(Optional Configuration Block) supports the following:'
             description: '- (Optional String) The description of the tag.'
@@ -804,10 +3122,50 @@ resources:
               $ export IMPORT_SCHEMA_REGISTRY_API_SECRET="<schema_registry_api_secret>"
               $ export IMPORT_SCHEMA_REGISTRY_REST_ENDPOINT="<schema_registry_rest_endpoint>"
               $ terraform import confluent_tag.pii lsrc-8wrx70/PII
-    confluent_tag_binding Resource - terraform-provider-confluent:
+    confluent_tag_binding:
         subCategory: ""
-        name: confluent_tag_binding Resource - terraform-provider-confluent
+        name: confluent_tag_binding
         title: confluent_tag_binding Resource - terraform-provider-confluent
+        examples:
+            - name: main
+              manifest: |-
+                {
+                  "credentials": [
+                    {
+                      "key": "\u003cSchema Registry API Key for confluent_schema_registry_cluster.essentials\u003e",
+                      "secret": "\u003cSchema Registry API Secret for confluent_schema_registry_cluster.essentials\u003e"
+                    }
+                  ],
+                  "entity_name": "${var.schema_registry_id}:${var.kafka_id}:${data.confluent_kafka_topic.main.topic_name}",
+                  "entity_type": "kafka_topic",
+                  "lifecycle": [
+                    {
+                      "prevent_destroy": true
+                    }
+                  ],
+                  "rest_endpoint": "${confluent_schema_registry_cluster.essentials.rest_endpoint}",
+                  "schema_registry_cluster": [
+                    {
+                      "id": "${confluent_schema_registry_cluster.essentials.id}"
+                    }
+                  ],
+                  "tag_name": "PII"
+                }
+              references:
+                rest_endpoint: confluent_schema_registry_cluster.essentials.rest_endpoint
+                schema_registry_cluster.id: confluent_schema_registry_cluster.essentials.id
+            - name: topic-tagging
+              manifest: |-
+                {
+                  "entity_name": "${var.schema_registry_id}:${var.kafka_id}:${data.confluent_kafka_topic.main.topic_name}",
+                  "entity_type": "kafka_topic",
+                  "lifecycle": [
+                    {
+                      "prevent_destroy": true
+                    }
+                  ],
+                  "tag_name": "PII"
+                }
         argumentDocs:
             credentials: '(Optional Configuration Block) supports the following:'
             entity_name: '- (Required String) The qualified name of the entity., for example, ${confluent_schema_registry_cluster.main.id}:.:${confluent_schema.purchase.schema_identifier}, ${confluent_schema_registry_cluster.main.id}:${confluent_kafka_cluster.basic.id}:${confluent_kafka_topic.purchase.topic_name}.'
@@ -824,18 +3182,88 @@ resources:
               $ export IMPORT_SCHEMA_REGISTRY_API_SECRET="<schema_registry_api_secret>"
               $ export IMPORT_SCHEMA_REGISTRY_REST_ENDPOINT="<schema_registry_rest_endpoint>"
               $ terraform import confluent_tag_binding.main lsrc-8wrx70/PII/lsrc-8wrx70:.:100001/sr_schema
-    confluent_tf_importer Resource - terraform-provider-confluent:
+    confluent_tf_importer:
         subCategory: ""
-        name: confluent_tf_importer Resource - terraform-provider-confluent
+        name: confluent_tf_importer
         title: confluent_tf_importer Resource - terraform-provider-confluent
+        examples:
+            - name: example
+              manifest: |-
+                {
+                  "resources": [
+                    "confluent_service_account",
+                    "confluent_environment"
+                  ]
+                }
         argumentDocs:
             output_path: '- (Optional Strings) An absolute path to a folder for outputting generated TF state and TF configuration files for your infrastructure. The folder is created if it doesn''t exist. Defaults to ./imported_confluent_infrastructure.'
             resources: '- (Optional List of Strings) A list of resources names to export. Defaults to all exportable resources.'
         importStatements: []
-    confluent_transit_gateway_attachment Resource - terraform-provider-confluent:
+    confluent_transit_gateway_attachment:
         subCategory: ""
-        name: confluent_transit_gateway_attachment Resource - terraform-provider-confluent
+        name: confluent_transit_gateway_attachment
         title: confluent_transit_gateway_attachment Resource - terraform-provider-confluent
+        examples:
+            - name: aws
+              manifest: |-
+                {
+                  "aws": [
+                    {
+                      "ram_resource_share_arn": "arn:aws:ram:us-east-2:000000000000:resource-share/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxx",
+                      "routes": [
+                        "192.168.0.0/16",
+                        "172.16.0.0/12",
+                        "100.64.0.0/10",
+                        "10.0.0.0/8"
+                      ],
+                      "transit_gateway_id": "tgw-xxxxxxxxxxxxxxxxx"
+                    }
+                  ],
+                  "display_name": "AWS Transit Gateway Attachment",
+                  "environment": [
+                    {
+                      "id": "${confluent_environment.development.id}"
+                    }
+                  ],
+                  "lifecycle": [
+                    {
+                      "prevent_destroy": true
+                    }
+                  ],
+                  "network": [
+                    {
+                      "id": "${confluent_network.aws-transit-gateway-attachment.id}"
+                    }
+                  ]
+                }
+              references:
+                environment.id: confluent_environment.development.id
+                network.id: confluent_network.aws-transit-gateway-attachment.id
+              dependencies:
+                confluent_environment.development: |-
+                    {
+                      "display_name": "Development"
+                    }
+                confluent_network.aws-transit-gateway-attachment: |-
+                    {
+                      "cidr": "10.10.0.0/16",
+                      "cloud": "AWS",
+                      "connection_types": [
+                        "TRANSITGATEWAY"
+                      ],
+                      "display_name": "AWS Transit Gateway Attachment Network",
+                      "environment": [
+                        {
+                          "id": "${confluent_environment.development.id}"
+                        }
+                      ],
+                      "lifecycle": [
+                        {
+                          "prevent_destroy": true
+                        }
+                      ],
+                      "region": "us-east-2"
+                    }
         argumentDocs:
             aws: '- (Required Configuration Block) The AWS-specific Transit Gateway Attachment details. It supports the following:'
             display_name: '- (Optional String) The name of the Transit Gateway Attachment.'
