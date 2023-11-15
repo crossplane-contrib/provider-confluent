@@ -239,17 +239,16 @@ spec:
                     type: array
                 type: object
               initProvider:
-                description: THIS IS AN ALPHA FIELD. Do not use it in production.
-                  It is not honored unless the relevant Crossplane feature flag is
-                  enabled, and may be changed or removed without notice. InitProvider
-                  holds the same fields as ForProvider, with the exception of Identifier
-                  and other resource reference fields. The fields that are in InitProvider
-                  are merged into ForProvider when the resource is created. The same
-                  fields are also added to the terraform ignore_changes hook, to avoid
-                  updating them after creation. This is useful for fields that are
-                  required on creation, but we do not desire to update them after
-                  creation, for example because of an external controller is managing
-                  them, like an autoscaler.
+                description: THIS IS A BETA FIELD. It will be honored unless the Management
+                  Policies feature flag is disabled. InitProvider holds the same fields
+                  as ForProvider, with the exception of Identifier and other resource
+                  reference fields. The fields that are in InitProvider are merged
+                  into ForProvider when the resource is created. The same fields are
+                  also added to the terraform ignore_changes hook, to avoid updating
+                  them after creation. This is useful for fields that are required
+                  on creation, but we do not desire to update them after creation,
+                  for example because of an external controller is managing them,
+                  like an autoscaler.
                 properties:
                   availability:
                     description: 'The availability zone configuration of the Kafka
@@ -500,26 +499,26 @@ spec:
             - forProvider
             type: object
             x-kubernetes-validations:
-            - message: availability is a required parameter
+            - message: spec.forProvider.availability is a required parameter
               rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
                 || ''Update'' in self.managementPolicies) || has(self.forProvider.availability)
-                || has(self.initProvider.availability)'
-            - message: cloud is a required parameter
+                || (has(self.initProvider) && has(self.initProvider.availability))'
+            - message: spec.forProvider.cloud is a required parameter
               rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
                 || ''Update'' in self.managementPolicies) || has(self.forProvider.cloud)
-                || has(self.initProvider.cloud)'
-            - message: displayName is a required parameter
+                || (has(self.initProvider) && has(self.initProvider.cloud))'
+            - message: spec.forProvider.displayName is a required parameter
               rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
                 || ''Update'' in self.managementPolicies) || has(self.forProvider.displayName)
-                || has(self.initProvider.displayName)'
-            - message: environment is a required parameter
+                || (has(self.initProvider) && has(self.initProvider.displayName))'
+            - message: spec.forProvider.environment is a required parameter
               rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
                 || ''Update'' in self.managementPolicies) || has(self.forProvider.environment)
-                || has(self.initProvider.environment)'
-            - message: region is a required parameter
+                || (has(self.initProvider) && has(self.initProvider.environment))'
+            - message: spec.forProvider.region is a required parameter
               rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
                 || ''Update'' in self.managementPolicies) || has(self.forProvider.region)
-                || has(self.initProvider.region)'
+                || (has(self.initProvider) && has(self.initProvider.region))'
           status:
             description: ClusterStatus defines the observed state of Cluster.
             properties:

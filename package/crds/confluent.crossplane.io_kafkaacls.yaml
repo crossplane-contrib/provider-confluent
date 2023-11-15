@@ -313,17 +313,16 @@ spec:
                     type: string
                 type: object
               initProvider:
-                description: THIS IS AN ALPHA FIELD. Do not use it in production.
-                  It is not honored unless the relevant Crossplane feature flag is
-                  enabled, and may be changed or removed without notice. InitProvider
-                  holds the same fields as ForProvider, with the exception of Identifier
-                  and other resource reference fields. The fields that are in InitProvider
-                  are merged into ForProvider when the resource is created. The same
-                  fields are also added to the terraform ignore_changes hook, to avoid
-                  updating them after creation. This is useful for fields that are
-                  required on creation, but we do not desire to update them after
-                  creation, for example because of an external controller is managing
-                  them, like an autoscaler.
+                description: THIS IS A BETA FIELD. It will be honored unless the Management
+                  Policies feature flag is disabled. InitProvider holds the same fields
+                  as ForProvider, with the exception of Identifier and other resource
+                  reference fields. The fields that are in InitProvider are merged
+                  into ForProvider when the resource is created. The same fields are
+                  also added to the terraform ignore_changes hook, to avoid updating
+                  them after creation. This is useful for fields that are required
+                  on creation, but we do not desire to update them after creation,
+                  for example because of an external controller is managing them,
+                  like an autoscaler.
                 properties:
                   credentials:
                     description: 'supports the following: The Cluster API Credentials.'
@@ -534,30 +533,30 @@ spec:
             - forProvider
             type: object
             x-kubernetes-validations:
-            - message: host is a required parameter
+            - message: spec.forProvider.host is a required parameter
               rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
                 || ''Update'' in self.managementPolicies) || has(self.forProvider.host)
-                || has(self.initProvider.host)'
-            - message: operation is a required parameter
+                || (has(self.initProvider) && has(self.initProvider.host))'
+            - message: spec.forProvider.operation is a required parameter
               rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
                 || ''Update'' in self.managementPolicies) || has(self.forProvider.operation)
-                || has(self.initProvider.operation)'
-            - message: patternType is a required parameter
+                || (has(self.initProvider) && has(self.initProvider.operation))'
+            - message: spec.forProvider.patternType is a required parameter
               rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
                 || ''Update'' in self.managementPolicies) || has(self.forProvider.patternType)
-                || has(self.initProvider.patternType)'
-            - message: permission is a required parameter
+                || (has(self.initProvider) && has(self.initProvider.patternType))'
+            - message: spec.forProvider.permission is a required parameter
               rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
                 || ''Update'' in self.managementPolicies) || has(self.forProvider.permission)
-                || has(self.initProvider.permission)'
-            - message: resourceName is a required parameter
+                || (has(self.initProvider) && has(self.initProvider.permission))'
+            - message: spec.forProvider.resourceName is a required parameter
               rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
                 || ''Update'' in self.managementPolicies) || has(self.forProvider.resourceName)
-                || has(self.initProvider.resourceName)'
-            - message: resourceType is a required parameter
+                || (has(self.initProvider) && has(self.initProvider.resourceName))'
+            - message: spec.forProvider.resourceType is a required parameter
               rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
                 || ''Update'' in self.managementPolicies) || has(self.forProvider.resourceType)
-                || has(self.initProvider.resourceType)'
+                || (has(self.initProvider) && has(self.initProvider.resourceType))'
           status:
             description: KafkaACLStatus defines the observed state of KafkaACL.
             properties:
