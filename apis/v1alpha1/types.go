@@ -1,5 +1,6 @@
 /*
-Copyright 2022 Upbound Inc.
+Copyright 2022 The Crossplane Authors.
+
 */
 
 package v1alpha1
