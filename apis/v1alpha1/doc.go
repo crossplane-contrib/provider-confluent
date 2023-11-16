@@ -1,5 +1,6 @@
 /*
-Copyright 2021 Upbound Inc.
+Copyright 2023 The Crossplane Authors.
+
 */
 
 // Package v1alpha1 contains the core resources of the confluent jet provider.

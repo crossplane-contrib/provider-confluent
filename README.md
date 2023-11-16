@@ -77,3 +77,7 @@ make build
 
 For filing bugs, suggesting improvements, or requesting new features, please
 open an [issue](https://github.com/crossplane-contrib/provider-confluent/issues).
+
+
+## Credits
+Initially developed by [jaylevin](https://github.com/jaylevin), [jtucci](https://github.com/jtucci) and their team at [SAP](https://github.com/SAP).

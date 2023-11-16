@@ -2,7 +2,7 @@
 // +build generate
 
 /*
-Copyright 2021 Upbound Inc.
+Copyright 2023 The Crossplane Authors.
 */
 
 // NOTE: See the below link for details on what is happening here.
@@ -11,15 +11,17 @@ Copyright 2021 Upbound Inc.
 // Remove existing CRDs
 //go:generate rm -rf ../package/crds
 
-// Remove generated files
+// Remove generated Go files
 //go:generate bash -c "find . -iname 'zz_*' ! -iname 'zz_generated.managed*.go' -delete"
 //go:generate bash -c "find . -type d -empty -delete"
 //go:generate bash -c "find ../internal/controller -iname 'zz_*' -delete"
 //go:generate bash -c "find ../internal/controller -type d -empty -delete"
 //go:generate rm -rf ../examples-generated
+//go:generate bash -c "find ../cmd/provider -name 'zz_*' -type f -delete"
+//go:generate bash -c "find ../cmd/provider -type d -maxdepth 1 -mindepth 1 -empty -delete"
 
 // Generate documentation from Terraform docs.
-//go:generate go run github.com/upbound/upjet/cmd/scraper -n ${TERRAFORM_PROVIDER_SOURCE} -r ../.work/${TERRAFORM_PROVIDER_SOURCE}/${TERRAFORM_DOCS_PATH} -o ../config/provider-metadata.yaml
+//go:generate go run github.com/crossplane/upjet/cmd/scraper -n ${TERRAFORM_PROVIDER_SOURCE} -r ../.work/${TERRAFORM_PROVIDER_SOURCE}/${TERRAFORM_DOCS_PATH} -o ../config/provider-metadata.yaml
 
 // Run Upjet generator
 //go:generate go run ../cmd/generator/main.go ..
@@ -33,7 +35,6 @@ Copyright 2021 Upbound Inc.
 package apis
 
 import (
-	_ "sigs.k8s.io/controller-tools/cmd/controller-gen" //nolint:typecheck
-
 	_ "github.com/crossplane/crossplane-tools/cmd/angryjet" //nolint:typecheck
+	_ "sigs.k8s.io/controller-tools/cmd/controller-gen"     //nolint:typecheck
 )

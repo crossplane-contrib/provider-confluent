@@ -1,5 +1,5 @@
 /*
-Copyright 2021 Upbound Inc.
+Copyright 2023 The Crossplane Authors.
 */
 
 package config
@@ -8,7 +8,7 @@ import (
 	// Note(turkenh): we are importing this to embed provider schema document
 	_ "embed"
 
-	ujconfig "github.com/upbound/upjet/pkg/config"
+	ujconfig "github.com/crossplane/upjet/pkg/config"
 
 	confluentapikey "github.com/crossplane-contrib/provider-confluent/config/confluent_api_key"
 	confluentenvironment "github.com/crossplane-contrib/provider-confluent/config/confluent_environment"

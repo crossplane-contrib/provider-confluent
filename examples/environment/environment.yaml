@@ -1,7 +1,0 @@
-apiVersion: confluent.crossplane.io/v1alpha1
-kind: Environment
-metadata:
-  name: example-confluent-env
-spec:
-  forProvider:
-    displayName: "test"
