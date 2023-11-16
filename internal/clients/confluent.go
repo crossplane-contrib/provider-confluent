@@ -1,5 +1,5 @@
 /*
-Copyright 2021 Upbound Inc.
+Copyright 2023 The Crossplane Authors.
 */
 
 package clients

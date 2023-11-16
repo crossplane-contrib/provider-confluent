@@ -2,7 +2,7 @@
 // +build generate
 
 /*
-Copyright 2021 Upbound Inc.
+Copyright 2023 The Crossplane Authors.
 */
 
 // NOTE: See the below link for details on what is happening here.
