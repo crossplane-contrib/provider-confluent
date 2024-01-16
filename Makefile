@@ -2,7 +2,7 @@
 # Setup Project
 
 PROJECT_NAME ?= provider-confluent
-PROJECT_REPO ?= github.com/crossplane-contrib/$(PROJECT_NAME)
+PROJECT_REPO ?= github.com/stakater/$(PROJECT_NAME)
 
 export TERRAFORM_VERSION ?= 1.3.3
 

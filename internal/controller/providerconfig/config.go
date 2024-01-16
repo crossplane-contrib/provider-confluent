@@ -14,11 +14,11 @@ limitations under the License.
 package providerconfig
 
 import (
-	"github.com/crossplane-contrib/provider-confluent/apis/v1beta1"
 	"github.com/crossplane/crossplane-runtime/pkg/event"
 	"github.com/crossplane/crossplane-runtime/pkg/reconciler/providerconfig"
 	"github.com/crossplane/crossplane-runtime/pkg/resource"
 	"github.com/crossplane/upjet/pkg/controller"
+	"github.com/stakater/provider-confluent/apis/v1beta1"
 	ctrl "sigs.k8s.io/controller-runtime"
 )
 

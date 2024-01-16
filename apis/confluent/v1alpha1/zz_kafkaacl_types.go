@@ -153,7 +153,7 @@ type KafkaACLParameters struct {
 	// The principal for the ACL.
 	// The principal for the ACL.
 	// +crossplane:generate:reference:type=ServiceAccount
-	// +crossplane:generate:reference:extractor=github.com/crossplane-contrib/provider-confluent/config/confluent_kafka_acl.ExtractResourceID()
+	// +crossplane:generate:reference:extractor=github.com/stakater/provider-confluent/config/confluent_kafka_acl.ExtractResourceID()
 	// +kubebuilder:validation:Optional
 	Principal *string `json:"principal,omitempty" tf:"principal,omitempty"`
 

@@ -10,18 +10,18 @@ import (
 
 	ujconfig "github.com/crossplane/upjet/pkg/config"
 
-	confluentapikey "github.com/crossplane-contrib/provider-confluent/config/confluent_api_key"
-	confluentenvironment "github.com/crossplane-contrib/provider-confluent/config/confluent_environment"
-	confluentkafkaacl "github.com/crossplane-contrib/provider-confluent/config/confluent_kafka_acl"
-	confluentkafkacluster "github.com/crossplane-contrib/provider-confluent/config/confluent_kafka_cluster"
-	confluentkafkaclusterconfig "github.com/crossplane-contrib/provider-confluent/config/confluent_kafka_cluster_config"
-	confluentrolebinding "github.com/crossplane-contrib/provider-confluent/config/confluent_role_binding"
-	confluentserviceaccount "github.com/crossplane-contrib/provider-confluent/config/confluent_service_account"
+	confluentapikey "github.com/stakater/provider-confluent/config/confluent_api_key"
+	confluentenvironment "github.com/stakater/provider-confluent/config/confluent_environment"
+	confluentkafkaacl "github.com/stakater/provider-confluent/config/confluent_kafka_acl"
+	confluentkafkacluster "github.com/stakater/provider-confluent/config/confluent_kafka_cluster"
+	confluentkafkaclusterconfig "github.com/stakater/provider-confluent/config/confluent_kafka_cluster_config"
+	confluentrolebinding "github.com/stakater/provider-confluent/config/confluent_role_binding"
+	confluentserviceaccount "github.com/stakater/provider-confluent/config/confluent_service_account"
 )
 
 const (
 	resourcePrefix = "confluent"
-	modulePath     = "github.com/crossplane-contrib/provider-confluent"
+	modulePath     = "github.com/stakater/provider-confluent"
 )
 
 //go:embed schema.json

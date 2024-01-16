@@ -14,9 +14,9 @@ package apis
 import (
 	"k8s.io/apimachinery/pkg/runtime"
 
-	v1alpha1 "github.com/crossplane-contrib/provider-confluent/apis/confluent/v1alpha1"
-	v1alpha1apis "github.com/crossplane-contrib/provider-confluent/apis/v1alpha1"
-	v1beta1 "github.com/crossplane-contrib/provider-confluent/apis/v1beta1"
+	v1alpha1 "github.com/stakater/provider-confluent/apis/confluent/v1alpha1"
+	v1alpha1apis "github.com/stakater/provider-confluent/apis/v1alpha1"
+	v1beta1 "github.com/stakater/provider-confluent/apis/v1beta1"
 )
 
 func init() {

@@ -22,9 +22,9 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/crossplane-contrib/provider-confluent/config"
 	ujconfig "github.com/crossplane/upjet/pkg/config"
 	"github.com/crossplane/upjet/pkg/pipeline"
+	"github.com/stakater/provider-confluent/config"
 	"gopkg.in/alecthomas/kingpin.v2"
 )
 

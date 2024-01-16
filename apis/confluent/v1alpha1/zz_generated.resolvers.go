@@ -7,9 +7,9 @@ package v1alpha1
 
 import (
 	"context"
-	confluentkafkaacl "github.com/crossplane-contrib/provider-confluent/config/confluent_kafka_acl"
 	reference "github.com/crossplane/crossplane-runtime/pkg/reference"
 	errors "github.com/pkg/errors"
+	confluentkafkaacl "github.com/stakater/provider-confluent/config/confluent_kafka_acl"
 	client "sigs.k8s.io/controller-runtime/pkg/client"
 )
 

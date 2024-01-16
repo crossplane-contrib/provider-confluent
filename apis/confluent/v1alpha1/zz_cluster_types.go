@@ -62,7 +62,7 @@ type ClusterEnvironmentParameters struct {
 
 	// The ID of the Environment that the Kafka cluster belongs to, for example, env-abc123.
 	// The unique identifier for the environment.
-	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-confluent/apis/confluent/v1alpha1.Environment
+	// +crossplane:generate:reference:type=github.com/stakater/provider-confluent/apis/confluent/v1alpha1.Environment
 	// +kubebuilder:validation:Optional
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 

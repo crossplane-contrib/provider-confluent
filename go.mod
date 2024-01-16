@@ -1,4 +1,4 @@
-module github.com/crossplane-contrib/provider-confluent
+module github.com/stakater/provider-confluent
 
 go 1.20
 

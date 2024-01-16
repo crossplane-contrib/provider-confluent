@@ -46,7 +46,7 @@ EOF
 
 Notice that in this example Provider resource is referencing ControllerConfig with debug enabled.
 
-You can see the API reference [here](https://doc.crds.dev/github.com/crossplane-contrib/provider-confluent).
+You can see the API reference [here](https://doc.crds.dev/github.com/stakater/provider-confluent).
 
 ## Developing
 
@@ -76,7 +76,7 @@ make build
 ## Report a Bug
 
 For filing bugs, suggesting improvements, or requesting new features, please
-open an [issue](https://github.com/crossplane-contrib/provider-confluent/issues).
+open an [issue](https://github.com/stakater/provider-confluent/issues).
 
 
 ## Credits
