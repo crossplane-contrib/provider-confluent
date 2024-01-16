@@ -1,0 +1,25 @@
+apiVersion: confluent.orchestrate.cloud.sap/v1beta1
+kind: ProviderConfig
+metadata:
+  name: default
+spec:
+  credentials:
+    source: Secret
+    secretRef:
+      name: confluent-provider-config
+      namespace: default
+      key: credentials
+---
+
+apiVersion: v1
+kind: Secret
+metadata:
+  namespace: default
+  name: confluent-provider-config
+type: Opaque
+stringData:
+  credentials: |
+    {
+      "cloud_api_key": "<confluent_api_key_id>",
+      "cloud_api_secret": "<confluent_api_key_secret>
+    }
