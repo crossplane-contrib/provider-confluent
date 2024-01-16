@@ -1,1 +1,1 @@
-["confluent_api_key","confluent_environment","confluent_kafka_acl","confluent_kafka_cluster","confluent_kafka_cluster_config","confluent_role_binding","confluent_service_account"]
+["confluent_api_key","confluent_environment","confluent_identity_provider","confluent_kafka_acl","confluent_kafka_cluster","confluent_kafka_cluster_config","confluent_role_binding","confluent_service_account"]

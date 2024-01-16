@@ -13,6 +13,7 @@ import (
 	cluster "github.com/stakater/provider-confluent/internal/controller/confluent/cluster"
 	clusterconfig "github.com/stakater/provider-confluent/internal/controller/confluent/clusterconfig"
 	environment "github.com/stakater/provider-confluent/internal/controller/confluent/environment"
+	identityprovider "github.com/stakater/provider-confluent/internal/controller/confluent/identityprovider"
 	kafkaacl "github.com/stakater/provider-confluent/internal/controller/confluent/kafkaacl"
 	rolebinding "github.com/stakater/provider-confluent/internal/controller/confluent/rolebinding"
 	serviceaccount "github.com/stakater/provider-confluent/internal/controller/confluent/serviceaccount"
@@ -27,6 +28,7 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		cluster.Setup,
 		clusterconfig.Setup,
 		environment.Setup,
+		identityprovider.Setup,
 		kafkaacl.Setup,
 		rolebinding.Setup,
 		serviceaccount.Setup,
