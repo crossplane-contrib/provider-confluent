@@ -17,6 +17,7 @@ import (
 	confluentkafkaclusterconfig "github.com/crossplane-contrib/provider-confluent/config/confluent_kafka_cluster_config"
 	confluentrolebinding "github.com/crossplane-contrib/provider-confluent/config/confluent_role_binding"
 	confluentserviceaccount "github.com/crossplane-contrib/provider-confluent/config/confluent_service_account"
+	confluentidentityprovider "github.com/stakater/provider-confluent/config/confluent_identity_provider"
 )
 
 const (
@@ -49,6 +50,7 @@ func GetProvider() *ujconfig.Provider {
 		confluentapikey.Configure,
 		confluentkafkaacl.Configure,
 		confluentrolebinding.Configure,
+		confluentidentityprovider.Configure,
 	} {
 		configure(pc)
 	}
