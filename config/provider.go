@@ -18,7 +18,6 @@ import (
 	confluentrolebinding "github.com/crossplane-contrib/provider-confluent/config/confluent_role_binding"
 	confluentschemaregistrycluster "github.com/crossplane-contrib/provider-confluent/config/confluent_schema_registry_cluster"
 	confluentserviceaccount "github.com/crossplane-contrib/provider-confluent/config/confluent_service_account"
-	
 )
 
 const (
