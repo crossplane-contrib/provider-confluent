@@ -14,6 +14,7 @@ import (
 	clusterconfig "github.com/crossplane-contrib/provider-confluent/internal/controller/confluent/clusterconfig"
 	environment "github.com/crossplane-contrib/provider-confluent/internal/controller/confluent/environment"
 	kafkaacl "github.com/crossplane-contrib/provider-confluent/internal/controller/confluent/kafkaacl"
+	kafkatopic "github.com/crossplane-contrib/provider-confluent/internal/controller/confluent/kafkatopic"
 	rolebinding "github.com/crossplane-contrib/provider-confluent/internal/controller/confluent/rolebinding"
 	schemaregistrycluster "github.com/crossplane-contrib/provider-confluent/internal/controller/confluent/schemaregistrycluster"
 	serviceaccount "github.com/crossplane-contrib/provider-confluent/internal/controller/confluent/serviceaccount"
@@ -29,6 +30,7 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		clusterconfig.Setup,
 		environment.Setup,
 		kafkaacl.Setup,
+		kafkatopic.Setup,
 		rolebinding.Setup,
 		schemaregistrycluster.Setup,
 		serviceaccount.Setup,
