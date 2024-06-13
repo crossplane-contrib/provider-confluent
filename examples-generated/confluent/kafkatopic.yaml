@@ -1,0 +1,25 @@
+apiVersion: confluent.crossplane.io/v1alpha1
+kind: KafkaTopic
+metadata:
+  annotations:
+    meta.upbound.io/example-id: confluent/v1alpha1/kafkatopic
+  labels:
+    testing.upbound.io/example-name: orders
+  name: orders
+spec:
+  forProvider:
+    credentials:
+    - keySecretRef:
+        key: attribute.id
+        name: example-api-key
+        namespace: upbound-system
+      secretSecretRef:
+        key: attribute.secret
+        name: example-api-key
+        namespace: upbound-system
+    kafkaCluster:
+    - idSelector:
+        matchLabels:
+          testing.upbound.io/example-name: basic-cluster
+    restEndpoint: ${confluent_kafka_cluster.basic-cluster.rest_endpoint}
+    topicName: orders
