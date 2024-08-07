@@ -21,5 +21,8 @@ stringData:
   credentials: |
     {
       "cloud_api_key": "<confluent_api_key_id>",
-      "cloud_api_secret": "<confluent_api_key_secret>
+      "cloud_api_secret": "<confluent_api_key_secret>",
+      "kafka_api_key": "<schema_registry_api_key>",
+      "kafka_api_secret": "<schema_registry_api_secret>",
+      "kafka_rest_endpoint": "<schema_registry_rest_endpoint>"
     }
