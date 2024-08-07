@@ -18,8 +18,11 @@ import (
 
 const (
 	// ProviderConfig secret keys
-	cloudAPIKey    = "cloud_api_key"
-	cloudAPISecret = "cloud_api_secret"
+	cloudAPIKey       = "cloud_api_key"
+	cloudAPISecret    = "cloud_api_secret"
+	kafkaAPIKey       = "kafka_api_key"
+	kafkaAPISecret    = "kafka_api_secret"
+	kafkaRESTEndpoint = "kafka_rest_endpoint"
 
 	// error messages
 	errNoProviderConfig     = "no providerConfigRef provided"
@@ -69,8 +72,11 @@ func TerraformSetupBuilder(version, providerSource, providerVersion string, sche
 
 		// Set credentials in Terraform provider configuration.
 		ps.Configuration = map[string]any{
-			cloudAPIKey:    creds[cloudAPIKey],
-			cloudAPISecret: creds[cloudAPISecret],
+			cloudAPIKey:       creds[cloudAPIKey],
+			cloudAPISecret:    creds[cloudAPISecret],
+			kafkaAPIKey:       creds[kafkaAPIKey],
+			kafkaAPISecret:    creds[kafkaAPISecret],
+			kafkaRESTEndpoint: creds[kafkaRESTEndpoint],
 		}
 		return ps, nil
 	}

@@ -183,13 +183,28 @@ CROSSPLANE_NAMESPACE = upbound-system
 # - UPTEST_DATASOURCE_PATH (optional), see https://github.com/upbound/uptest#injecting-dynamic-values-and-datasource
 uptest: $(UPTEST) $(KUBECTL) $(KUTTL)
 	@$(INFO) running automated tests
-	@KUBECTL=$(KUBECTL) KUTTL=$(KUTTL) $(UPTEST) e2e "${UPTEST_EXAMPLE_LIST}" --data-source="${UPTEST_DATASOURCE_PATH}" --setup-script=cluster/test/setup.sh --default-conditions="Test" || $(FAIL)
+	@if [[ -n "$${UPTEST_CONFLUENT_KAFKA_CLUSTER_ID:-}" && -n "$${UPTEST_CONFLUENT_PRINCIPAL:-}" ]]; then \
+		{ \
+			echo "confluent_kafka_cluster_id: $${UPTEST_CONFLUENT_KAFKA_CLUSTER_ID}"; \
+			echo "confluent_principal: $${UPTEST_CONFLUENT_PRINCIPAL}"; \
+		} > "$(OUTPUT_DIR)/datasource.yaml"; \
+		if [[ -n "$${UPTEST_DATASOURCE_PATH:-}" ]]; then \
+			echo "" >> "$(OUTPUT_DIR)/datasource.yaml"; \
+			cat "$${UPTEST_DATASOURCE_PATH}" >> "$(OUTPUT_DIR)/datasource.yaml"; \
+		fi; \
+		export UPTEST_DATASOURCE_PATH="$(OUTPUT_DIR)/datasource.yaml"; \
+	fi; \
+	KUBECTL=$(KUBECTL) KUTTL=$(KUTTL) CROSSPLANE_NAMESPACE=$(CROSSPLANE_NAMESPACE) \
+		$(UPTEST) e2e "$${UPTEST_EXAMPLE_LIST}" \
+			--data-source="$${UPTEST_DATASOURCE_PATH}" \
+			--setup-script=cluster/test/setup.sh \
+			--default-conditions="Test" || $(FAIL)
 	@$(OK) running automated tests
 
 local-deploy: build controlplane.up local.xpkg.deploy.provider.$(PROJECT_NAME)
 	@$(INFO) running locally built provider
 	@$(KUBECTL) wait provider.pkg $(PROJECT_NAME) --for condition=Healthy --timeout 5m
-	@$(KUBECTL) -n upbound-system wait --for=condition=Available deployment --all --timeout=5m
+	@$(KUBECTL) -n $(CROSSPLANE_NAMESPACE) wait --for=condition=Available deployment --all --timeout=5m
 	@$(OK) running locally built provider
 
 e2e: local-deploy uptest
