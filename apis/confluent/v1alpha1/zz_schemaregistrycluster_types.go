@@ -61,7 +61,7 @@ type SchemaRegistryClusterEnvironmentParameters struct {
 	ID *string `json:"id" tf:"id,omitempty"`
 }
 
-type SchemaRegistryClusterInitParameters struct {
+type SchemaRegistryClusterInitParameters_2 struct {
 
 	// supports the following:
 	// Environment objects represent an isolated namespace for your Confluent resources for organizational purposes.
@@ -75,7 +75,7 @@ type SchemaRegistryClusterInitParameters struct {
 	Region []RegionInitParameters `json:"region,omitempty" tf:"region,omitempty"`
 }
 
-type SchemaRegistryClusterObservation struct {
+type SchemaRegistryClusterObservation_2 struct {
 
 	// An API Version of the schema version of the Schema Registry cluster, for example, srcm/v2.
 	// API Version defines the schema version of this representation of a Schema Registry Cluster.
@@ -112,7 +112,7 @@ type SchemaRegistryClusterObservation struct {
 	RestEndpoint *string `json:"restEndpoint,omitempty" tf:"rest_endpoint,omitempty"`
 }
 
-type SchemaRegistryClusterParameters struct {
+type SchemaRegistryClusterParameters_2 struct {
 
 	// supports the following:
 	// Environment objects represent an isolated namespace for your Confluent resources for organizational purposes.
@@ -132,7 +132,7 @@ type SchemaRegistryClusterParameters struct {
 // SchemaRegistryClusterSpec defines the desired state of SchemaRegistryCluster
 type SchemaRegistryClusterSpec struct {
 	v1.ResourceSpec `json:",inline"`
-	ForProvider     SchemaRegistryClusterParameters `json:"forProvider"`
+	ForProvider     SchemaRegistryClusterParameters_2 `json:"forProvider"`
 	// THIS IS A BETA FIELD. It will be honored
 	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
@@ -143,13 +143,13 @@ type SchemaRegistryClusterSpec struct {
 	// required on creation, but we do not desire to update them after creation,
 	// for example because of an external controller is managing them, like an
 	// autoscaler.
-	InitProvider SchemaRegistryClusterInitParameters `json:"initProvider,omitempty"`
+	InitProvider SchemaRegistryClusterInitParameters_2 `json:"initProvider,omitempty"`
 }
 
 // SchemaRegistryClusterStatus defines the observed state of SchemaRegistryCluster.
 type SchemaRegistryClusterStatus struct {
 	v1.ResourceStatus `json:",inline"`
-	AtProvider        SchemaRegistryClusterObservation `json:"atProvider,omitempty"`
+	AtProvider        SchemaRegistryClusterObservation_2 `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true
