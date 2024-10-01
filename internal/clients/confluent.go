@@ -74,9 +74,16 @@ func TerraformSetupBuilder(version, providerSource, providerVersion string, sche
 		ps.Configuration = map[string]any{
 			cloudAPIKey:       creds[cloudAPIKey],
 			cloudAPISecret:    creds[cloudAPISecret],
-			kafkaAPIKey:       creds[kafkaAPIKey],
-			kafkaAPISecret:    creds[kafkaAPISecret],
-			kafkaRESTEndpoint: creds[kafkaRESTEndpoint],
+		}
+		
+		if kafkaAPIKey, ok := creds[kafkaAPIKey]; ok {
+			ps.Configuration[kafkaAPIKey] = creds[kafkaAPIKey],
+		}
+		if kafkaAPISecret, ok := creds[kafkaAPISecret]; ok {
+			ps.Configuration[kafkaAPISecret] = creds[kafkaAPISecret],
+		}
+		if kafkaRESTEndpoint, ok := creds[kafkaRESTEndpoint]; ok {
+			ps.Configuration[kafkaRESTEndpoint] = creds[kafkaRESTEndpoint],
 		}
 		return ps, nil
 	}
