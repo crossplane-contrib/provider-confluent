@@ -71,21 +71,12 @@ func TerraformSetupBuilder(version, providerSource, providerVersion string, sche
 		}
 
 		// Set credentials in Terraform provider configuration.
-		ps.Configuration = map[string]any{}
-		if cloudAPIKey, ok := creds[cloudAPIKey]; ok {
-			ps.Configuration[cloudAPIKey] = creds[cloudAPIKey]
-		}
-		if cloudAPISecret, ok := creds[cloudAPISecret]; ok {
-			ps.Configuration[cloudAPISecret] = creds[cloudAPISecret]
-		}
-		if kafkaAPIKey, ok := creds[kafkaAPIKey]; ok {
-			ps.Configuration[kafkaAPIKey] = creds[kafkaAPIKey]
-		}
-		if kafkaAPISecret, ok := creds[kafkaAPISecret]; ok {
-			ps.Configuration[kafkaAPISecret] = creds[kafkaAPISecret]
-		}
-		if kafkaRESTEndpoint, ok := creds[kafkaRESTEndpoint]; ok {
-			ps.Configuration[kafkaRESTEndpoint] = creds[kafkaRESTEndpoint]
+		ps.Configuration = map[string]any{
+			cloudAPIKey:       creds[cloudAPIKey],
+			cloudAPISecret:    creds[cloudAPISecret],
+			kafkaAPIKey:       creds[kafkaAPIKey],
+			kafkaAPISecret:    creds[kafkaAPISecret],
+			kafkaRESTEndpoint: creds[kafkaRESTEndpoint],
 		}
 		return ps, nil
 	}
