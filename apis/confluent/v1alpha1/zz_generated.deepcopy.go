@@ -2642,11 +2642,6 @@ func (in *RoleBindingInitParameters) DeepCopyInto(out *RoleBindingInitParameters
 		*out = new(string)
 		**out = **in
 	}
-	if in.Principal != nil {
-		in, out := &in.Principal, &out.Principal
-		*out = new(string)
-		**out = **in
-	}
 	if in.RoleName != nil {
 		in, out := &in.RoleName, &out.RoleName
 		*out = new(string)
@@ -2743,6 +2738,16 @@ func (in *RoleBindingParameters) DeepCopyInto(out *RoleBindingParameters) {
 		in, out := &in.Principal, &out.Principal
 		*out = new(string)
 		**out = **in
+	}
+	if in.PrincipalRef != nil {
+		in, out := &in.PrincipalRef, &out.PrincipalRef
+		*out = new(v1.Reference)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.PrincipalSelector != nil {
+		in, out := &in.PrincipalSelector, &out.PrincipalSelector
+		*out = new(v1.Selector)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.RoleName != nil {
 		in, out := &in.RoleName, &out.RoleName

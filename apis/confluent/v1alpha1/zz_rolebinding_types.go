@@ -23,10 +23,6 @@ type RoleBindingInitParameters struct {
 	// A CRN that specifies the scope and resource patterns necessary for the role to bind.
 	CrnPattern *string `json:"crnPattern,omitempty" tf:"crn_pattern,omitempty"`
 
-	// A principal User to bind the role to, for example, "User:u-111aaa" for binding to a user "u-111aaa", or "User:sa-111aaa" for binding to a service account "sa-111aaa".
-	// The principal User to bind the role to.
-	Principal *string `json:"principal,omitempty" tf:"principal,omitempty"`
-
 	// A name of the role to bind to the principal. See Confluent Cloud RBAC Roles for a full list of supported role names.
 	// The name of the role to bind to the principal.
 	RoleName *string `json:"roleName,omitempty" tf:"role_name,omitempty"`
@@ -59,8 +55,18 @@ type RoleBindingParameters struct {
 
 	// A principal User to bind the role to, for example, "User:u-111aaa" for binding to a user "u-111aaa", or "User:sa-111aaa" for binding to a service account "sa-111aaa".
 	// The principal User to bind the role to.
+	// +crossplane:generate:reference:type=ServiceAccount
+	// +crossplane:generate:reference:extractor=github.com/crossplane-contrib/provider-confluent/config/common.ExtractPrincipalID()
 	// +kubebuilder:validation:Optional
 	Principal *string `json:"principal,omitempty" tf:"principal,omitempty"`
+
+	// Reference to a ServiceAccount to populate principal.
+	// +kubebuilder:validation:Optional
+	PrincipalRef *v1.Reference `json:"principalRef,omitempty" tf:"-"`
+
+	// Selector for a ServiceAccount to populate principal.
+	// +kubebuilder:validation:Optional
+	PrincipalSelector *v1.Selector `json:"principalSelector,omitempty" tf:"-"`
 
 	// A name of the role to bind to the principal. See Confluent Cloud RBAC Roles for a full list of supported role names.
 	// The name of the role to bind to the principal.
@@ -104,7 +110,6 @@ type RoleBinding struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.crnPattern) || (has(self.initProvider) && has(self.initProvider.crnPattern))",message="spec.forProvider.crnPattern is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.principal) || (has(self.initProvider) && has(self.initProvider.principal))",message="spec.forProvider.principal is a required parameter"
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.roleName) || (has(self.initProvider) && has(self.initProvider.roleName))",message="spec.forProvider.roleName is a required parameter"
 	Spec   RoleBindingSpec   `json:"spec"`
 	Status RoleBindingStatus `json:"status,omitempty"`

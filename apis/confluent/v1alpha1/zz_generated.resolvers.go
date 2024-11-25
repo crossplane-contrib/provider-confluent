@@ -7,7 +7,7 @@ package v1alpha1
 
 import (
 	"context"
-	confluentkafkaacl "github.com/crossplane-contrib/provider-confluent/config/confluent_kafka_acl"
+	common "github.com/crossplane-contrib/provider-confluent/config/common"
 	reference "github.com/crossplane/crossplane-runtime/pkg/reference"
 	errors "github.com/pkg/errors"
 	client "sigs.k8s.io/controller-runtime/pkg/client"
@@ -136,7 +136,7 @@ func (mg *KafkaACL) ResolveReferences(ctx context.Context, c client.Reader) erro
 	}
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Principal),
-		Extract:      confluentkafkaacl.ExtractResourceID(),
+		Extract:      common.ExtractPrincipalID(),
 		Reference:    mg.Spec.ForProvider.PrincipalRef,
 		Selector:     mg.Spec.ForProvider.PrincipalSelector,
 		To: reference.To{
@@ -178,6 +178,32 @@ func (mg *KafkaTopic) ResolveReferences(ctx context.Context, c client.Reader) er
 		mg.Spec.ForProvider.KafkaCluster[i3].IDRef = rsp.ResolvedReference
 
 	}
+
+	return nil
+}
+
+// ResolveReferences of this RoleBinding.
+func (mg *RoleBinding) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPIResolver(c, mg)
+
+	var rsp reference.ResolutionResponse
+	var err error
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Principal),
+		Extract:      common.ExtractPrincipalID(),
+		Reference:    mg.Spec.ForProvider.PrincipalRef,
+		Selector:     mg.Spec.ForProvider.PrincipalSelector,
+		To: reference.To{
+			List:    &ServiceAccountList{},
+			Managed: &ServiceAccount{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.Principal")
+	}
+	mg.Spec.ForProvider.Principal = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.PrincipalRef = rsp.ResolvedReference
 
 	return nil
 }

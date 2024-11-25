@@ -9,5 +9,7 @@ metadata:
 spec:
   forProvider:
     crnPattern: ${data.confluent_organization.demo.resource_name}
-    principal: User:${confluent_service_account.test.id}
+    principalSelector:
+      matchLabels:
+        testing.upbound.io/example-name: test
     roleName: MetricsViewer

@@ -1,6 +1,7 @@
 package confluent_role_binding
 
 import (
+	"github.com/crossplane-contrib/provider-confluent/config/common"
 	"github.com/crossplane/upjet/pkg/config"
 )
 
@@ -11,5 +12,11 @@ func Configure(p *config.Provider) {
 		r.ShortGroup = "confluent"
 		r.UseAsync = true
 		r.Kind = "RoleBinding"
+
+		// Allows us to reference managedResource ID via spec.forProvider.principal.idSelector
+		r.References["principal"] = config.Reference{
+			Type:      "ServiceAccount",
+			Extractor: common.ExtractPrincipalIDFuncPath,
+		}
 	})
 }
