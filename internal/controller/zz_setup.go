@@ -12,6 +12,7 @@ import (
 	apikey "github.com/crossplane-contrib/provider-confluent/internal/controller/confluent/apikey"
 	cluster "github.com/crossplane-contrib/provider-confluent/internal/controller/confluent/cluster"
 	clusterconfig "github.com/crossplane-contrib/provider-confluent/internal/controller/confluent/clusterconfig"
+	connector "github.com/crossplane-contrib/provider-confluent/internal/controller/confluent/connector"
 	environment "github.com/crossplane-contrib/provider-confluent/internal/controller/confluent/environment"
 	kafkaacl "github.com/crossplane-contrib/provider-confluent/internal/controller/confluent/kafkaacl"
 	kafkatopic "github.com/crossplane-contrib/provider-confluent/internal/controller/confluent/kafkatopic"
@@ -29,6 +30,7 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		apikey.Setup,
 		cluster.Setup,
 		clusterconfig.Setup,
+		connector.Setup,
 		environment.Setup,
 		kafkaacl.Setup,
 		kafkatopic.Setup,
