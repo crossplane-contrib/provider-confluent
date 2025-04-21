@@ -32,7 +32,7 @@ type APIKeyInitParameters struct {
 	DisplayName *string `json:"displayName,omitempty" tf:"display_name,omitempty"`
 
 	// This block must be set for Cluster API Keys and must be omitted for Cloud API Keys. It supports the following:
-	// The resource associated with this object. The only resource that is supported is 'cmk.v2.Cluster', 'srcm.v2.Cluster'.
+	// The resource associated with this object. The only resource that is supported is 'cmk.v2.Cluster', 'srcm.v2.Cluster', 'srcm.v3.Cluster'.
 	ManagedResource []ManagedResourceInitParameters `json:"managedResource,omitempty" tf:"managed_resource,omitempty"`
 
 	// supports the following:
@@ -58,7 +58,7 @@ type APIKeyObservation struct {
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
 	// This block must be set for Cluster API Keys and must be omitted for Cloud API Keys. It supports the following:
-	// The resource associated with this object. The only resource that is supported is 'cmk.v2.Cluster', 'srcm.v2.Cluster'.
+	// The resource associated with this object. The only resource that is supported is 'cmk.v2.Cluster', 'srcm.v2.Cluster', 'srcm.v3.Cluster'.
 	ManagedResource []ManagedResourceObservation `json:"managedResource,omitempty" tf:"managed_resource,omitempty"`
 
 	// supports the following:
@@ -84,7 +84,7 @@ type APIKeyParameters struct {
 	DisplayName *string `json:"displayName,omitempty" tf:"display_name,omitempty"`
 
 	// This block must be set for Cluster API Keys and must be omitted for Cloud API Keys. It supports the following:
-	// The resource associated with this object. The only resource that is supported is 'cmk.v2.Cluster', 'srcm.v2.Cluster'.
+	// The resource associated with this object. The only resource that is supported is 'cmk.v2.Cluster', 'srcm.v2.Cluster', 'srcm.v3.Cluster'.
 	// +kubebuilder:validation:Optional
 	ManagedResource []ManagedResourceParameters `json:"managedResource,omitempty" tf:"managed_resource,omitempty"`
 
@@ -100,14 +100,12 @@ type EnvironmentInitParameters struct {
 type EnvironmentObservation struct {
 
 	// The ID of the owner that the API Key belongs to, for example, sa-abc123 or u-abc123.
-	// The unique identifier for the environment.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 }
 
 type EnvironmentParameters struct {
 
 	// The ID of the owner that the API Key belongs to, for example, sa-abc123 or u-abc123.
-	// The unique identifier for the environment.
 	// +crossplane:generate:reference:type=Environment
 	// +kubebuilder:validation:Optional
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
@@ -128,7 +126,6 @@ type ManagedResourceInitParameters struct {
 	APIVersion *string `json:"apiVersion,omitempty" tf:"api_version,omitempty"`
 
 	// supports the following:
-	// Environment objects represent an isolated namespace for your Confluent resources for organizational purposes.
 	Environment []EnvironmentInitParameters `json:"environment,omitempty" tf:"environment,omitempty"`
 
 	// The kind of the owner that the API Key belongs to, for example, ServiceAccount or User.
@@ -143,7 +140,6 @@ type ManagedResourceObservation struct {
 	APIVersion *string `json:"apiVersion,omitempty" tf:"api_version,omitempty"`
 
 	// supports the following:
-	// Environment objects represent an isolated namespace for your Confluent resources for organizational purposes.
 	Environment []EnvironmentObservation `json:"environment,omitempty" tf:"environment,omitempty"`
 
 	// The ID of the owner that the API Key belongs to, for example, sa-abc123 or u-abc123.
@@ -163,9 +159,8 @@ type ManagedResourceParameters struct {
 	APIVersion *string `json:"apiVersion" tf:"api_version,omitempty"`
 
 	// supports the following:
-	// Environment objects represent an isolated namespace for your Confluent resources for organizational purposes.
 	// +kubebuilder:validation:Optional
-	Environment []EnvironmentParameters `json:"environment" tf:"environment,omitempty"`
+	Environment []EnvironmentParameters `json:"environment,omitempty" tf:"environment,omitempty"`
 
 	// The ID of the owner that the API Key belongs to, for example, sa-abc123 or u-abc123.
 	// The unique identifier for the referred resource.

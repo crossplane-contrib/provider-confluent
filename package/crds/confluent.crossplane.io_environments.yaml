@@ -72,6 +72,19 @@ spec:
                       "Development". The name can contain hyphens and underscores.
                       A human-readable name for the Environment.
                     type: string
+                  streamGovernance:
+                    description: 'The stream governance configuration for the Environment.
+                      The block supports the following arguments: Stream Governance
+                      configurations for the environment'
+                    items:
+                      properties:
+                        package:
+                          description: 'The stream governance package for the Environment.
+                            Accepted values are: ESSENTIALS and ADVANCED. Stream Governance
+                            Package. ''ESSENTIALS'' or ''ADVANCED'''
+                          type: string
+                      type: object
+                    type: array
                 type: object
               initProvider:
                 description: THIS IS A BETA FIELD. It will be honored unless the Management
@@ -91,6 +104,19 @@ spec:
                       "Development". The name can contain hyphens and underscores.
                       A human-readable name for the Environment.
                     type: string
+                  streamGovernance:
+                    description: 'The stream governance configuration for the Environment.
+                      The block supports the following arguments: Stream Governance
+                      configurations for the environment'
+                    items:
+                      properties:
+                        package:
+                          description: 'The stream governance package for the Environment.
+                            Accepted values are: ESSENTIALS and ADVANCED. Stream Governance
+                            Package. ''ESSENTIALS'' or ''ADVANCED'''
+                          type: string
+                      type: object
+                    type: array
                 type: object
               managementPolicies:
                 default:
@@ -276,6 +302,19 @@ spec:
                       example, crn://confluent.cloud/organization=1111aaaa-11aa-11aa-11aa-111111aaaaaa/environment=env-abc123.
                       The Confluent Resource Name of the Environment.
                     type: string
+                  streamGovernance:
+                    description: 'The stream governance configuration for the Environment.
+                      The block supports the following arguments: Stream Governance
+                      configurations for the environment'
+                    items:
+                      properties:
+                        package:
+                          description: 'The stream governance package for the Environment.
+                            Accepted values are: ESSENTIALS and ADVANCED. Stream Governance
+                            Package. ''ESSENTIALS'' or ''ADVANCED'''
+                          type: string
+                      type: object
+                    type: array
                 type: object
               conditions:
                 description: Conditions of the resource.
