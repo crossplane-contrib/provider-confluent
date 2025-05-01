@@ -4,7 +4,7 @@
 PROJECT_NAME ?= provider-confluent
 PROJECT_REPO ?= github.com/crossplane-contrib/$(PROJECT_NAME)
 
-export TERRAFORM_VERSION ?= 1.3.3
+export TERRAFORM_VERSION ?= 1.5.7
 
 export TERRAFORM_PROVIDER_SOURCE := confluentinc/confluent
 export TERRAFORM_PROVIDER_REPO := https://github.com/confluentinc/terraform-provider-confluent
@@ -175,9 +175,19 @@ CROSSPLANE_ARGS = "--enable-usages,--debug,--enable-composition-webhook-schema-v
 #   To ensure the proper functioning of the end-to-end test resource pre-deletion hook, it is crucial to arrange your
 #   resources appropriately. You can check the basic implementation here:
 #   https://github.com/upbound/uptest/blob/main/internal/templates/01-delete.yaml.tmpl.
-# - UPTEST_CONFLUENT_CLOUD_CREDENTIALS, string of JSON object containing Confluent Cloud credentials (see
+# - UPTEST_CLOUD_CREDENTIALS, string of JSON object containing Confluent Cloud credentials (see
 #   examples/providerconfigs/secret.yaml.tmpl for format)
-# - UPTEST_DATASOURCE_PATH (optional), see https://github.com/crossplane/uptest?tab=readme-ov-file#injecting-dynamic-values-and-datasource
+# - UPTEST_DATASOURCE_PATH, see https://github.com/crossplane/uptest?tab=readme-ov-file#injecting-dynamic-values-and-datasource
+#   The datasource values can be optionally set using their corresponding environment variables. Depending on the
+#   specific example, the following datasource values (or environment variable) may be required:
+#     - confluent_kafka_cluster_id (UPTEST_CONFLUENT_KAFKA_CLUSTER_ID)
+#     - confluent_principal (UPTEST_CONFLUENT_PRINCIPAL)
+#     - confluent_kafka_cluster_cloud (UPTEST_CONFLUENT_KAFKA_CLUSTER_CLOUD)
+#     - confluent_environment_id (UPTEST_CONFLUENT_ENVIRONMENT_ID)
+#     - confluent_service_account_id (UPTEST_CONFLUENT_SERVICE_ACCT_ID)
+#     - confluent_org_id (UPTEST_CONFLUENT_ORG_ID)
+#     - confluent_region (UPTEST_CONFLUENT_REGION)
+
 uptest: $(YQ) $(UPTEST) $(KUBECTL) $(KUTTL)
 	@$(INFO) running automated tests
 	@> "$(OUTPUT_DIR)/datasource.yaml"; \
@@ -185,8 +195,6 @@ uptest: $(YQ) $(UPTEST) $(KUBECTL) $(KUTTL)
 		cat "$${UPTEST_DATASOURCE_PATH}" >> "$(OUTPUT_DIR)/datasource.yaml"; \
 		echo "" >> "$(OUTPUT_DIR)/datasource.yaml"; \
 	fi; \
-	\
-	export UPTEST_DATASOURCE_PATH="$(OUTPUT_DIR)/datasource.yaml"; \
 	\
 	if [[ -n "$${UPTEST_CONFLUENT_KAFKA_CLUSTER_ID:-}" ]]; then \
 		echo "confluent_kafka_cluster_id: $${UPTEST_CONFLUENT_KAFKA_CLUSTER_ID}" >> "$(OUTPUT_DIR)/datasource.yaml"; \
@@ -196,8 +204,10 @@ uptest: $(YQ) $(UPTEST) $(KUBECTL) $(KUTTL)
 		echo "confluent_principal: $${UPTEST_CONFLUENT_PRINCIPAL}" >> "$(OUTPUT_DIR)/datasource.yaml"; \
 	fi; \
 	\
-	echo "confluent_kafka_cluster_cloud: $${UPTEST_CONFLUENT_KAFKA_CLUSTER_CLOUD:-GCP}" \
-		>> "$(OUTPUT_DIR)/datasource.yaml"; \
+	if [[ -n "$${UPTEST_CONFLUENT_KAFKA_CLUSTER_CLOUD:-}" ]]; then \
+		echo "confluent_kafka_cluster_cloud: $${UPTEST_CONFLUENT_KAFKA_CLUSTER_CLOUD}" \
+			>> "$(OUTPUT_DIR)/datasource.yaml"; \
+	fi; \
 	\
 	if [[ -n "$${UPTEST_CONFLUENT_ENVIRONMENT_ID:-}" ]]; then \
 		echo "confluent_environment_id: $${UPTEST_CONFLUENT_ENVIRONMENT_ID}" \
@@ -213,7 +223,9 @@ uptest: $(YQ) $(UPTEST) $(KUBECTL) $(KUTTL)
 		echo "confluent_org_id: $${UPTEST_CONFLUENT_ORG_ID}" >> "$(OUTPUT_DIR)/datasource.yaml"; \
 	fi; \
 	\
-	echo "confluent_region: $${UPTEST_CONFLUENT_REGION:-us-west2}" >> "$(OUTPUT_DIR)/datasource.yaml"; \
+	if [[ -n "$${UPTEST_CONFLUENT_REGION:-}" ]]; then \
+		echo "confluent_region: $${UPTEST_CONFLUENT_REGION}" >> "$(OUTPUT_DIR)/datasource.yaml"; \
+	fi; \
 	\
 	KUBECTL=$(KUBECTL) KUTTL=$(KUTTL) CROSSPLANE_NAMESPACE=$(CROSSPLANE_NAMESPACE) \
 		$(UPTEST) e2e "$${UPTEST_EXAMPLE_LIST}" \

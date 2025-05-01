@@ -3,14 +3,14 @@ set -aeuo pipefail
 
 echo "Running setup.sh"
 
-if [[ -z "${UPTEST_CONFLUENT_CLOUD_CREDENTIALS:-}" ]]; then
-  echo "Error: UPTEST_CONFLUENT_CLOUD_CREDENTIALS is not set!" >&2
+if [[ -z "${UPTEST_CLOUD_CREDENTIALS:-}" ]]; then
+  echo "Error: UPTEST_CLOUD_CREDENTIALS is not set!" >&2
   exit 1
 fi
 
 echo "Creating Confluent credentials secret 'confluent-creds'..."
 ${KUBECTL} -n "${CROSSPLANE_NAMESPACE}" create secret generic confluent-creds \
-  --from-literal=confluent_credentials="${UPTEST_CONFLUENT_CLOUD_CREDENTIALS}" \
+  --from-literal=confluent_credentials="${UPTEST_CLOUD_CREDENTIALS}" \
   --dry-run=client -o yaml | ${KUBECTL} apply -f -
 
 echo "Creating 'default' ProviderConfig..."
