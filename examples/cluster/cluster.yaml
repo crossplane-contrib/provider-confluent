@@ -1,0 +1,14 @@
+apiVersion: confluent.crossplane.io/v1alpha1
+kind: Cluster
+metadata:
+  name: confluent-cloud-kafka-cluster-basic-uptest
+spec:
+  forProvider:
+    availability: SINGLE_ZONE
+    basic:
+      - {}
+    cloud: ${data.confluent_kafka_cluster_cloud}
+    displayName: confluent-cloud-kafka-cluster-basic-uptest
+    environment:
+      - id: ${data.confluent_environment_id}
+    region: ${data.confluent_region}

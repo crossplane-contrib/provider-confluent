@@ -16,11 +16,12 @@ func Configure(p *config.Provider) {
 			Type: "github.com/crossplane-contrib/provider-confluent/apis/confluent/v1alpha1.Environment",
 		}
 
-		// This is workaround for error related to terraform state containing spec.network[0].id = "", which gets late-initialized by upjet by default.
-		// This overrides the default late initialization to ignore the network field in the terraform state file.
-		// see https://github.com/upbound/upjet/blob/main/docs/add-new-resource-long.md#late-initialization-configuration
+		// This is workaround for error related to terraform state containing spec.forProvider.network[0].id = "" and
+		// spec.forProvider.byokKey[0].id = "", which get late-initialized by upjet by default. This overrides the
+		// default late initialization to ignore the network and byokKey fields in the terraform state file. see
+		// https://github.com/crossplane/upjet/blob/main/docs/configuring-a-resource.md#late-initialization-configuration
 		r.LateInitializer = config.LateInitializer{
-			IgnoredFields: []string{"network"},
+			IgnoredFields: []string{"network", "byok_key"},
 		}
 	})
 }
