@@ -20,7 +20,7 @@ func Configure(p *config.Provider) {
 		// This overrides the default late initialization to ignore the network field in the terraform state file.
 		// see https://github.com/upbound/upjet/blob/main/docs/add-new-resource-long.md#late-initialization-configuration
 		r.LateInitializer = config.LateInitializer{
-			IgnoredFields: []string{"network"},
+			IgnoredFields: []string{"byok_key", "network"},
 		}
 	})
 }

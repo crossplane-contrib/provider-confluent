@@ -17,6 +17,342 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type DomainRulesInitParameters struct {
+
+	// The boolean flag to control whether the rule should be disabled. Defaults to false.
+	// Defaults to `false`.
+	Disabled *bool `json:"disabled,omitempty" tf:"disabled,omitempty"`
+
+	// An optional description of the rule. Defaults to "".
+	// Defaults to “.
+	Doc *string `json:"doc,omitempty" tf:"doc,omitempty"`
+
+	// The rule body. Data quality and transformation rules use CEL language expressions, data migration rules use JSONata expressions. Defaults to "".
+	// Defaults to “.
+	Expr *string `json:"expr,omitempty" tf:"expr,omitempty"`
+
+	// The kind of the rule. Accepted values are CONDITION and TRANSFORM. CONDITION - validate the value of a field, TRANSFORM - transform the value of a field. Data quality rules use CONDITION kind, data transformation, encryption and migration rules use TRANSFORM kind.
+	Kind *string `json:"kind,omitempty" tf:"kind,omitempty"`
+
+	// The mode of the rule. Accepted values are UPGRADE, DOWNGRADE, UPDOWN, WRITE, READ, and WRITEREAD.
+	Mode *string `json:"mode,omitempty" tf:"mode,omitempty"`
+
+	// The name of the subject, representing the subject under which the referenced schema is registered.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// An optional action to execute if the rule fails, otherwise the built-in action type ERROR is used. For UPDOWN and WRITEREAD rules, one can specify two actions separated by commas, as mentioned above. Defaults to ERROR,ERROR.
+	// Defaults to `ERROR,ERROR`.
+	OnFailure *string `json:"onFailure,omitempty" tf:"on_failure,omitempty"`
+
+	// An optional action to execute if the rule succeeds, otherwise the built-in action type NONE is used. For UPDOWN and WRITEREAD rules, one can specify two actions separated by commas, such as NONE,ERROR for a WRITEREAD rule. In this case NONE applies to WRITE and ERROR applies to READ. Defaults to NONE,NONE.
+	// Defaults to `NONE,NONE`.
+	OnSuccess *string `json:"onSuccess,omitempty" tf:"on_success,omitempty"`
+
+	// A set of static parameters for the rule, which is optional. These are key-value pairs that are passed to the rule.
+	Params map[string]*string `json:"params,omitempty" tf:"params,omitempty"`
+
+	// supports the following:
+	Tags []*string `json:"tags,omitempty" tf:"tags,omitempty"`
+
+	// The type of rule, which invokes a specific rule executor that that will run the rule. Google Common Expression Language (CEL) is used for data quality and transformation rules, Confluent ENCRYPT is used for data encryption rules, and JSONata is used for migration rules.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
+type DomainRulesObservation struct {
+
+	// The boolean flag to control whether the rule should be disabled. Defaults to false.
+	// Defaults to `false`.
+	Disabled *bool `json:"disabled,omitempty" tf:"disabled,omitempty"`
+
+	// An optional description of the rule. Defaults to "".
+	// Defaults to “.
+	Doc *string `json:"doc,omitempty" tf:"doc,omitempty"`
+
+	// The rule body. Data quality and transformation rules use CEL language expressions, data migration rules use JSONata expressions. Defaults to "".
+	// Defaults to “.
+	Expr *string `json:"expr,omitempty" tf:"expr,omitempty"`
+
+	// The kind of the rule. Accepted values are CONDITION and TRANSFORM. CONDITION - validate the value of a field, TRANSFORM - transform the value of a field. Data quality rules use CONDITION kind, data transformation, encryption and migration rules use TRANSFORM kind.
+	Kind *string `json:"kind,omitempty" tf:"kind,omitempty"`
+
+	// The mode of the rule. Accepted values are UPGRADE, DOWNGRADE, UPDOWN, WRITE, READ, and WRITEREAD.
+	Mode *string `json:"mode,omitempty" tf:"mode,omitempty"`
+
+	// The name of the subject, representing the subject under which the referenced schema is registered.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// An optional action to execute if the rule fails, otherwise the built-in action type ERROR is used. For UPDOWN and WRITEREAD rules, one can specify two actions separated by commas, as mentioned above. Defaults to ERROR,ERROR.
+	// Defaults to `ERROR,ERROR`.
+	OnFailure *string `json:"onFailure,omitempty" tf:"on_failure,omitempty"`
+
+	// An optional action to execute if the rule succeeds, otherwise the built-in action type NONE is used. For UPDOWN and WRITEREAD rules, one can specify two actions separated by commas, such as NONE,ERROR for a WRITEREAD rule. In this case NONE applies to WRITE and ERROR applies to READ. Defaults to NONE,NONE.
+	// Defaults to `NONE,NONE`.
+	OnSuccess *string `json:"onSuccess,omitempty" tf:"on_success,omitempty"`
+
+	// A set of static parameters for the rule, which is optional. These are key-value pairs that are passed to the rule.
+	Params map[string]*string `json:"params,omitempty" tf:"params,omitempty"`
+
+	// supports the following:
+	Tags []*string `json:"tags,omitempty" tf:"tags,omitempty"`
+
+	// The type of rule, which invokes a specific rule executor that that will run the rule. Google Common Expression Language (CEL) is used for data quality and transformation rules, Confluent ENCRYPT is used for data encryption rules, and JSONata is used for migration rules.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
+type DomainRulesParameters struct {
+
+	// The boolean flag to control whether the rule should be disabled. Defaults to false.
+	// Defaults to `false`.
+	// +kubebuilder:validation:Optional
+	Disabled *bool `json:"disabled,omitempty" tf:"disabled,omitempty"`
+
+	// An optional description of the rule. Defaults to "".
+	// Defaults to “.
+	// +kubebuilder:validation:Optional
+	Doc *string `json:"doc,omitempty" tf:"doc,omitempty"`
+
+	// The rule body. Data quality and transformation rules use CEL language expressions, data migration rules use JSONata expressions. Defaults to "".
+	// Defaults to “.
+	// +kubebuilder:validation:Optional
+	Expr *string `json:"expr,omitempty" tf:"expr,omitempty"`
+
+	// The kind of the rule. Accepted values are CONDITION and TRANSFORM. CONDITION - validate the value of a field, TRANSFORM - transform the value of a field. Data quality rules use CONDITION kind, data transformation, encryption and migration rules use TRANSFORM kind.
+	// +kubebuilder:validation:Optional
+	Kind *string `json:"kind" tf:"kind,omitempty"`
+
+	// The mode of the rule. Accepted values are UPGRADE, DOWNGRADE, UPDOWN, WRITE, READ, and WRITEREAD.
+	// +kubebuilder:validation:Optional
+	Mode *string `json:"mode" tf:"mode,omitempty"`
+
+	// The name of the subject, representing the subject under which the referenced schema is registered.
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name" tf:"name,omitempty"`
+
+	// An optional action to execute if the rule fails, otherwise the built-in action type ERROR is used. For UPDOWN and WRITEREAD rules, one can specify two actions separated by commas, as mentioned above. Defaults to ERROR,ERROR.
+	// Defaults to `ERROR,ERROR`.
+	// +kubebuilder:validation:Optional
+	OnFailure *string `json:"onFailure,omitempty" tf:"on_failure,omitempty"`
+
+	// An optional action to execute if the rule succeeds, otherwise the built-in action type NONE is used. For UPDOWN and WRITEREAD rules, one can specify two actions separated by commas, such as NONE,ERROR for a WRITEREAD rule. In this case NONE applies to WRITE and ERROR applies to READ. Defaults to NONE,NONE.
+	// Defaults to `NONE,NONE`.
+	// +kubebuilder:validation:Optional
+	OnSuccess *string `json:"onSuccess,omitempty" tf:"on_success,omitempty"`
+
+	// A set of static parameters for the rule, which is optional. These are key-value pairs that are passed to the rule.
+	// +kubebuilder:validation:Optional
+	Params map[string]*string `json:"params,omitempty" tf:"params,omitempty"`
+
+	// supports the following:
+	// +kubebuilder:validation:Optional
+	Tags []*string `json:"tags,omitempty" tf:"tags,omitempty"`
+
+	// The type of rule, which invokes a specific rule executor that that will run the rule. Google Common Expression Language (CEL) is used for data quality and transformation rules, Confluent ENCRYPT is used for data encryption rules, and JSONata is used for migration rules.
+	// +kubebuilder:validation:Optional
+	Type *string `json:"type" tf:"type,omitempty"`
+}
+
+type MetadataInitParameters struct {
+
+	// The custom properties to set:
+	Properties map[string]*string `json:"properties,omitempty" tf:"properties,omitempty"`
+
+	// A list of metadata properties to be encrypted.
+	Sensitive []*string `json:"sensitive,omitempty" tf:"sensitive,omitempty"`
+
+	// supports the following:
+	Tags []TagsInitParameters `json:"tags,omitempty" tf:"tags,omitempty"`
+}
+
+type MetadataObservation struct {
+
+	// The custom properties to set:
+	Properties map[string]*string `json:"properties,omitempty" tf:"properties,omitempty"`
+
+	// A list of metadata properties to be encrypted.
+	Sensitive []*string `json:"sensitive,omitempty" tf:"sensitive,omitempty"`
+
+	// supports the following:
+	Tags []TagsObservation `json:"tags,omitempty" tf:"tags,omitempty"`
+}
+
+type MetadataParameters struct {
+
+	// The custom properties to set:
+	// +kubebuilder:validation:Optional
+	Properties map[string]*string `json:"properties,omitempty" tf:"properties,omitempty"`
+
+	// A list of metadata properties to be encrypted.
+	// +kubebuilder:validation:Optional
+	Sensitive []*string `json:"sensitive,omitempty" tf:"sensitive,omitempty"`
+
+	// supports the following:
+	// +kubebuilder:validation:Optional
+	Tags []TagsParameters `json:"tags,omitempty" tf:"tags,omitempty"`
+}
+
+type MigrationRulesInitParameters struct {
+
+	// The boolean flag to control whether the rule should be disabled. Defaults to false.
+	// Defaults to `false`.
+	Disabled *bool `json:"disabled,omitempty" tf:"disabled,omitempty"`
+
+	// An optional description of the rule. Defaults to "".
+	// Defaults to “.
+	Doc *string `json:"doc,omitempty" tf:"doc,omitempty"`
+
+	// The rule body. Data quality and transformation rules use CEL language expressions, data migration rules use JSONata expressions. Defaults to "".
+	// Defaults to “.
+	Expr *string `json:"expr,omitempty" tf:"expr,omitempty"`
+
+	// The kind of the rule. Accepted values are CONDITION and TRANSFORM. CONDITION - validate the value of a field, TRANSFORM - transform the value of a field. Data quality rules use CONDITION kind, data transformation, encryption and migration rules use TRANSFORM kind.
+	Kind *string `json:"kind,omitempty" tf:"kind,omitempty"`
+
+	// The mode of the rule. Accepted values are UPGRADE, DOWNGRADE, UPDOWN, WRITE, READ, and WRITEREAD.
+	Mode *string `json:"mode,omitempty" tf:"mode,omitempty"`
+
+	// The name of the subject, representing the subject under which the referenced schema is registered.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// An optional action to execute if the rule fails, otherwise the built-in action type ERROR is used. For UPDOWN and WRITEREAD rules, one can specify two actions separated by commas, as mentioned above. Defaults to ERROR,ERROR.
+	// Defaults to `ERROR,ERROR`.
+	OnFailure *string `json:"onFailure,omitempty" tf:"on_failure,omitempty"`
+
+	// An optional action to execute if the rule succeeds, otherwise the built-in action type NONE is used. For UPDOWN and WRITEREAD rules, one can specify two actions separated by commas, such as NONE,ERROR for a WRITEREAD rule. In this case NONE applies to WRITE and ERROR applies to READ. Defaults to NONE,NONE.
+	// Defaults to `NONE,NONE`.
+	OnSuccess *string `json:"onSuccess,omitempty" tf:"on_success,omitempty"`
+
+	// A set of static parameters for the rule, which is optional. These are key-value pairs that are passed to the rule.
+	Params map[string]*string `json:"params,omitempty" tf:"params,omitempty"`
+
+	// supports the following:
+	Tags []*string `json:"tags,omitempty" tf:"tags,omitempty"`
+
+	// The type of rule, which invokes a specific rule executor that that will run the rule. Google Common Expression Language (CEL) is used for data quality and transformation rules, Confluent ENCRYPT is used for data encryption rules, and JSONata is used for migration rules.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
+type MigrationRulesObservation struct {
+
+	// The boolean flag to control whether the rule should be disabled. Defaults to false.
+	// Defaults to `false`.
+	Disabled *bool `json:"disabled,omitempty" tf:"disabled,omitempty"`
+
+	// An optional description of the rule. Defaults to "".
+	// Defaults to “.
+	Doc *string `json:"doc,omitempty" tf:"doc,omitempty"`
+
+	// The rule body. Data quality and transformation rules use CEL language expressions, data migration rules use JSONata expressions. Defaults to "".
+	// Defaults to “.
+	Expr *string `json:"expr,omitempty" tf:"expr,omitempty"`
+
+	// The kind of the rule. Accepted values are CONDITION and TRANSFORM. CONDITION - validate the value of a field, TRANSFORM - transform the value of a field. Data quality rules use CONDITION kind, data transformation, encryption and migration rules use TRANSFORM kind.
+	Kind *string `json:"kind,omitempty" tf:"kind,omitempty"`
+
+	// The mode of the rule. Accepted values are UPGRADE, DOWNGRADE, UPDOWN, WRITE, READ, and WRITEREAD.
+	Mode *string `json:"mode,omitempty" tf:"mode,omitempty"`
+
+	// The name of the subject, representing the subject under which the referenced schema is registered.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// An optional action to execute if the rule fails, otherwise the built-in action type ERROR is used. For UPDOWN and WRITEREAD rules, one can specify two actions separated by commas, as mentioned above. Defaults to ERROR,ERROR.
+	// Defaults to `ERROR,ERROR`.
+	OnFailure *string `json:"onFailure,omitempty" tf:"on_failure,omitempty"`
+
+	// An optional action to execute if the rule succeeds, otherwise the built-in action type NONE is used. For UPDOWN and WRITEREAD rules, one can specify two actions separated by commas, such as NONE,ERROR for a WRITEREAD rule. In this case NONE applies to WRITE and ERROR applies to READ. Defaults to NONE,NONE.
+	// Defaults to `NONE,NONE`.
+	OnSuccess *string `json:"onSuccess,omitempty" tf:"on_success,omitempty"`
+
+	// A set of static parameters for the rule, which is optional. These are key-value pairs that are passed to the rule.
+	Params map[string]*string `json:"params,omitempty" tf:"params,omitempty"`
+
+	// supports the following:
+	Tags []*string `json:"tags,omitempty" tf:"tags,omitempty"`
+
+	// The type of rule, which invokes a specific rule executor that that will run the rule. Google Common Expression Language (CEL) is used for data quality and transformation rules, Confluent ENCRYPT is used for data encryption rules, and JSONata is used for migration rules.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
+type MigrationRulesParameters struct {
+
+	// The boolean flag to control whether the rule should be disabled. Defaults to false.
+	// Defaults to `false`.
+	// +kubebuilder:validation:Optional
+	Disabled *bool `json:"disabled,omitempty" tf:"disabled,omitempty"`
+
+	// An optional description of the rule. Defaults to "".
+	// Defaults to “.
+	// +kubebuilder:validation:Optional
+	Doc *string `json:"doc,omitempty" tf:"doc,omitempty"`
+
+	// The rule body. Data quality and transformation rules use CEL language expressions, data migration rules use JSONata expressions. Defaults to "".
+	// Defaults to “.
+	// +kubebuilder:validation:Optional
+	Expr *string `json:"expr,omitempty" tf:"expr,omitempty"`
+
+	// The kind of the rule. Accepted values are CONDITION and TRANSFORM. CONDITION - validate the value of a field, TRANSFORM - transform the value of a field. Data quality rules use CONDITION kind, data transformation, encryption and migration rules use TRANSFORM kind.
+	// +kubebuilder:validation:Optional
+	Kind *string `json:"kind" tf:"kind,omitempty"`
+
+	// The mode of the rule. Accepted values are UPGRADE, DOWNGRADE, UPDOWN, WRITE, READ, and WRITEREAD.
+	// +kubebuilder:validation:Optional
+	Mode *string `json:"mode" tf:"mode,omitempty"`
+
+	// The name of the subject, representing the subject under which the referenced schema is registered.
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name" tf:"name,omitempty"`
+
+	// An optional action to execute if the rule fails, otherwise the built-in action type ERROR is used. For UPDOWN and WRITEREAD rules, one can specify two actions separated by commas, as mentioned above. Defaults to ERROR,ERROR.
+	// Defaults to `ERROR,ERROR`.
+	// +kubebuilder:validation:Optional
+	OnFailure *string `json:"onFailure,omitempty" tf:"on_failure,omitempty"`
+
+	// An optional action to execute if the rule succeeds, otherwise the built-in action type NONE is used. For UPDOWN and WRITEREAD rules, one can specify two actions separated by commas, such as NONE,ERROR for a WRITEREAD rule. In this case NONE applies to WRITE and ERROR applies to READ. Defaults to NONE,NONE.
+	// Defaults to `NONE,NONE`.
+	// +kubebuilder:validation:Optional
+	OnSuccess *string `json:"onSuccess,omitempty" tf:"on_success,omitempty"`
+
+	// A set of static parameters for the rule, which is optional. These are key-value pairs that are passed to the rule.
+	// +kubebuilder:validation:Optional
+	Params map[string]*string `json:"params,omitempty" tf:"params,omitempty"`
+
+	// supports the following:
+	// +kubebuilder:validation:Optional
+	Tags []*string `json:"tags,omitempty" tf:"tags,omitempty"`
+
+	// The type of rule, which invokes a specific rule executor that that will run the rule. Google Common Expression Language (CEL) is used for data quality and transformation rules, Confluent ENCRYPT is used for data encryption rules, and JSONata is used for migration rules.
+	// +kubebuilder:validation:Optional
+	Type *string `json:"type" tf:"type,omitempty"`
+}
+
+type RulesetInitParameters struct {
+
+	// supports the following:
+	DomainRules []DomainRulesInitParameters `json:"domainRules,omitempty" tf:"domain_rules,omitempty"`
+
+	// supports the following:
+	MigrationRules []MigrationRulesInitParameters `json:"migrationRules,omitempty" tf:"migration_rules,omitempty"`
+}
+
+type RulesetObservation struct {
+
+	// supports the following:
+	DomainRules []DomainRulesObservation `json:"domainRules,omitempty" tf:"domain_rules,omitempty"`
+
+	// supports the following:
+	MigrationRules []MigrationRulesObservation `json:"migrationRules,omitempty" tf:"migration_rules,omitempty"`
+}
+
+type RulesetParameters struct {
+
+	// supports the following:
+	// +kubebuilder:validation:Optional
+	DomainRules []DomainRulesParameters `json:"domainRules,omitempty" tf:"domain_rules,omitempty"`
+
+	// supports the following:
+	// +kubebuilder:validation:Optional
+	MigrationRules []MigrationRulesParameters `json:"migrationRules,omitempty" tf:"migration_rules,omitempty"`
+}
+
 type SchemaCredentialsInitParameters struct {
 }
 
@@ -50,13 +386,19 @@ type SchemaInitParameters struct {
 	// Controls whether a schema should be soft or hard deleted. Set it to `true` if you want to hard delete a schema on destroy. Defaults to `false` (soft delete). Defaults to `false`.
 	HardDelete *bool `json:"hardDelete,omitempty" tf:"hard_delete,omitempty"`
 
+	// See here for more details. Supports the following:
+	Metadata []MetadataInitParameters `json:"metadata,omitempty" tf:"metadata,omitempty"`
+
 	// An optional flag to control whether a schema should be recreated on an update. Set it to true if you want to manage different schema versions using different resource instances. Must be set to the target value when importing. Defaults to false, which manages the latest schema version only. The resource instance always points to the latest schema version by supporting in-place updates.
 	// Controls whether a schema should be recreated on update. Defaults to `false`.
 	RecreateOnUpdate *bool `json:"recreateOnUpdate,omitempty" tf:"recreate_on_update,omitempty"`
 
-	// The REST endpoint of the Schema Registry cluster, for example, https://psrc-00000.us-central1.gcp.confluent.cloud:443).
+	// The REST endpoint of the Schema Registry cluster. For example, for public networking: https://psrc-00000.us-central1.gcp.confluent.cloud. In the case of private networking, the endpoint might look like https://lsrc-abc123.pr1jy6.us-east-2.aws.confluent.cloud. You can construct it using either:
 	// The REST endpoint of the Schema Registry cluster, for example, `https://psrc-00000.us-central1.gcp.confluent.cloud:443`).
 	RestEndpoint *string `json:"restEndpoint,omitempty" tf:"rest_endpoint,omitempty"`
+
+	// The list of schema rules. See Data Contracts for Schema Registry for more details. For example, these rules can enforce that a field that contains sensitive information must be encrypted, or that a message containing an invalid age must be sent to a dead letter queue.
+	Ruleset []RulesetInitParameters `json:"ruleset,omitempty" tf:"ruleset,omitempty"`
 
 	// The schema string, for example, file("./schema_version_1.avsc").
 	// The definition of the Schema.
@@ -68,6 +410,9 @@ type SchemaInitParameters struct {
 
 	// supports the following:
 	SchemaRegistryCluster []SchemaRegistryClusterInitParameters `json:"schemaRegistryCluster,omitempty" tf:"schema_registry_cluster,omitempty"`
+
+	// Defaults to false. Defaults to `false`.
+	SkipValidationDuringPlan *bool `json:"skipValidationDuringPlan,omitempty" tf:"skip_validation_during_plan,omitempty"`
 
 	// The name for the reference. (For Avro Schema, the reference name is the fully qualified schema name, for JSON Schema it is a URL, and for Protobuf Schema, it is the name of another Protobuf file.)
 	// The name of the Schema Registry Subject.
@@ -91,13 +436,19 @@ type SchemaObservation struct {
 	// The ID of the Schema Registry cluster, for example, lsrc-abc123.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// See here for more details. Supports the following:
+	Metadata []MetadataObservation `json:"metadata,omitempty" tf:"metadata,omitempty"`
+
 	// An optional flag to control whether a schema should be recreated on an update. Set it to true if you want to manage different schema versions using different resource instances. Must be set to the target value when importing. Defaults to false, which manages the latest schema version only. The resource instance always points to the latest schema version by supporting in-place updates.
 	// Controls whether a schema should be recreated on update. Defaults to `false`.
 	RecreateOnUpdate *bool `json:"recreateOnUpdate,omitempty" tf:"recreate_on_update,omitempty"`
 
-	// The REST endpoint of the Schema Registry cluster, for example, https://psrc-00000.us-central1.gcp.confluent.cloud:443).
+	// The REST endpoint of the Schema Registry cluster. For example, for public networking: https://psrc-00000.us-central1.gcp.confluent.cloud. In the case of private networking, the endpoint might look like https://lsrc-abc123.pr1jy6.us-east-2.aws.confluent.cloud. You can construct it using either:
 	// The REST endpoint of the Schema Registry cluster, for example, `https://psrc-00000.us-central1.gcp.confluent.cloud:443`).
 	RestEndpoint *string `json:"restEndpoint,omitempty" tf:"rest_endpoint,omitempty"`
+
+	// The list of schema rules. See Data Contracts for Schema Registry for more details. For example, these rules can enforce that a field that contains sensitive information must be encrypted, or that a message containing an invalid age must be sent to a dead letter queue.
+	Ruleset []RulesetObservation `json:"ruleset,omitempty" tf:"ruleset,omitempty"`
 
 	// The schema string, for example, file("./schema_version_1.avsc").
 	// The definition of the Schema.
@@ -113,6 +464,9 @@ type SchemaObservation struct {
 
 	// supports the following:
 	SchemaRegistryCluster []SchemaRegistryClusterObservation `json:"schemaRegistryCluster,omitempty" tf:"schema_registry_cluster,omitempty"`
+
+	// Defaults to false. Defaults to `false`.
+	SkipValidationDuringPlan *bool `json:"skipValidationDuringPlan,omitempty" tf:"skip_validation_during_plan,omitempty"`
 
 	// The name for the reference. (For Avro Schema, the reference name is the fully qualified schema name, for JSON Schema it is a URL, and for Protobuf Schema, it is the name of another Protobuf file.)
 	// The name of the Schema Registry Subject.
@@ -140,15 +494,23 @@ type SchemaParameters struct {
 	// +kubebuilder:validation:Optional
 	HardDelete *bool `json:"hardDelete,omitempty" tf:"hard_delete,omitempty"`
 
+	// See here for more details. Supports the following:
+	// +kubebuilder:validation:Optional
+	Metadata []MetadataParameters `json:"metadata,omitempty" tf:"metadata,omitempty"`
+
 	// An optional flag to control whether a schema should be recreated on an update. Set it to true if you want to manage different schema versions using different resource instances. Must be set to the target value when importing. Defaults to false, which manages the latest schema version only. The resource instance always points to the latest schema version by supporting in-place updates.
 	// Controls whether a schema should be recreated on update. Defaults to `false`.
 	// +kubebuilder:validation:Optional
 	RecreateOnUpdate *bool `json:"recreateOnUpdate,omitempty" tf:"recreate_on_update,omitempty"`
 
-	// The REST endpoint of the Schema Registry cluster, for example, https://psrc-00000.us-central1.gcp.confluent.cloud:443).
+	// The REST endpoint of the Schema Registry cluster. For example, for public networking: https://psrc-00000.us-central1.gcp.confluent.cloud. In the case of private networking, the endpoint might look like https://lsrc-abc123.pr1jy6.us-east-2.aws.confluent.cloud. You can construct it using either:
 	// The REST endpoint of the Schema Registry cluster, for example, `https://psrc-00000.us-central1.gcp.confluent.cloud:443`).
 	// +kubebuilder:validation:Optional
 	RestEndpoint *string `json:"restEndpoint,omitempty" tf:"rest_endpoint,omitempty"`
+
+	// The list of schema rules. See Data Contracts for Schema Registry for more details. For example, these rules can enforce that a field that contains sensitive information must be encrypted, or that a message containing an invalid age must be sent to a dead letter queue.
+	// +kubebuilder:validation:Optional
+	Ruleset []RulesetParameters `json:"ruleset,omitempty" tf:"ruleset,omitempty"`
 
 	// The schema string, for example, file("./schema_version_1.avsc").
 	// The definition of the Schema.
@@ -163,6 +525,10 @@ type SchemaParameters struct {
 	// supports the following:
 	// +kubebuilder:validation:Optional
 	SchemaRegistryCluster []SchemaRegistryClusterParameters `json:"schemaRegistryCluster,omitempty" tf:"schema_registry_cluster,omitempty"`
+
+	// Defaults to false. Defaults to `false`.
+	// +kubebuilder:validation:Optional
+	SkipValidationDuringPlan *bool `json:"skipValidationDuringPlan,omitempty" tf:"skip_validation_during_plan,omitempty"`
 
 	// The name for the reference. (For Avro Schema, the reference name is the fully qualified schema name, for JSON Schema it is a URL, and for Protobuf Schema, it is the name of another Protobuf file.)
 	// The name of the Schema Registry Subject.
@@ -238,6 +604,35 @@ type SchemaRegistryClusterParameters struct {
 	// The Schema Registry cluster ID (e.g., `lsrc-abc123`).
 	// +kubebuilder:validation:Optional
 	ID *string `json:"id" tf:"id,omitempty"`
+}
+
+type TagsInitParameters struct {
+
+	// The Schema Registry API Key.
+	Key *string `json:"key,omitempty" tf:"key,omitempty"`
+
+	// The setting value.
+	Value []*string `json:"value,omitempty" tf:"value,omitempty"`
+}
+
+type TagsObservation struct {
+
+	// The Schema Registry API Key.
+	Key *string `json:"key,omitempty" tf:"key,omitempty"`
+
+	// The setting value.
+	Value []*string `json:"value,omitempty" tf:"value,omitempty"`
+}
+
+type TagsParameters struct {
+
+	// The Schema Registry API Key.
+	// +kubebuilder:validation:Optional
+	Key *string `json:"key,omitempty" tf:"key,omitempty"`
+
+	// The setting value.
+	// +kubebuilder:validation:Optional
+	Value []*string `json:"value,omitempty" tf:"value,omitempty"`
 }
 
 // SchemaSpec defines the desired state of Schema

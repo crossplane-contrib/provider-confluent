@@ -124,6 +124,36 @@ spec:
                       deleted. Set it to `true` if you want to hard delete a schema
                       on destroy. Defaults to `false` (soft delete). Defaults to `false`.
                     type: boolean
+                  metadata:
+                    description: 'See here for more details. Supports the following:'
+                    items:
+                      properties:
+                        properties:
+                          additionalProperties:
+                            type: string
+                          description: 'The custom properties to set:'
+                          type: object
+                        sensitive:
+                          description: A list of metadata properties to be encrypted.
+                          items:
+                            type: string
+                          type: array
+                        tags:
+                          description: 'supports the following:'
+                          items:
+                            properties:
+                              key:
+                                description: The Schema Registry API Key.
+                                type: string
+                              value:
+                                description: The setting value.
+                                items:
+                                  type: string
+                                type: array
+                            type: object
+                          type: array
+                      type: object
+                    type: array
                   recreateOnUpdate:
                     description: An optional flag to control whether a schema should
                       be recreated on an update. Set it to true if you want to manage
@@ -135,11 +165,173 @@ spec:
                       on update. Defaults to `false`.
                     type: boolean
                   restEndpoint:
-                    description: The REST endpoint of the Schema Registry cluster,
-                      for example, https://psrc-00000.us-central1.gcp.confluent.cloud:443).
-                      The REST endpoint of the Schema Registry cluster, for example,
-                      `https://psrc-00000.us-central1.gcp.confluent.cloud:443`).
+                    description: 'The REST endpoint of the Schema Registry cluster.
+                      For example, for public networking: https://psrc-00000.us-central1.gcp.confluent.cloud.
+                      In the case of private networking, the endpoint might look like
+                      https://lsrc-abc123.pr1jy6.us-east-2.aws.confluent.cloud. You
+                      can construct it using either: The REST endpoint of the Schema
+                      Registry cluster, for example, `https://psrc-00000.us-central1.gcp.confluent.cloud:443`).'
                     type: string
+                  ruleset:
+                    description: The list of schema rules. See Data Contracts for
+                      Schema Registry for more details. For example, these rules can
+                      enforce that a field that contains sensitive information must
+                      be encrypted, or that a message containing an invalid age must
+                      be sent to a dead letter queue.
+                    items:
+                      properties:
+                        domainRules:
+                          description: 'supports the following:'
+                          items:
+                            properties:
+                              disabled:
+                                description: The boolean flag to control whether the
+                                  rule should be disabled. Defaults to false. Defaults
+                                  to `false`.
+                                type: boolean
+                              doc:
+                                description: An optional description of the rule.
+                                  Defaults to "". Defaults to “.
+                                type: string
+                              expr:
+                                description: The rule body. Data quality and transformation
+                                  rules use CEL language expressions, data migration
+                                  rules use JSONata expressions. Defaults to "". Defaults
+                                  to “.
+                                type: string
+                              kind:
+                                description: The kind of the rule. Accepted values
+                                  are CONDITION and TRANSFORM. CONDITION - validate
+                                  the value of a field, TRANSFORM - transform the
+                                  value of a field. Data quality rules use CONDITION
+                                  kind, data transformation, encryption and migration
+                                  rules use TRANSFORM kind.
+                                type: string
+                              mode:
+                                description: The mode of the rule. Accepted values
+                                  are UPGRADE, DOWNGRADE, UPDOWN, WRITE, READ, and
+                                  WRITEREAD.
+                                type: string
+                              name:
+                                description: The name of the subject, representing
+                                  the subject under which the referenced schema is
+                                  registered.
+                                type: string
+                              onFailure:
+                                description: An optional action to execute if the
+                                  rule fails, otherwise the built-in action type ERROR
+                                  is used. For UPDOWN and WRITEREAD rules, one can
+                                  specify two actions separated by commas, as mentioned
+                                  above. Defaults to ERROR,ERROR. Defaults to `ERROR,ERROR`.
+                                type: string
+                              onSuccess:
+                                description: An optional action to execute if the
+                                  rule succeeds, otherwise the built-in action type
+                                  NONE is used. For UPDOWN and WRITEREAD rules, one
+                                  can specify two actions separated by commas, such
+                                  as NONE,ERROR for a WRITEREAD rule. In this case
+                                  NONE applies to WRITE and ERROR applies to READ.
+                                  Defaults to NONE,NONE. Defaults to `NONE,NONE`.
+                                type: string
+                              params:
+                                additionalProperties:
+                                  type: string
+                                description: A set of static parameters for the rule,
+                                  which is optional. These are key-value pairs that
+                                  are passed to the rule.
+                                type: object
+                              tags:
+                                description: 'supports the following:'
+                                items:
+                                  type: string
+                                type: array
+                              type:
+                                description: The type of rule, which invokes a specific
+                                  rule executor that that will run the rule. Google
+                                  Common Expression Language (CEL) is used for data
+                                  quality and transformation rules, Confluent ENCRYPT
+                                  is used for data encryption rules, and JSONata is
+                                  used for migration rules.
+                                type: string
+                            type: object
+                          type: array
+                        migrationRules:
+                          description: 'supports the following:'
+                          items:
+                            properties:
+                              disabled:
+                                description: The boolean flag to control whether the
+                                  rule should be disabled. Defaults to false. Defaults
+                                  to `false`.
+                                type: boolean
+                              doc:
+                                description: An optional description of the rule.
+                                  Defaults to "". Defaults to “.
+                                type: string
+                              expr:
+                                description: The rule body. Data quality and transformation
+                                  rules use CEL language expressions, data migration
+                                  rules use JSONata expressions. Defaults to "". Defaults
+                                  to “.
+                                type: string
+                              kind:
+                                description: The kind of the rule. Accepted values
+                                  are CONDITION and TRANSFORM. CONDITION - validate
+                                  the value of a field, TRANSFORM - transform the
+                                  value of a field. Data quality rules use CONDITION
+                                  kind, data transformation, encryption and migration
+                                  rules use TRANSFORM kind.
+                                type: string
+                              mode:
+                                description: The mode of the rule. Accepted values
+                                  are UPGRADE, DOWNGRADE, UPDOWN, WRITE, READ, and
+                                  WRITEREAD.
+                                type: string
+                              name:
+                                description: The name of the subject, representing
+                                  the subject under which the referenced schema is
+                                  registered.
+                                type: string
+                              onFailure:
+                                description: An optional action to execute if the
+                                  rule fails, otherwise the built-in action type ERROR
+                                  is used. For UPDOWN and WRITEREAD rules, one can
+                                  specify two actions separated by commas, as mentioned
+                                  above. Defaults to ERROR,ERROR. Defaults to `ERROR,ERROR`.
+                                type: string
+                              onSuccess:
+                                description: An optional action to execute if the
+                                  rule succeeds, otherwise the built-in action type
+                                  NONE is used. For UPDOWN and WRITEREAD rules, one
+                                  can specify two actions separated by commas, such
+                                  as NONE,ERROR for a WRITEREAD rule. In this case
+                                  NONE applies to WRITE and ERROR applies to READ.
+                                  Defaults to NONE,NONE. Defaults to `NONE,NONE`.
+                                type: string
+                              params:
+                                additionalProperties:
+                                  type: string
+                                description: A set of static parameters for the rule,
+                                  which is optional. These are key-value pairs that
+                                  are passed to the rule.
+                                type: object
+                              tags:
+                                description: 'supports the following:'
+                                items:
+                                  type: string
+                                type: array
+                              type:
+                                description: The type of rule, which invokes a specific
+                                  rule executor that that will run the rule. Google
+                                  Common Expression Language (CEL) is used for data
+                                  quality and transformation rules, Confluent ENCRYPT
+                                  is used for data encryption rules, and JSONata is
+                                  used for migration rules.
+                                type: string
+                            type: object
+                          type: array
+                      type: object
+                    type: array
                   schema:
                     description: The schema string, for example, file("./schema_version_1.avsc").
                       The definition of the Schema.
@@ -182,6 +374,9 @@ spec:
                           type: string
                       type: object
                     type: array
+                  skipValidationDuringPlan:
+                    description: Defaults to false. Defaults to `false`.
+                    type: boolean
                   subjectName:
                     description: The name for the reference. (For Avro Schema, the
                       reference name is the fully qualified schema name, for JSON
@@ -219,6 +414,36 @@ spec:
                       deleted. Set it to `true` if you want to hard delete a schema
                       on destroy. Defaults to `false` (soft delete). Defaults to `false`.
                     type: boolean
+                  metadata:
+                    description: 'See here for more details. Supports the following:'
+                    items:
+                      properties:
+                        properties:
+                          additionalProperties:
+                            type: string
+                          description: 'The custom properties to set:'
+                          type: object
+                        sensitive:
+                          description: A list of metadata properties to be encrypted.
+                          items:
+                            type: string
+                          type: array
+                        tags:
+                          description: 'supports the following:'
+                          items:
+                            properties:
+                              key:
+                                description: The Schema Registry API Key.
+                                type: string
+                              value:
+                                description: The setting value.
+                                items:
+                                  type: string
+                                type: array
+                            type: object
+                          type: array
+                      type: object
+                    type: array
                   recreateOnUpdate:
                     description: An optional flag to control whether a schema should
                       be recreated on an update. Set it to true if you want to manage
@@ -230,11 +455,173 @@ spec:
                       on update. Defaults to `false`.
                     type: boolean
                   restEndpoint:
-                    description: The REST endpoint of the Schema Registry cluster,
-                      for example, https://psrc-00000.us-central1.gcp.confluent.cloud:443).
-                      The REST endpoint of the Schema Registry cluster, for example,
-                      `https://psrc-00000.us-central1.gcp.confluent.cloud:443`).
+                    description: 'The REST endpoint of the Schema Registry cluster.
+                      For example, for public networking: https://psrc-00000.us-central1.gcp.confluent.cloud.
+                      In the case of private networking, the endpoint might look like
+                      https://lsrc-abc123.pr1jy6.us-east-2.aws.confluent.cloud. You
+                      can construct it using either: The REST endpoint of the Schema
+                      Registry cluster, for example, `https://psrc-00000.us-central1.gcp.confluent.cloud:443`).'
                     type: string
+                  ruleset:
+                    description: The list of schema rules. See Data Contracts for
+                      Schema Registry for more details. For example, these rules can
+                      enforce that a field that contains sensitive information must
+                      be encrypted, or that a message containing an invalid age must
+                      be sent to a dead letter queue.
+                    items:
+                      properties:
+                        domainRules:
+                          description: 'supports the following:'
+                          items:
+                            properties:
+                              disabled:
+                                description: The boolean flag to control whether the
+                                  rule should be disabled. Defaults to false. Defaults
+                                  to `false`.
+                                type: boolean
+                              doc:
+                                description: An optional description of the rule.
+                                  Defaults to "". Defaults to “.
+                                type: string
+                              expr:
+                                description: The rule body. Data quality and transformation
+                                  rules use CEL language expressions, data migration
+                                  rules use JSONata expressions. Defaults to "". Defaults
+                                  to “.
+                                type: string
+                              kind:
+                                description: The kind of the rule. Accepted values
+                                  are CONDITION and TRANSFORM. CONDITION - validate
+                                  the value of a field, TRANSFORM - transform the
+                                  value of a field. Data quality rules use CONDITION
+                                  kind, data transformation, encryption and migration
+                                  rules use TRANSFORM kind.
+                                type: string
+                              mode:
+                                description: The mode of the rule. Accepted values
+                                  are UPGRADE, DOWNGRADE, UPDOWN, WRITE, READ, and
+                                  WRITEREAD.
+                                type: string
+                              name:
+                                description: The name of the subject, representing
+                                  the subject under which the referenced schema is
+                                  registered.
+                                type: string
+                              onFailure:
+                                description: An optional action to execute if the
+                                  rule fails, otherwise the built-in action type ERROR
+                                  is used. For UPDOWN and WRITEREAD rules, one can
+                                  specify two actions separated by commas, as mentioned
+                                  above. Defaults to ERROR,ERROR. Defaults to `ERROR,ERROR`.
+                                type: string
+                              onSuccess:
+                                description: An optional action to execute if the
+                                  rule succeeds, otherwise the built-in action type
+                                  NONE is used. For UPDOWN and WRITEREAD rules, one
+                                  can specify two actions separated by commas, such
+                                  as NONE,ERROR for a WRITEREAD rule. In this case
+                                  NONE applies to WRITE and ERROR applies to READ.
+                                  Defaults to NONE,NONE. Defaults to `NONE,NONE`.
+                                type: string
+                              params:
+                                additionalProperties:
+                                  type: string
+                                description: A set of static parameters for the rule,
+                                  which is optional. These are key-value pairs that
+                                  are passed to the rule.
+                                type: object
+                              tags:
+                                description: 'supports the following:'
+                                items:
+                                  type: string
+                                type: array
+                              type:
+                                description: The type of rule, which invokes a specific
+                                  rule executor that that will run the rule. Google
+                                  Common Expression Language (CEL) is used for data
+                                  quality and transformation rules, Confluent ENCRYPT
+                                  is used for data encryption rules, and JSONata is
+                                  used for migration rules.
+                                type: string
+                            type: object
+                          type: array
+                        migrationRules:
+                          description: 'supports the following:'
+                          items:
+                            properties:
+                              disabled:
+                                description: The boolean flag to control whether the
+                                  rule should be disabled. Defaults to false. Defaults
+                                  to `false`.
+                                type: boolean
+                              doc:
+                                description: An optional description of the rule.
+                                  Defaults to "". Defaults to “.
+                                type: string
+                              expr:
+                                description: The rule body. Data quality and transformation
+                                  rules use CEL language expressions, data migration
+                                  rules use JSONata expressions. Defaults to "". Defaults
+                                  to “.
+                                type: string
+                              kind:
+                                description: The kind of the rule. Accepted values
+                                  are CONDITION and TRANSFORM. CONDITION - validate
+                                  the value of a field, TRANSFORM - transform the
+                                  value of a field. Data quality rules use CONDITION
+                                  kind, data transformation, encryption and migration
+                                  rules use TRANSFORM kind.
+                                type: string
+                              mode:
+                                description: The mode of the rule. Accepted values
+                                  are UPGRADE, DOWNGRADE, UPDOWN, WRITE, READ, and
+                                  WRITEREAD.
+                                type: string
+                              name:
+                                description: The name of the subject, representing
+                                  the subject under which the referenced schema is
+                                  registered.
+                                type: string
+                              onFailure:
+                                description: An optional action to execute if the
+                                  rule fails, otherwise the built-in action type ERROR
+                                  is used. For UPDOWN and WRITEREAD rules, one can
+                                  specify two actions separated by commas, as mentioned
+                                  above. Defaults to ERROR,ERROR. Defaults to `ERROR,ERROR`.
+                                type: string
+                              onSuccess:
+                                description: An optional action to execute if the
+                                  rule succeeds, otherwise the built-in action type
+                                  NONE is used. For UPDOWN and WRITEREAD rules, one
+                                  can specify two actions separated by commas, such
+                                  as NONE,ERROR for a WRITEREAD rule. In this case
+                                  NONE applies to WRITE and ERROR applies to READ.
+                                  Defaults to NONE,NONE. Defaults to `NONE,NONE`.
+                                type: string
+                              params:
+                                additionalProperties:
+                                  type: string
+                                description: A set of static parameters for the rule,
+                                  which is optional. These are key-value pairs that
+                                  are passed to the rule.
+                                type: object
+                              tags:
+                                description: 'supports the following:'
+                                items:
+                                  type: string
+                                type: array
+                              type:
+                                description: The type of rule, which invokes a specific
+                                  rule executor that that will run the rule. Google
+                                  Common Expression Language (CEL) is used for data
+                                  quality and transformation rules, Confluent ENCRYPT
+                                  is used for data encryption rules, and JSONata is
+                                  used for migration rules.
+                                type: string
+                            type: object
+                          type: array
+                      type: object
+                    type: array
                   schema:
                     description: The schema string, for example, file("./schema_version_1.avsc").
                       The definition of the Schema.
@@ -277,6 +664,9 @@ spec:
                           type: string
                       type: object
                     type: array
+                  skipValidationDuringPlan:
+                    description: Defaults to false. Defaults to `false`.
+                    type: boolean
                   subjectName:
                     description: The name for the reference. (For Avro Schema, the
                       reference name is the fully qualified schema name, for JSON
@@ -520,6 +910,36 @@ spec:
                     description: The ID of the Schema Registry cluster, for example,
                       lsrc-abc123.
                     type: string
+                  metadata:
+                    description: 'See here for more details. Supports the following:'
+                    items:
+                      properties:
+                        properties:
+                          additionalProperties:
+                            type: string
+                          description: 'The custom properties to set:'
+                          type: object
+                        sensitive:
+                          description: A list of metadata properties to be encrypted.
+                          items:
+                            type: string
+                          type: array
+                        tags:
+                          description: 'supports the following:'
+                          items:
+                            properties:
+                              key:
+                                description: The Schema Registry API Key.
+                                type: string
+                              value:
+                                description: The setting value.
+                                items:
+                                  type: string
+                                type: array
+                            type: object
+                          type: array
+                      type: object
+                    type: array
                   recreateOnUpdate:
                     description: An optional flag to control whether a schema should
                       be recreated on an update. Set it to true if you want to manage
@@ -531,11 +951,173 @@ spec:
                       on update. Defaults to `false`.
                     type: boolean
                   restEndpoint:
-                    description: The REST endpoint of the Schema Registry cluster,
-                      for example, https://psrc-00000.us-central1.gcp.confluent.cloud:443).
-                      The REST endpoint of the Schema Registry cluster, for example,
-                      `https://psrc-00000.us-central1.gcp.confluent.cloud:443`).
+                    description: 'The REST endpoint of the Schema Registry cluster.
+                      For example, for public networking: https://psrc-00000.us-central1.gcp.confluent.cloud.
+                      In the case of private networking, the endpoint might look like
+                      https://lsrc-abc123.pr1jy6.us-east-2.aws.confluent.cloud. You
+                      can construct it using either: The REST endpoint of the Schema
+                      Registry cluster, for example, `https://psrc-00000.us-central1.gcp.confluent.cloud:443`).'
                     type: string
+                  ruleset:
+                    description: The list of schema rules. See Data Contracts for
+                      Schema Registry for more details. For example, these rules can
+                      enforce that a field that contains sensitive information must
+                      be encrypted, or that a message containing an invalid age must
+                      be sent to a dead letter queue.
+                    items:
+                      properties:
+                        domainRules:
+                          description: 'supports the following:'
+                          items:
+                            properties:
+                              disabled:
+                                description: The boolean flag to control whether the
+                                  rule should be disabled. Defaults to false. Defaults
+                                  to `false`.
+                                type: boolean
+                              doc:
+                                description: An optional description of the rule.
+                                  Defaults to "". Defaults to “.
+                                type: string
+                              expr:
+                                description: The rule body. Data quality and transformation
+                                  rules use CEL language expressions, data migration
+                                  rules use JSONata expressions. Defaults to "". Defaults
+                                  to “.
+                                type: string
+                              kind:
+                                description: The kind of the rule. Accepted values
+                                  are CONDITION and TRANSFORM. CONDITION - validate
+                                  the value of a field, TRANSFORM - transform the
+                                  value of a field. Data quality rules use CONDITION
+                                  kind, data transformation, encryption and migration
+                                  rules use TRANSFORM kind.
+                                type: string
+                              mode:
+                                description: The mode of the rule. Accepted values
+                                  are UPGRADE, DOWNGRADE, UPDOWN, WRITE, READ, and
+                                  WRITEREAD.
+                                type: string
+                              name:
+                                description: The name of the subject, representing
+                                  the subject under which the referenced schema is
+                                  registered.
+                                type: string
+                              onFailure:
+                                description: An optional action to execute if the
+                                  rule fails, otherwise the built-in action type ERROR
+                                  is used. For UPDOWN and WRITEREAD rules, one can
+                                  specify two actions separated by commas, as mentioned
+                                  above. Defaults to ERROR,ERROR. Defaults to `ERROR,ERROR`.
+                                type: string
+                              onSuccess:
+                                description: An optional action to execute if the
+                                  rule succeeds, otherwise the built-in action type
+                                  NONE is used. For UPDOWN and WRITEREAD rules, one
+                                  can specify two actions separated by commas, such
+                                  as NONE,ERROR for a WRITEREAD rule. In this case
+                                  NONE applies to WRITE and ERROR applies to READ.
+                                  Defaults to NONE,NONE. Defaults to `NONE,NONE`.
+                                type: string
+                              params:
+                                additionalProperties:
+                                  type: string
+                                description: A set of static parameters for the rule,
+                                  which is optional. These are key-value pairs that
+                                  are passed to the rule.
+                                type: object
+                              tags:
+                                description: 'supports the following:'
+                                items:
+                                  type: string
+                                type: array
+                              type:
+                                description: The type of rule, which invokes a specific
+                                  rule executor that that will run the rule. Google
+                                  Common Expression Language (CEL) is used for data
+                                  quality and transformation rules, Confluent ENCRYPT
+                                  is used for data encryption rules, and JSONata is
+                                  used for migration rules.
+                                type: string
+                            type: object
+                          type: array
+                        migrationRules:
+                          description: 'supports the following:'
+                          items:
+                            properties:
+                              disabled:
+                                description: The boolean flag to control whether the
+                                  rule should be disabled. Defaults to false. Defaults
+                                  to `false`.
+                                type: boolean
+                              doc:
+                                description: An optional description of the rule.
+                                  Defaults to "". Defaults to “.
+                                type: string
+                              expr:
+                                description: The rule body. Data quality and transformation
+                                  rules use CEL language expressions, data migration
+                                  rules use JSONata expressions. Defaults to "". Defaults
+                                  to “.
+                                type: string
+                              kind:
+                                description: The kind of the rule. Accepted values
+                                  are CONDITION and TRANSFORM. CONDITION - validate
+                                  the value of a field, TRANSFORM - transform the
+                                  value of a field. Data quality rules use CONDITION
+                                  kind, data transformation, encryption and migration
+                                  rules use TRANSFORM kind.
+                                type: string
+                              mode:
+                                description: The mode of the rule. Accepted values
+                                  are UPGRADE, DOWNGRADE, UPDOWN, WRITE, READ, and
+                                  WRITEREAD.
+                                type: string
+                              name:
+                                description: The name of the subject, representing
+                                  the subject under which the referenced schema is
+                                  registered.
+                                type: string
+                              onFailure:
+                                description: An optional action to execute if the
+                                  rule fails, otherwise the built-in action type ERROR
+                                  is used. For UPDOWN and WRITEREAD rules, one can
+                                  specify two actions separated by commas, as mentioned
+                                  above. Defaults to ERROR,ERROR. Defaults to `ERROR,ERROR`.
+                                type: string
+                              onSuccess:
+                                description: An optional action to execute if the
+                                  rule succeeds, otherwise the built-in action type
+                                  NONE is used. For UPDOWN and WRITEREAD rules, one
+                                  can specify two actions separated by commas, such
+                                  as NONE,ERROR for a WRITEREAD rule. In this case
+                                  NONE applies to WRITE and ERROR applies to READ.
+                                  Defaults to NONE,NONE. Defaults to `NONE,NONE`.
+                                type: string
+                              params:
+                                additionalProperties:
+                                  type: string
+                                description: A set of static parameters for the rule,
+                                  which is optional. These are key-value pairs that
+                                  are passed to the rule.
+                                type: object
+                              tags:
+                                description: 'supports the following:'
+                                items:
+                                  type: string
+                                type: array
+                              type:
+                                description: The type of rule, which invokes a specific
+                                  rule executor that that will run the rule. Google
+                                  Common Expression Language (CEL) is used for data
+                                  quality and transformation rules, Confluent ENCRYPT
+                                  is used for data encryption rules, and JSONata is
+                                  used for migration rules.
+                                type: string
+                            type: object
+                          type: array
+                      type: object
+                    type: array
                   schema:
                     description: The schema string, for example, file("./schema_version_1.avsc").
                       The definition of the Schema.
@@ -588,6 +1170,9 @@ spec:
                           type: string
                       type: object
                     type: array
+                  skipValidationDuringPlan:
+                    description: Defaults to false. Defaults to `false`.
+                    type: boolean
                   subjectName:
                     description: The name for the reference. (For Avro Schema, the
                       reference name is the fully qualified schema name, for JSON

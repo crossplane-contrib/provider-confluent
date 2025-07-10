@@ -19,9 +19,13 @@ import (
 
 type RoleBindingInitParameters struct {
 
-	// A Confluent Resource Name(CRN) that specifies the scope and resource patterns necessary for the role to bind.
+	// A Confluent Resource Name (CRN) that specifies the scope and resource patterns necessary for the role to bind.
 	// A CRN that specifies the scope and resource patterns necessary for the role to bind.
 	CrnPattern *string `json:"crnPattern,omitempty" tf:"crn_pattern,omitempty"`
+
+	// An optional flag to disable wait-for-readiness on create. Must be unset when importing. Defaults to false.
+	// Defaults to `false`.
+	DisableWaitForReady *bool `json:"disableWaitForReady,omitempty" tf:"disable_wait_for_ready,omitempty"`
 
 	// A principal User to bind the role to, for example, "User:u-111aaa" for binding to a user "u-111aaa", or "User:sa-111aaa" for binding to a service account "sa-111aaa".
 	// The principal User to bind the role to.
@@ -34,9 +38,13 @@ type RoleBindingInitParameters struct {
 
 type RoleBindingObservation struct {
 
-	// A Confluent Resource Name(CRN) that specifies the scope and resource patterns necessary for the role to bind.
+	// A Confluent Resource Name (CRN) that specifies the scope and resource patterns necessary for the role to bind.
 	// A CRN that specifies the scope and resource patterns necessary for the role to bind.
 	CrnPattern *string `json:"crnPattern,omitempty" tf:"crn_pattern,omitempty"`
+
+	// An optional flag to disable wait-for-readiness on create. Must be unset when importing. Defaults to false.
+	// Defaults to `false`.
+	DisableWaitForReady *bool `json:"disableWaitForReady,omitempty" tf:"disable_wait_for_ready,omitempty"`
 
 	// The ID of the Role Binding (e.g., rb-f3a90de).
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
@@ -52,10 +60,15 @@ type RoleBindingObservation struct {
 
 type RoleBindingParameters struct {
 
-	// A Confluent Resource Name(CRN) that specifies the scope and resource patterns necessary for the role to bind.
+	// A Confluent Resource Name (CRN) that specifies the scope and resource patterns necessary for the role to bind.
 	// A CRN that specifies the scope and resource patterns necessary for the role to bind.
 	// +kubebuilder:validation:Optional
 	CrnPattern *string `json:"crnPattern,omitempty" tf:"crn_pattern,omitempty"`
+
+	// An optional flag to disable wait-for-readiness on create. Must be unset when importing. Defaults to false.
+	// Defaults to `false`.
+	// +kubebuilder:validation:Optional
+	DisableWaitForReady *bool `json:"disableWaitForReady,omitempty" tf:"disable_wait_for_ready,omitempty"`
 
 	// A principal User to bind the role to, for example, "User:u-111aaa" for binding to a user "u-111aaa", or "User:sa-111aaa" for binding to a service account "sa-111aaa".
 	// The principal User to bind the role to.

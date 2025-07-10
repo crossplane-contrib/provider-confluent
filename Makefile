@@ -4,14 +4,14 @@
 PROJECT_NAME ?= provider-confluent
 PROJECT_REPO ?= github.com/crossplane-contrib/$(PROJECT_NAME)
 
-export TERRAFORM_VERSION ?= 1.3.3
+export TERRAFORM_VERSION ?= 1.12.2
 
 export TERRAFORM_PROVIDER_SOURCE := confluentinc/confluent
 export TERRAFORM_PROVIDER_REPO := https://github.com/confluentinc/terraform-provider-confluent
-export TERRAFORM_PROVIDER_VERSION := 1.55.0
+export TERRAFORM_PROVIDER_VERSION := 2.34.0
 export TERRAFORM_PROVIDER_DOWNLOAD_NAME := terraform-provider-confluent
 export TERRAFORM_PROVIDER_DOWNLOAD_URL_PREFIX ?= $(TERRAFORM_PROVIDER_REPO)/releases/download/v$(TERRAFORM_PROVIDER_VERSION)
-export TERRAFORM_NATIVE_PROVIDER_BINARY := terraform-provider-confluent_1.55.0
+export TERRAFORM_NATIVE_PROVIDER_BINARY := terraform-provider-confluent_2.34.0
 export TERRAFORM_DOCS_PATH := docs/resources
 
 PLATFORMS ?= linux_amd64 linux_arm64
@@ -39,8 +39,8 @@ NPROCS ?= 1
 # to half the number of CPU cores.
 GO_TEST_PARALLEL := $(shell echo $$(( $(NPROCS) / 2 )))
 
-GO_REQUIRED_VERSION ?= 1.20
-GOLANGCILINT_VERSION = 1.54.2
+GO_REQUIRED_VERSION ?= 1.24.4
+GOLANGCILINT_VERSION = 2.2.1
 GO_LINT_ARGS="--timeout=15m"
 GO_STATIC_PACKAGES = $(GO_PROJECT)/cmd/provider $(GO_PROJECT)/cmd/generator
 GO_LDFLAGS += -X $(GO_PROJECT)/internal/version.Version=$(VERSION)
@@ -51,7 +51,7 @@ GO111MODULE ?= on
 # ====================================================================================
 # Setup Kubernetes tools
 
-KIND_VERSION = v0.16.0
+KIND_VERSION = v0.29.0
 UP_VERSION = v0.31.0
 UP_CHANNEL = stable
 UPTEST_VERSION = v0.5.0
