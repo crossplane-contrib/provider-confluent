@@ -17,7 +17,6 @@ import (
 	kafkatopic "github.com/crossplane-contrib/provider-confluent/internal/controller/confluent/kafkatopic"
 	rolebinding "github.com/crossplane-contrib/provider-confluent/internal/controller/confluent/rolebinding"
 	schema "github.com/crossplane-contrib/provider-confluent/internal/controller/confluent/schema"
-	schemaregistrycluster "github.com/crossplane-contrib/provider-confluent/internal/controller/confluent/schemaregistrycluster"
 	serviceaccount "github.com/crossplane-contrib/provider-confluent/internal/controller/confluent/serviceaccount"
 	providerconfig "github.com/crossplane-contrib/provider-confluent/internal/controller/providerconfig"
 )
@@ -34,7 +33,6 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		kafkatopic.Setup,
 		rolebinding.Setup,
 		schema.Setup,
-		schemaregistrycluster.Setup,
 		serviceaccount.Setup,
 		providerconfig.Setup,
 	} {

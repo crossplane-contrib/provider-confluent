@@ -18,11 +18,12 @@ import (
 
 const (
 	// ProviderConfig secret keys
-	cloudAPIKey       = "cloud_api_key"
-	cloudAPISecret    = "cloud_api_secret"
-	kafkaAPIKey       = "kafka_api_key"
-	kafkaAPISecret    = "kafka_api_secret"
-	kafkaRESTEndpoint = "kafka_rest_endpoint"
+	cloudAPIKey                = "cloud_api_key"
+	cloudAPISecret             = "cloud_api_secret"
+	schemaregistryapikey       = "schema_registry_api_key"
+	schemaregistryapisecret    = "schema_registry_api_secret"
+	schemaregistryrestendpoint = "schema_registry_rest_endpoint"
+	schemaregistryid           = "schema_registry_id"
 
 	// error messages
 	errNoProviderConfig     = "no providerConfigRef provided"
@@ -72,11 +73,12 @@ func TerraformSetupBuilder(version, providerSource, providerVersion string, sche
 
 		// Set credentials in Terraform provider configuration.
 		ps.Configuration = map[string]any{
-			cloudAPIKey:       creds[cloudAPIKey],
-			cloudAPISecret:    creds[cloudAPISecret],
-			kafkaAPIKey:       creds[kafkaAPIKey],
-			kafkaAPISecret:    creds[kafkaAPISecret],
-			kafkaRESTEndpoint: creds[kafkaRESTEndpoint],
+			cloudAPIKey:                creds[cloudAPIKey],
+			cloudAPISecret:             creds[cloudAPISecret],
+			schemaregistryapikey:       creds[schemaregistryapikey],
+			schemaregistryapisecret:    creds[schemaregistryapisecret],
+			schemaregistryrestendpoint: creds[schemaregistryrestendpoint],
+			schemaregistryid:           creds[schemaregistryid],
 		}
 		return ps, nil
 	}

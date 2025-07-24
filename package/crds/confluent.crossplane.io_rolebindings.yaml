@@ -67,11 +67,16 @@ spec:
               forProvider:
                 properties:
                   crnPattern:
-                    description: A Confluent Resource Name(CRN) that specifies the
+                    description: A Confluent Resource Name (CRN) that specifies the
                       scope and resource patterns necessary for the role to bind.
                       A CRN that specifies the scope and resource patterns necessary
                       for the role to bind.
                     type: string
+                  disableWaitForReady:
+                    description: An optional flag to disable wait-for-readiness on
+                      create. Must be unset when importing. Defaults to false. Defaults
+                      to `false`.
+                    type: boolean
                   principal:
                     description: A principal User to bind the role to, for example,
                       "User:u-111aaa" for binding to a user "u-111aaa", or "User:sa-111aaa"
@@ -97,11 +102,16 @@ spec:
                   like an autoscaler.
                 properties:
                   crnPattern:
-                    description: A Confluent Resource Name(CRN) that specifies the
+                    description: A Confluent Resource Name (CRN) that specifies the
                       scope and resource patterns necessary for the role to bind.
                       A CRN that specifies the scope and resource patterns necessary
                       for the role to bind.
                     type: string
+                  disableWaitForReady:
+                    description: An optional flag to disable wait-for-readiness on
+                      create. Must be unset when importing. Defaults to false. Defaults
+                      to `false`.
+                    type: boolean
                   principal:
                     description: A principal User to bind the role to, for example,
                       "User:u-111aaa" for binding to a user "u-111aaa", or "User:sa-111aaa"
@@ -293,11 +303,16 @@ spec:
               atProvider:
                 properties:
                   crnPattern:
-                    description: A Confluent Resource Name(CRN) that specifies the
+                    description: A Confluent Resource Name (CRN) that specifies the
                       scope and resource patterns necessary for the role to bind.
                       A CRN that specifies the scope and resource patterns necessary
                       for the role to bind.
                     type: string
+                  disableWaitForReady:
+                    description: An optional flag to disable wait-for-readiness on
+                      create. Must be unset when importing. Defaults to false. Defaults
+                      to `false`.
+                    type: boolean
                   id:
                     description: The ID of the Role Binding (e.g., rb-f3a90de).
                     type: string
