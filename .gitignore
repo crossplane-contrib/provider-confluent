@@ -12,3 +12,4 @@ cover.out
 .vscode/
 .idea/
 kubeconfig
+cmd/provider/provider

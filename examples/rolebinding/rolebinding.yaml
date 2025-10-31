@@ -1,0 +1,9 @@
+apiVersion: confluent.crossplane.io/v1alpha1
+kind: RoleBinding
+metadata:
+  name: confluent-cloud-rolebinding-test
+spec:
+  forProvider:
+    crnPattern: crn://confluent.cloud/organization=${data.confluent_org_id}/environment=${data.confluent_environment_id}/cloud-cluster=${data.confluent_kafka_cluster_id}
+    principal: ${data.confluent_principal}
+    roleName: CloudClusterAdmin

@@ -22,6 +22,10 @@ type EnvironmentInitParameters_2 struct {
 	// A human-readable name for the Environment. Start and end the name with alphanumeric characters, for example, "Development". The name can contain hyphens and underscores.
 	// A human-readable name for the Environment.
 	DisplayName *string `json:"displayName,omitempty" tf:"display_name,omitempty"`
+
+	// The stream governance configuration for the Environment. The block supports the following arguments:
+	// Stream Governance configurations for the environment
+	StreamGovernance []StreamGovernanceInitParameters `json:"streamGovernance,omitempty" tf:"stream_governance,omitempty"`
 }
 
 type EnvironmentObservation_2 struct {
@@ -36,6 +40,10 @@ type EnvironmentObservation_2 struct {
 	// The Confluent Resource Name of the Environment, for example, crn://confluent.cloud/organization=1111aaaa-11aa-11aa-11aa-111111aaaaaa/environment=env-abc123.
 	// The Confluent Resource Name of the Environment.
 	ResourceName *string `json:"resourceName,omitempty" tf:"resource_name,omitempty"`
+
+	// The stream governance configuration for the Environment. The block supports the following arguments:
+	// Stream Governance configurations for the environment
+	StreamGovernance []StreamGovernanceObservation `json:"streamGovernance,omitempty" tf:"stream_governance,omitempty"`
 }
 
 type EnvironmentParameters_2 struct {
@@ -44,6 +52,33 @@ type EnvironmentParameters_2 struct {
 	// A human-readable name for the Environment.
 	// +kubebuilder:validation:Optional
 	DisplayName *string `json:"displayName,omitempty" tf:"display_name,omitempty"`
+
+	// The stream governance configuration for the Environment. The block supports the following arguments:
+	// Stream Governance configurations for the environment
+	// +kubebuilder:validation:Optional
+	StreamGovernance []StreamGovernanceParameters `json:"streamGovernance,omitempty" tf:"stream_governance,omitempty"`
+}
+
+type StreamGovernanceInitParameters struct {
+
+	// The stream governance package for the Environment. Accepted values are: ESSENTIALS and ADVANCED.
+	// Stream Governance Package. 'ESSENTIALS' or 'ADVANCED'
+	Package *string `json:"package,omitempty" tf:"package,omitempty"`
+}
+
+type StreamGovernanceObservation struct {
+
+	// The stream governance package for the Environment. Accepted values are: ESSENTIALS and ADVANCED.
+	// Stream Governance Package. 'ESSENTIALS' or 'ADVANCED'
+	Package *string `json:"package,omitempty" tf:"package,omitempty"`
+}
+
+type StreamGovernanceParameters struct {
+
+	// The stream governance package for the Environment. Accepted values are: ESSENTIALS and ADVANCED.
+	// Stream Governance Package. 'ESSENTIALS' or 'ADVANCED'
+	// +kubebuilder:validation:Optional
+	Package *string `json:"package" tf:"package,omitempty"`
 }
 
 // EnvironmentSpec defines the desired state of Environment

@@ -9,3 +9,5 @@ metadata:
 spec:
   forProvider:
     displayName: Production
+    streamGovernance:
+    - package: ESSENTIALS

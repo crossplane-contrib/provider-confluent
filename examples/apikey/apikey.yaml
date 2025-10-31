@@ -1,0 +1,16 @@
+apiVersion: confluent.crossplane.io/v1alpha1
+kind: APIKey
+metadata:
+  name: confluent-cloud-test-apikey
+spec:
+  forProvider:
+    managedResource:
+      - apiVersion: cmk/v2
+        environment:
+          - id: ${data.confluent_environment_id}
+        id: ${data.confluent_kafka_cluster_id}
+        kind: Cluster
+    owner:
+      - apiVersion: iam/v2
+        id: ${data.confluent_service_account_id}
+        kind: ServiceAccount
