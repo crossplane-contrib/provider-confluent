@@ -77,7 +77,7 @@ type ClusterEnvironmentParameters struct {
 
 type ClusterInitParameters struct {
 
-	// The availability zone configuration of the Kafka cluster. Accepted values are: SINGLE_ZONE and MULTI_ZONE.
+	// The availability zone configuration of the Kafka cluster. Accepted values are: SINGLE_ZONE, MULTI_ZONE, LOW, and HIGH.
 	// The availability zone configuration of the Kafka cluster.
 	Availability *string `json:"availability,omitempty" tf:"availability,omitempty"`
 
@@ -105,6 +105,9 @@ type ClusterInitParameters struct {
 	// Environment objects represent an isolated namespace for your Confluent resources for organizational purposes.
 	Environment []ClusterEnvironmentInitParameters `json:"environment,omitempty" tf:"environment,omitempty"`
 
+	// The configuration of the Freight Kafka cluster.
+	Freight []FreightInitParameters `json:"freight,omitempty" tf:"freight,omitempty"`
+
 	// supports the following:
 	// Network represents a network (VPC) in Confluent Cloud. All Networks exist within Confluent-managed cloud provider accounts.
 	Network []NetworkInitParameters `json:"network,omitempty" tf:"network,omitempty"`
@@ -123,7 +126,7 @@ type ClusterObservation struct {
 	// API Version defines the schema version of this representation of a Kafka cluster.
 	APIVersion *string `json:"apiVersion,omitempty" tf:"api_version,omitempty"`
 
-	// The availability zone configuration of the Kafka cluster. Accepted values are: SINGLE_ZONE and MULTI_ZONE.
+	// The availability zone configuration of the Kafka cluster. Accepted values are: SINGLE_ZONE, MULTI_ZONE, LOW, and HIGH.
 	// The availability zone configuration of the Kafka cluster.
 	Availability *string `json:"availability,omitempty" tf:"availability,omitempty"`
 
@@ -155,6 +158,9 @@ type ClusterObservation struct {
 	// Environment objects represent an isolated namespace for your Confluent resources for organizational purposes.
 	Environment []ClusterEnvironmentObservation `json:"environment,omitempty" tf:"environment,omitempty"`
 
+	// The configuration of the Freight Kafka cluster.
+	Freight []FreightObservation `json:"freight,omitempty" tf:"freight,omitempty"`
+
 	// The ID of the Environment that the Kafka cluster belongs to, for example, env-abc123.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
@@ -184,7 +190,7 @@ type ClusterObservation struct {
 
 type ClusterParameters struct {
 
-	// The availability zone configuration of the Kafka cluster. Accepted values are: SINGLE_ZONE and MULTI_ZONE.
+	// The availability zone configuration of the Kafka cluster. Accepted values are: SINGLE_ZONE, MULTI_ZONE, LOW, and HIGH.
 	// The availability zone configuration of the Kafka cluster.
 	// +kubebuilder:validation:Optional
 	Availability *string `json:"availability,omitempty" tf:"availability,omitempty"`
@@ -220,6 +226,10 @@ type ClusterParameters struct {
 	// +kubebuilder:validation:Optional
 	Environment []ClusterEnvironmentParameters `json:"environment,omitempty" tf:"environment,omitempty"`
 
+	// The configuration of the Freight Kafka cluster.
+	// +kubebuilder:validation:Optional
+	Freight []FreightParameters `json:"freight,omitempty" tf:"freight,omitempty"`
+
 	// supports the following:
 	// Network represents a network (VPC) in Confluent Cloud. All Networks exist within Confluent-managed cloud provider accounts.
 	// +kubebuilder:validation:Optional
@@ -237,7 +247,7 @@ type ClusterParameters struct {
 
 type DedicatedInitParameters struct {
 
-	// The number of Confluent Kafka Units (CKUs) for Dedicated cluster types. The minimum number of CKUs for SINGLE_ZONE dedicated clusters is 1 whereas MULTI_ZONE dedicated clusters must have more than 2 CKUs.
+	// The number of Confluent Kafka Units (CKUs) for Dedicated cluster types. The minimum number of CKUs for SINGLE_ZONE dedicated clusters is 1 whereas MULTI_ZONE dedicated clusters must have 2 CKUs or more.
 	// The number of Confluent Kafka Units (CKUs) for Dedicated cluster types. MULTI_ZONE dedicated clusters must have at least two CKUs.
 	Cku *float64 `json:"cku,omitempty" tf:"cku,omitempty"`
 
@@ -247,7 +257,7 @@ type DedicatedInitParameters struct {
 
 type DedicatedObservation struct {
 
-	// The number of Confluent Kafka Units (CKUs) for Dedicated cluster types. The minimum number of CKUs for SINGLE_ZONE dedicated clusters is 1 whereas MULTI_ZONE dedicated clusters must have more than 2 CKUs.
+	// The number of Confluent Kafka Units (CKUs) for Dedicated cluster types. The minimum number of CKUs for SINGLE_ZONE dedicated clusters is 1 whereas MULTI_ZONE dedicated clusters must have 2 CKUs or more.
 	// The number of Confluent Kafka Units (CKUs) for Dedicated cluster types. MULTI_ZONE dedicated clusters must have at least two CKUs.
 	Cku *float64 `json:"cku,omitempty" tf:"cku,omitempty"`
 
@@ -255,16 +265,13 @@ type DedicatedObservation struct {
 	EncryptionKey *string `json:"encryptionKey,omitempty" tf:"encryption_key,omitempty"`
 
 	// The list of zones the cluster is in.
-	// On AWS, zones are AWS AZ IDs, for example, use1-az3.
-	// On GCP, zones are GCP zones, for example, us-central1-c.
-	// On Azure, zones are Confluent-chosen names (for example, 1, 2, 3) since Azure does not have universal zone identifiers.
 	// The list of zones the cluster is in.
 	Zones []*string `json:"zones,omitempty" tf:"zones,omitempty"`
 }
 
 type DedicatedParameters struct {
 
-	// The number of Confluent Kafka Units (CKUs) for Dedicated cluster types. The minimum number of CKUs for SINGLE_ZONE dedicated clusters is 1 whereas MULTI_ZONE dedicated clusters must have more than 2 CKUs.
+	// The number of Confluent Kafka Units (CKUs) for Dedicated cluster types. The minimum number of CKUs for SINGLE_ZONE dedicated clusters is 1 whereas MULTI_ZONE dedicated clusters must have 2 CKUs or more.
 	// The number of Confluent Kafka Units (CKUs) for Dedicated cluster types. MULTI_ZONE dedicated clusters must have at least two CKUs.
 	// +kubebuilder:validation:Optional
 	Cku *float64 `json:"cku" tf:"cku,omitempty"`
@@ -281,6 +288,19 @@ type EnterpriseObservation struct {
 }
 
 type EnterpriseParameters struct {
+}
+
+type FreightInitParameters struct {
+}
+
+type FreightObservation struct {
+
+	// The list of zones the cluster is in.
+	// The list of zones the cluster is in.
+	Zones []*string `json:"zones,omitempty" tf:"zones,omitempty"`
+}
+
+type FreightParameters struct {
 }
 
 type NetworkInitParameters struct {

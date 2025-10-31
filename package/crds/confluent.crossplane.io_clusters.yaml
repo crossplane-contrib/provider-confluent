@@ -68,8 +68,8 @@ spec:
                 properties:
                   availability:
                     description: 'The availability zone configuration of the Kafka
-                      cluster. Accepted values are: SINGLE_ZONE and MULTI_ZONE. The
-                      availability zone configuration of the Kafka cluster.'
+                      cluster. Accepted values are: SINGLE_ZONE, MULTI_ZONE, LOW,
+                      and HIGH. The availability zone configuration of the Kafka cluster.'
                     type: string
                   basic:
                     description: The configuration of the Basic Kafka cluster.
@@ -101,7 +101,7 @@ spec:
                           description: The number of Confluent Kafka Units (CKUs)
                             for Dedicated cluster types. The minimum number of CKUs
                             for SINGLE_ZONE dedicated clusters is 1 whereas MULTI_ZONE
-                            dedicated clusters must have more than 2 CKUs. The number
+                            dedicated clusters must have 2 CKUs or more. The number
                             of Confluent Kafka Units (CKUs) for Dedicated cluster
                             types. MULTI_ZONE dedicated clusters must have at least
                             two CKUs.
@@ -212,6 +212,11 @@ spec:
                           type: object
                       type: object
                     type: array
+                  freight:
+                    description: The configuration of the Freight Kafka cluster.
+                    items:
+                      type: object
+                    type: array
                   network:
                     description: 'supports the following: Network represents a network
                       (VPC) in Confluent Cloud. All Networks exist within Confluent-managed
@@ -252,8 +257,8 @@ spec:
                 properties:
                   availability:
                     description: 'The availability zone configuration of the Kafka
-                      cluster. Accepted values are: SINGLE_ZONE and MULTI_ZONE. The
-                      availability zone configuration of the Kafka cluster.'
+                      cluster. Accepted values are: SINGLE_ZONE, MULTI_ZONE, LOW,
+                      and HIGH. The availability zone configuration of the Kafka cluster.'
                     type: string
                   basic:
                     description: The configuration of the Basic Kafka cluster.
@@ -285,7 +290,7 @@ spec:
                           description: The number of Confluent Kafka Units (CKUs)
                             for Dedicated cluster types. The minimum number of CKUs
                             for SINGLE_ZONE dedicated clusters is 1 whereas MULTI_ZONE
-                            dedicated clusters must have more than 2 CKUs. The number
+                            dedicated clusters must have 2 CKUs or more. The number
                             of Confluent Kafka Units (CKUs) for Dedicated cluster
                             types. MULTI_ZONE dedicated clusters must have at least
                             two CKUs.
@@ -309,6 +314,11 @@ spec:
                     description: 'supports the following: Environment objects represent
                       an isolated namespace for your Confluent resources for organizational
                       purposes.'
+                    items:
+                      type: object
+                    type: array
+                  freight:
+                    description: The configuration of the Freight Kafka cluster.
                     items:
                       type: object
                     type: array
@@ -531,8 +541,8 @@ spec:
                     type: string
                   availability:
                     description: 'The availability zone configuration of the Kafka
-                      cluster. Accepted values are: SINGLE_ZONE and MULTI_ZONE. The
-                      availability zone configuration of the Kafka cluster.'
+                      cluster. Accepted values are: SINGLE_ZONE, MULTI_ZONE, LOW,
+                      and HIGH. The availability zone configuration of the Kafka cluster.'
                     type: string
                   basic:
                     description: The configuration of the Basic Kafka cluster.
@@ -570,7 +580,7 @@ spec:
                           description: The number of Confluent Kafka Units (CKUs)
                             for Dedicated cluster types. The minimum number of CKUs
                             for SINGLE_ZONE dedicated clusters is 1 whereas MULTI_ZONE
-                            dedicated clusters must have more than 2 CKUs. The number
+                            dedicated clusters must have 2 CKUs or more. The number
                             of Confluent Kafka Units (CKUs) for Dedicated cluster
                             types. MULTI_ZONE dedicated clusters must have at least
                             two CKUs.
@@ -580,11 +590,7 @@ spec:
                             encrypt the data in the Kafka cluster.
                           type: string
                         zones:
-                          description: The list of zones the cluster is in. On AWS,
-                            zones are AWS AZ IDs, for example, use1-az3. On GCP, zones
-                            are GCP zones, for example, us-central1-c. On Azure, zones
-                            are Confluent-chosen names (for example, 1, 2, 3) since
-                            Azure does not have universal zone identifiers. The list
+                          description: The list of zones the cluster is in. The list
                             of zones the cluster is in.
                           items:
                             type: string
@@ -611,6 +617,18 @@ spec:
                             belongs to, for example, env-abc123. The unique identifier
                             for the environment.
                           type: string
+                      type: object
+                    type: array
+                  freight:
+                    description: The configuration of the Freight Kafka cluster.
+                    items:
+                      properties:
+                        zones:
+                          description: The list of zones the cluster is in. The list
+                            of zones the cluster is in.
+                          items:
+                            type: string
+                          type: array
                       type: object
                     type: array
                   id:

@@ -84,7 +84,8 @@ spec:
                     description: 'This block must be set for Cluster API Keys and
                       must be omitted for Cloud API Keys. It supports the following:
                       The resource associated with this object. The only resource
-                      that is supported is ''cmk.v2.Cluster'', ''srcm.v2.Cluster''.'
+                      that is supported is ''cmk.v2.Cluster'', ''srcm.v2.Cluster'',
+                      ''srcm.v3.Cluster''.'
                     items:
                       properties:
                         apiVersion:
@@ -93,15 +94,12 @@ spec:
                             of the referred owner.
                           type: string
                         environment:
-                          description: 'supports the following: Environment objects
-                            represent an isolated namespace for your Confluent resources
-                            for organizational purposes.'
+                          description: 'supports the following:'
                           items:
                             properties:
                               id:
                                 description: The ID of the owner that the API Key
                                   belongs to, for example, sa-abc123 or u-abc123.
-                                  The unique identifier for the environment.
                                 type: string
                               idRef:
                                 description: Reference to a Environment to populate
@@ -402,7 +400,8 @@ spec:
                     description: 'This block must be set for Cluster API Keys and
                       must be omitted for Cloud API Keys. It supports the following:
                       The resource associated with this object. The only resource
-                      that is supported is ''cmk.v2.Cluster'', ''srcm.v2.Cluster''.'
+                      that is supported is ''cmk.v2.Cluster'', ''srcm.v2.Cluster'',
+                      ''srcm.v3.Cluster''.'
                     items:
                       properties:
                         apiVersion:
@@ -411,9 +410,7 @@ spec:
                             of the referred owner.
                           type: string
                         environment:
-                          description: 'supports the following: Environment objects
-                            represent an isolated namespace for your Confluent resources
-                            for organizational purposes.'
+                          description: 'supports the following:'
                           items:
                             type: object
                           type: array
@@ -634,7 +631,8 @@ spec:
                     description: 'This block must be set for Cluster API Keys and
                       must be omitted for Cloud API Keys. It supports the following:
                       The resource associated with this object. The only resource
-                      that is supported is ''cmk.v2.Cluster'', ''srcm.v2.Cluster''.'
+                      that is supported is ''cmk.v2.Cluster'', ''srcm.v2.Cluster'',
+                      ''srcm.v3.Cluster''.'
                     items:
                       properties:
                         apiVersion:
@@ -643,15 +641,12 @@ spec:
                             of the referred owner.
                           type: string
                         environment:
-                          description: 'supports the following: Environment objects
-                            represent an isolated namespace for your Confluent resources
-                            for organizational purposes.'
+                          description: 'supports the following:'
                           items:
                             properties:
                               id:
                                 description: The ID of the owner that the API Key
                                   belongs to, for example, sa-abc123 or u-abc123.
-                                  The unique identifier for the environment.
                                 type: string
                             type: object
                           type: array

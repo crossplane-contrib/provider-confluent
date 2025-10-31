@@ -18,8 +18,8 @@ spec:
         name: example-secret
         namespace: upbound-system
     format: AVRO
-    restEndpoint: ${confluent_schema_registry_cluster.essentials.rest_endpoint}
+    restEndpoint: ${data.confluent_schema_registry_cluster.essentials.rest_endpoint}
     schema: ${file("./schemas/avro/purchase.avsc")}
     schemaRegistryCluster:
-    - id: ${confluent_schema_registry_cluster.essentials.id}
+    - id: ${data.confluent_schema_registry_cluster.essentials.id}
     subjectName: avro-purchase-value

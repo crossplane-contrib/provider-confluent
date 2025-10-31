@@ -4,14 +4,14 @@
 PROJECT_NAME ?= provider-confluent
 PROJECT_REPO ?= github.com/crossplane-contrib/$(PROJECT_NAME)
 
-export TERRAFORM_VERSION ?= 1.3.3
+export TERRAFORM_VERSION ?= 1.5.7
 
 export TERRAFORM_PROVIDER_SOURCE := confluentinc/confluent
 export TERRAFORM_PROVIDER_REPO := https://github.com/confluentinc/terraform-provider-confluent
-export TERRAFORM_PROVIDER_VERSION := 1.55.0
+export TERRAFORM_PROVIDER_VERSION := 2.25.0
 export TERRAFORM_PROVIDER_DOWNLOAD_NAME := terraform-provider-confluent
 export TERRAFORM_PROVIDER_DOWNLOAD_URL_PREFIX ?= $(TERRAFORM_PROVIDER_REPO)/releases/download/v$(TERRAFORM_PROVIDER_VERSION)
-export TERRAFORM_NATIVE_PROVIDER_BINARY := terraform-provider-confluent_1.55.0
+export TERRAFORM_NATIVE_PROVIDER_BINARY := terraform-provider-confluent_2.25.0
 export TERRAFORM_DOCS_PATH := docs/resources
 
 PLATFORMS ?= linux_amd64 linux_arm64
@@ -39,8 +39,8 @@ NPROCS ?= 1
 # to half the number of CPU cores.
 GO_TEST_PARALLEL := $(shell echo $$(( $(NPROCS) / 2 )))
 
-GO_REQUIRED_VERSION ?= 1.20
-GOLANGCILINT_VERSION = 1.54.2
+GO_REQUIRED_VERSION ?= 1.24.2
+GOLANGCILINT_VERSION = 1.64.8
 GO_LINT_ARGS="--timeout=15m"
 GO_STATIC_PACKAGES = $(GO_PROJECT)/cmd/provider $(GO_PROJECT)/cmd/generator
 GO_LDFLAGS += -X $(GO_PROJECT)/internal/version.Version=$(VERSION)
@@ -51,10 +51,12 @@ GO111MODULE ?= on
 # ====================================================================================
 # Setup Kubernetes tools
 
-KIND_VERSION = v0.16.0
-UP_VERSION = v0.31.0
+KIND_VERSION = v0.27.0
+KUBECTL_VERSION = v1.29.2
+UP_VERSION = v0.38.4
 UP_CHANNEL = stable
-UPTEST_VERSION = v0.5.0
+UPTEST_VERSION = v0.13.0
+CROSSPLANE_VERSION = v1.19.1
 -include build/makelib/k8s_tools.mk
 
 # ====================================================================================
@@ -163,40 +165,71 @@ run: go.build
 
 # ====================================================================================
 # End to End Testing
-CROSSPLANE_NAMESPACE = upbound-system
+CROSSPLANE_NAMESPACE = crossplane-system
+CROSSPLANE_ARGS = "--enable-usages,--debug,--enable-composition-webhook-schema-validation"
 -include build/makelib/local.xpkg.mk
 -include build/makelib/controlplane.mk
 
 # This target requires the following environment variables to be set:
 # - UPTEST_EXAMPLE_LIST, a comma-separated list of examples to test
-#   To ensure the proper functioning of the end-to-end test resource pre-deletion hook, it is crucial to arrange your resources appropriately.
-#   You can check the basic implementation here: https://github.com/upbound/uptest/blob/main/internal/templates/01-delete.yaml.tmpl.
-# - UPTEST_CLOUD_CREDENTIALS (optional), multiple sets of AWS IAM User credentials specified as key=value pairs.
-#   The support keys are currently `DEFAULT` and `PEER`. So, an example for the value of this env. variable is:
-#   DEFAULT='[default]
-#   aws_access_key_id = REDACTED
-#   aws_secret_access_key = REDACTED'
-#   PEER='[default]
-#   aws_access_key_id = REDACTED
-#   aws_secret_access_key = REDACTED'
-#   The associated `ProviderConfig`s will be named as `default` and `peer`.
-# - UPTEST_DATASOURCE_PATH (optional), see https://github.com/upbound/uptest#injecting-dynamic-values-and-datasource
-uptest: $(UPTEST) $(KUBECTL) $(KUTTL)
+#   To ensure the proper functioning of the end-to-end test resource pre-deletion hook, it is crucial to arrange your
+#   resources appropriately. You can check the basic implementation here:
+#   https://github.com/upbound/uptest/blob/main/internal/templates/01-delete.yaml.tmpl.
+# - UPTEST_CLOUD_CREDENTIALS, string of JSON object containing Confluent Cloud credentials (see
+#   examples/providerconfigs/secret.yaml.tmpl for format)
+# - UPTEST_DATASOURCE_PATH, see https://github.com/crossplane/uptest?tab=readme-ov-file#injecting-dynamic-values-and-datasource
+#   The datasource values can be optionally set using their corresponding environment variables. Depending on the
+#   specific example, the following datasource values (or environment variable) may be required:
+#     - confluent_kafka_cluster_id (UPTEST_CONFLUENT_KAFKA_CLUSTER_ID)
+#     - confluent_principal (UPTEST_CONFLUENT_PRINCIPAL)
+#     - confluent_kafka_cluster_cloud (UPTEST_CONFLUENT_KAFKA_CLUSTER_CLOUD)
+#     - confluent_environment_id (UPTEST_CONFLUENT_ENVIRONMENT_ID)
+#     - confluent_service_account_id (UPTEST_CONFLUENT_SERVICE_ACCT_ID)
+#     - confluent_org_id (UPTEST_CONFLUENT_ORG_ID)
+#     - confluent_region (UPTEST_CONFLUENT_REGION)
+
+uptest: $(YQ) $(UPTEST) $(KUBECTL) $(KUTTL)
 	@$(INFO) running automated tests
-	@if [[ -n "$${UPTEST_CONFLUENT_KAFKA_CLUSTER_ID:-}" && -n "$${UPTEST_CONFLUENT_PRINCIPAL:-}" ]]; then \
-		{ \
-			echo "confluent_kafka_cluster_id: $${UPTEST_CONFLUENT_KAFKA_CLUSTER_ID}"; \
-			echo "confluent_principal: $${UPTEST_CONFLUENT_PRINCIPAL}"; \
-		} > "$(OUTPUT_DIR)/datasource.yaml"; \
-		if [[ -n "$${UPTEST_DATASOURCE_PATH:-}" ]]; then \
-			echo "" >> "$(OUTPUT_DIR)/datasource.yaml"; \
-			cat "$${UPTEST_DATASOURCE_PATH}" >> "$(OUTPUT_DIR)/datasource.yaml"; \
-		fi; \
-		export UPTEST_DATASOURCE_PATH="$(OUTPUT_DIR)/datasource.yaml"; \
+	@> "$(OUTPUT_DIR)/datasource.yaml"; \
+	if [[ -n "$${UPTEST_DATASOURCE_PATH:-}" ]]; then \
+		cat "$${UPTEST_DATASOURCE_PATH}" >> "$(OUTPUT_DIR)/datasource.yaml"; \
+		echo "" >> "$(OUTPUT_DIR)/datasource.yaml"; \
 	fi; \
+	\
+	if [[ -n "$${UPTEST_CONFLUENT_KAFKA_CLUSTER_ID:-}" ]]; then \
+		echo "confluent_kafka_cluster_id: $${UPTEST_CONFLUENT_KAFKA_CLUSTER_ID}" >> "$(OUTPUT_DIR)/datasource.yaml"; \
+	fi;
+	\
+	if [[ -n "$${UPTEST_CONFLUENT_PRINCIPAL:-}" ]]; then \
+		echo "confluent_principal: $${UPTEST_CONFLUENT_PRINCIPAL}" >> "$(OUTPUT_DIR)/datasource.yaml"; \
+	fi; \
+	\
+	if [[ -n "$${UPTEST_CONFLUENT_KAFKA_CLUSTER_CLOUD:-}" ]]; then \
+		echo "confluent_kafka_cluster_cloud: $${UPTEST_CONFLUENT_KAFKA_CLUSTER_CLOUD}" \
+			>> "$(OUTPUT_DIR)/datasource.yaml"; \
+	fi; \
+	\
+	if [[ -n "$${UPTEST_CONFLUENT_ENVIRONMENT_ID:-}" ]]; then \
+		echo "confluent_environment_id: $${UPTEST_CONFLUENT_ENVIRONMENT_ID}" \
+			>> "$(OUTPUT_DIR)/datasource.yaml"; \
+	fi; \
+	\
+	if [[ -n "$${UPTEST_CONFLUENT_SERVICE_ACCT_ID:-}" ]]; then \
+		echo "confluent_service_account_id: $${UPTEST_CONFLUENT_SERVICE_ACCT_ID}" \
+			>> "$(OUTPUT_DIR)/datasource.yaml"; \
+	fi; \
+	\
+	if [[ -n "$${UPTEST_CONFLUENT_ORG_ID:-}" ]]; then \
+		echo "confluent_org_id: $${UPTEST_CONFLUENT_ORG_ID}" >> "$(OUTPUT_DIR)/datasource.yaml"; \
+	fi; \
+	\
+	if [[ -n "$${UPTEST_CONFLUENT_REGION:-}" ]]; then \
+		echo "confluent_region: $${UPTEST_CONFLUENT_REGION}" >> "$(OUTPUT_DIR)/datasource.yaml"; \
+	fi; \
+	\
 	KUBECTL=$(KUBECTL) KUTTL=$(KUTTL) CROSSPLANE_NAMESPACE=$(CROSSPLANE_NAMESPACE) \
 		$(UPTEST) e2e "$${UPTEST_EXAMPLE_LIST}" \
-			--data-source="$${UPTEST_DATASOURCE_PATH}" \
+			--data-source="$(OUTPUT_DIR)/datasource.yaml" \
 			--setup-script=cluster/test/setup.sh \
 			--default-conditions="Test" || $(FAIL)
 	@$(OK) running automated tests
