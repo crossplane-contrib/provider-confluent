@@ -1,0 +1,30 @@
+apiVersion: flink.crossplane.io/v1alpha1
+kind: Artifact
+metadata:
+  annotations:
+    meta.upbound.io/example-id: flink/v1alpha1/artifact
+  labels:
+    testing.upbound.io/example-name: main
+  name: main
+spec:
+  forProvider:
+    cloud: AWS
+    contentFormat: JAR
+    displayName: my_flink_sumscalar_artifact
+    environment:
+    - id: ${confluent_environment.development.id}
+    region: us-west-2
+
+---
+
+apiVersion: confluent.crossplane.io/v1alpha1
+kind: Environment
+metadata:
+  annotations:
+    meta.upbound.io/example-id: flink/v1alpha1/artifact
+  labels:
+    testing.upbound.io/example-name: development
+  name: development
+spec:
+  forProvider:
+    displayName: Development
