@@ -48,7 +48,11 @@ Notice that in this example Provider resource is referencing ControllerConfig wi
 
 You can see the API reference [here](https://doc.crds.dev/github.com/crossplane-contrib/provider-confluent).
 
-## Developing
+## Developing / Contributing
+
+First, make sure you are familiar with Upjet and their documentation:
+1. https://github.com/crossplane/upjet/blob/main/docs/README.md#generating-a-crossplane-provider-using-upjet
+2. https://github.com/crossplane/upjet/blob/main/docs/configuring-a-resource.md
 
 Run code-generation pipeline:
 ```console
