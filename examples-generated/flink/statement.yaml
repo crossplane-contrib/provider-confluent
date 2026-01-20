@@ -1,0 +1,34 @@
+apiVersion: flink.crossplane.io/v1alpha1
+kind: Statement
+metadata:
+  annotations:
+    meta.upbound.io/example-id: flink/v1alpha1/statement
+  labels:
+    testing.upbound.io/example-name: random_int_table
+  name: random-int-table
+spec:
+  forProvider:
+    computePool:
+    - idSelector:
+        matchLabels:
+          testing.upbound.io/example-name: example
+    credentials:
+    - keySecretRef:
+        key: attribute.id
+        name: example-api-key
+        namespace: upbound-system
+      secretSecretRef:
+        key: attribute.secret
+        name: example-api-key
+        namespace: upbound-system
+    environment:
+    - id: ${data.confluent_environment.staging.id}
+    organization:
+    - id: ${data.confluent_organization.main.id}
+    principal:
+    - id: ${confluent_service_account.app-manager-flink.id}
+    properties:
+      sql.current-catalog: ${data.confluent_environment.example.display_name}
+      sql.current-database: ${data.confluent_kafka_cluster.example.display_name}
+    restEndpoint: ${data.confluent_flink_region.main.rest_endpoint}
+    statement: CREATE TABLE random_int_table(ts TIMESTAMP_LTZ(3), random_value INT);

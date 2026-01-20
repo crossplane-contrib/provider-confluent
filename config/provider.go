@@ -12,6 +12,9 @@ import (
 
 	confluentapikey "github.com/crossplane-contrib/provider-confluent/config/confluent_api_key"
 	confluentenvironment "github.com/crossplane-contrib/provider-confluent/config/confluent_environment"
+	confluentflinkartifact "github.com/crossplane-contrib/provider-confluent/config/confluent_flink_artifact"
+	confluentflinkcomputepool "github.com/crossplane-contrib/provider-confluent/config/confluent_flink_compute_pool"
+	confluentflinkstatement "github.com/crossplane-contrib/provider-confluent/config/confluent_flink_statement"
 	confluentkafkaacl "github.com/crossplane-contrib/provider-confluent/config/confluent_kafka_acl"
 	confluentkafkacluster "github.com/crossplane-contrib/provider-confluent/config/confluent_kafka_cluster"
 	confluentkafkaclusterconfig "github.com/crossplane-contrib/provider-confluent/config/confluent_kafka_cluster_config"
@@ -51,6 +54,10 @@ func GetProvider() *ujconfig.Provider {
 		confluentkafkaacl.Configure,
 		confluentkafkatopic.Configure,
 		confluentrolebinding.Configure,
+		// Flink resources
+		confluentflinkcomputepool.Configure,
+		confluentflinkstatement.Configure,
+		confluentflinkartifact.Configure,
 	} {
 		configure(pc)
 	}
