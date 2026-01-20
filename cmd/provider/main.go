@@ -38,6 +38,7 @@ import (
 	"github.com/crossplane/crossplane-runtime/pkg/resource"
 	tjcontroller "github.com/crossplane/upjet/pkg/controller"
 	"github.com/crossplane/upjet/pkg/terraform"
+	"go.uber.org/zap/zapcore"
 	"gopkg.in/alecthomas/kingpin.v2"
 	kerrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -69,14 +70,16 @@ func main() {
 
 	kingpin.MustParse(app.Parse(os.Args[1:]))
 
-	zl := zap.New(zap.UseDevMode(*debug))
-	log := logging.NewLogrLogger(zl.WithName("provider-confluent"))
+	var zapOpts []zap.Opts
 	if *debug {
-		// The controller-runtime runs with a no-op logger by default. It is
-		// *very* verbose even at info level, so we only provide it a real
-		// logger when we're running in debug mode.
-		ctrl.SetLogger(zl)
+		zapOpts = append(zapOpts, zap.UseDevMode(true))
+	} else {
+		zapOpts = append(zapOpts, zap.UseDevMode(false), zap.Level(zapcore.InfoLevel))
 	}
+	
+	zl := zap.New(zapOpts...)
+	log := logging.NewLogrLogger(zl.WithName("provider-confluent"))
+	ctrl.SetLogger(zl)
 
 	// currently, we configure the jitter to be the 5% of the poll interval
 	pollJitter := time.Duration(float64(*pollInterval) * 0.05)

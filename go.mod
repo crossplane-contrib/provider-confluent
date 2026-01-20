@@ -7,6 +7,7 @@ require (
 	github.com/crossplane/crossplane-tools v0.0.0-20230925130601-628280f8bf79
 	github.com/crossplane/upjet v0.11.0-rc.0.0.20231012093706-c4a76d2a7505
 	github.com/pkg/errors v0.9.1
+	go.uber.org/zap v1.26.0
 	gopkg.in/alecthomas/kingpin.v2 v2.2.6
 	k8s.io/apimachinery v0.28.3
 	k8s.io/client-go v0.28.3
@@ -90,7 +91,6 @@ require (
 	github.com/yuin/goldmark v1.4.13 // indirect
 	github.com/zclconf/go-cty v1.11.0 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
-	go.uber.org/zap v1.26.0 // indirect
 	golang.org/x/exp v0.0.0-20231006140011-7918f672742d // indirect
 	golang.org/x/mod v0.13.0 // indirect
 	golang.org/x/net v0.17.0 // indirect
