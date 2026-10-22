@@ -6,6 +6,10 @@ PROJECT_REPO ?= github.com/crossplane-contrib/$(PROJECT_NAME)
 
 export TERRAFORM_VERSION ?= 1.5.7
 
+# Do not allow a version of terraform greater than 1.5.x, due to versions 1.6+ being
+# licensed under BSL, which is not permitted for Crossplane community extensions.
+TERRAFORM_VERSION_VALID := $(shell [ "$(TERRAFORM_VERSION)" = "`printf "$(TERRAFORM_VERSION)\n1.6" | sort -V | head -n1`" ] && echo 1 || echo 0)
+
 export TERRAFORM_PROVIDER_SOURCE := confluentinc/confluent
 export TERRAFORM_PROVIDER_REPO := https://github.com/confluentinc/terraform-provider-confluent
 export TERRAFORM_PROVIDER_VERSION := 2.25.0
@@ -96,7 +100,7 @@ xpkg.build.provider-confluent: do.build.images
 
 # NOTE(hasheddan): we ensure up is installed prior to running platform-specific
 # build steps in parallel to avoid encountering an installation race condition.
-build.init: $(UP)
+build.init: $(UP) check-terraform-version
 
 # ====================================================================================
 # Setup Terraform for fetching provider schema
@@ -104,7 +108,12 @@ TERRAFORM := $(TOOLS_HOST_DIR)/terraform-$(TERRAFORM_VERSION)
 TERRAFORM_WORKDIR := $(WORK_DIR)/terraform
 TERRAFORM_PROVIDER_SCHEMA := config/schema.json
 
-$(TERRAFORM):
+check-terraform-version:
+ifneq ($(TERRAFORM_VERSION_VALID),1)
+	$(error invalid TERRAFORM_VERSION $(TERRAFORM_VERSION), must be less than 1.6.0 since that version introduced a not permitted BSL license)
+endif
+
+$(TERRAFORM): check-terraform-version
 	@$(INFO) installing terraform $(HOSTOS)-$(HOSTARCH)
 	@mkdir -p $(TOOLS_HOST_DIR)/tmp-terraform
 	@curl -fsSL https://releases.hashicorp.com/terraform/$(TERRAFORM_VERSION)/terraform_$(TERRAFORM_VERSION)_$(SAFEHOST_PLATFORM).zip -o $(TOOLS_HOST_DIR)/tmp-terraform/terraform.zip
@@ -130,7 +139,7 @@ pull-docs:
 generate.init: $(TERRAFORM_PROVIDER_SCHEMA) pull-docs
 
 
-.PHONY: $(TERRAFORM_PROVIDER_SCHEMA) pull-docs
+.PHONY: $(TERRAFORM_PROVIDER_SCHEMA) pull-docs check-terraform-version
 # ====================================================================================
 # Targets
 
