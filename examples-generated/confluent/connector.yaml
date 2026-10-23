@@ -22,6 +22,10 @@ spec:
       name: example-secret
       namespace: upbound-system
     environment:
-    - id: ${confluent_environment.staging.id}
+    - idSelector:
+        matchLabels:
+          testing.upbound.io/example-name: staging
     kafkaCluster:
-    - id: ${confluent_kafka_cluster.basic.id}
+    - idSelector:
+        matchLabels:
+          testing.upbound.io/example-name: basic
