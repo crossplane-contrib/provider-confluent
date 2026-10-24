@@ -16,6 +16,7 @@ import (
 	confluentkafkacluster "github.com/crossplane-contrib/provider-confluent/config/confluent_kafka_cluster"
 	confluentkafkaclusterconfig "github.com/crossplane-contrib/provider-confluent/config/confluent_kafka_cluster_config"
 	confluentkafkatopic "github.com/crossplane-contrib/provider-confluent/config/confluent_kafka_topic"
+	confluentidentitypool "github.com/crossplane-contrib/provider-confluent/config/confluent_identity_pool"
 	confluentrolebinding "github.com/crossplane-contrib/provider-confluent/config/confluent_role_binding"
 	confluentserviceaccount "github.com/crossplane-contrib/provider-confluent/config/confluent_service_account"
 )
@@ -50,6 +51,7 @@ func GetProvider() *ujconfig.Provider {
 		confluentapikey.Configure,
 		confluentkafkaacl.Configure,
 		confluentkafkatopic.Configure,
+		confluentidentitypool.Configure,
 		confluentrolebinding.Configure,
 	} {
 		configure(pc)
