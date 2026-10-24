@@ -47,7 +47,7 @@ type KafkaACLInitParameters struct {
 	Host *string `json:"host,omitempty" tf:"host,omitempty"`
 
 	// supports the following:
-	KafkaCluster []KafkaClusterInitParameters `json:"kafkaCluster,omitempty" tf:"kafka_cluster,omitempty"`
+	KafkaCluster []KafkaACLKafkaClusterInitParameters `json:"kafkaCluster,omitempty" tf:"kafka_cluster,omitempty"`
 
 	// The operation type for the ACL. Accepted values are: ALL, READ, WRITE, CREATE, DELETE, ALTER, DESCRIBE, CLUSTER_ACTION, DESCRIBE_CONFIGS, ALTER_CONFIGS, and IDEMPOTENT_WRITE.  See Authorization using ACLs to find mappings of (resource_type, operation) to one or more Kafka APIs or request types.
 	// The operation type for the ACL.
@@ -74,6 +74,33 @@ type KafkaACLInitParameters struct {
 	RestEndpoint *string `json:"restEndpoint,omitempty" tf:"rest_endpoint,omitempty"`
 }
 
+type KafkaACLKafkaClusterInitParameters struct {
+}
+
+type KafkaACLKafkaClusterObservation struct {
+
+	// The ID of the Kafka cluster, for example, lkc-abc123.
+	// The Kafka cluster ID (e.g., `lkc-12345`).
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+}
+
+type KafkaACLKafkaClusterParameters struct {
+
+	// The ID of the Kafka cluster, for example, lkc-abc123.
+	// The Kafka cluster ID (e.g., `lkc-12345`).
+	// +crossplane:generate:reference:type=Cluster
+	// +kubebuilder:validation:Optional
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// Reference to a Cluster to populate id.
+	// +kubebuilder:validation:Optional
+	IDRef *v1.Reference `json:"idRef,omitempty" tf:"-"`
+
+	// Selector for a Cluster to populate id.
+	// +kubebuilder:validation:Optional
+	IDSelector *v1.Selector `json:"idSelector,omitempty" tf:"-"`
+}
+
 type KafkaACLObservation struct {
 
 	// supports the following:
@@ -88,7 +115,7 @@ type KafkaACLObservation struct {
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
 	// supports the following:
-	KafkaCluster []KafkaClusterObservation `json:"kafkaCluster,omitempty" tf:"kafka_cluster,omitempty"`
+	KafkaCluster []KafkaACLKafkaClusterObservation `json:"kafkaCluster,omitempty" tf:"kafka_cluster,omitempty"`
 
 	// The operation type for the ACL. Accepted values are: ALL, READ, WRITE, CREATE, DELETE, ALTER, DESCRIBE, CLUSTER_ACTION, DESCRIBE_CONFIGS, ALTER_CONFIGS, and IDEMPOTENT_WRITE.  See Authorization using ACLs to find mappings of (resource_type, operation) to one or more Kafka APIs or request types.
 	// The operation type for the ACL.
@@ -133,7 +160,7 @@ type KafkaACLParameters struct {
 
 	// supports the following:
 	// +kubebuilder:validation:Optional
-	KafkaCluster []KafkaClusterParameters `json:"kafkaCluster,omitempty" tf:"kafka_cluster,omitempty"`
+	KafkaCluster []KafkaACLKafkaClusterParameters `json:"kafkaCluster,omitempty" tf:"kafka_cluster,omitempty"`
 
 	// The operation type for the ACL. Accepted values are: ALL, READ, WRITE, CREATE, DELETE, ALTER, DESCRIBE, CLUSTER_ACTION, DESCRIBE_CONFIGS, ALTER_CONFIGS, and IDEMPOTENT_WRITE.  See Authorization using ACLs to find mappings of (resource_type, operation) to one or more Kafka APIs or request types.
 	// The operation type for the ACL.
@@ -179,33 +206,6 @@ type KafkaACLParameters struct {
 	// The REST endpoint of the Kafka cluster (e.g., `https://pkc-00000.us-central1.gcp.confluent.cloud:443`).
 	// +kubebuilder:validation:Optional
 	RestEndpoint *string `json:"restEndpoint,omitempty" tf:"rest_endpoint,omitempty"`
-}
-
-type KafkaClusterInitParameters struct {
-}
-
-type KafkaClusterObservation struct {
-
-	// The ID of the Kafka cluster, for example, lkc-abc123.
-	// The Kafka cluster ID (e.g., `lkc-12345`).
-	ID *string `json:"id,omitempty" tf:"id,omitempty"`
-}
-
-type KafkaClusterParameters struct {
-
-	// The ID of the Kafka cluster, for example, lkc-abc123.
-	// The Kafka cluster ID (e.g., `lkc-12345`).
-	// +crossplane:generate:reference:type=Cluster
-	// +kubebuilder:validation:Optional
-	ID *string `json:"id,omitempty" tf:"id,omitempty"`
-
-	// Reference to a Cluster to populate id.
-	// +kubebuilder:validation:Optional
-	IDRef *v1.Reference `json:"idRef,omitempty" tf:"-"`
-
-	// Selector for a Cluster to populate id.
-	// +kubebuilder:validation:Optional
-	IDSelector *v1.Selector `json:"idSelector,omitempty" tf:"-"`
 }
 
 // KafkaACLSpec defines the desired state of KafkaACL
