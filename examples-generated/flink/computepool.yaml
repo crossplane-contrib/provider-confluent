@@ -1,0 +1,30 @@
+apiVersion: flink.crossplane.io/v1alpha1
+kind: ComputePool
+metadata:
+  annotations:
+    meta.upbound.io/example-id: flink/v1alpha1/computepool
+  labels:
+    testing.upbound.io/example-name: main
+  name: main
+spec:
+  forProvider:
+    cloud: AWS
+    displayName: standard_compute_pool
+    environment:
+    - id: ${confluent_environment.development.id}
+    maxCfu: 5
+    region: us-east-1
+
+---
+
+apiVersion: confluent.crossplane.io/v1alpha1
+kind: Environment
+metadata:
+  annotations:
+    meta.upbound.io/example-id: flink/v1alpha1/computepool
+  labels:
+    testing.upbound.io/example-name: development
+  name: development
+spec:
+  forProvider:
+    displayName: Development

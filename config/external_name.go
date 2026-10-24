@@ -19,6 +19,10 @@ var ExternalNameConfigs = map[string]config.ExternalName{
 	"confluent_kafka_topic":          config.IdentifierFromProvider,
 	"confluent_role_binding":         config.IdentifierFromProvider,
 	"confluent_schema":               config.IdentifierFromProvider,
+	// Flink resources
+	"confluent_flink_compute_pool":   config.IdentifierFromProvider,
+	"confluent_flink_statement":      config.IdentifierFromProvider,
+	"confluent_flink_artifact":       config.IdentifierFromProvider,
 }
 
 // ExternalNameConfigurations applies all external name configs listed in the
