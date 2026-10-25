@@ -8,19 +8,10 @@ latest release. Please upgrade to the latest release before reporting an issue.
 
 ## Reporting a Vulnerability
 
-Please do **not** report security vulnerabilities in public issues. To report a
-vulnerability, either:
-
-1. Use GitHub's private vulnerability reporting. Open the
-   [security tab](https://github.com/crossplane-contrib/provider-confluent/security)
-   of this repository, click on 'Advisories', then 'Report a vulnerability', and
-   describe the issue. See the [GitHub
-   documentation](https://docs.github.com/en/code-security/security-advisories/guidance-on-reporting-and-writing/privately-reporting-a-security-vulnerability)
-   for details.
-
-2. Send an email to `crossplane-security@lists.cncf.io` with the details of the
-   issue, as described in the [Crossplane security
-   policy](https://github.com/crossplane/crossplane/blob/main/SECURITY.md).
+Please do **not** report security vulnerabilities in public issues. Instead,
+send an email to `crossplane-security@lists.cncf.io` with the details of the
+issue, as described in the [Crossplane security
+policy](https://github.com/crossplane/crossplane/blob/main/SECURITY.md).
 
 Useful information to include: the affected provider-confluent version, a
 description of the issue and its impact, and steps to reproduce it.
