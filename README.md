@@ -1,7 +1,7 @@
 # Provider Confluent
 
 `provider-confluent` is a [Crossplane](https://crossplane.io/) provider that
-is built using [Upjet](https://github.com/upbound/upjet) code
+is built using [Upjet](https://github.com/crossplane/upjet) code
 generation tools and exposes XRM-conformant managed resources for the
 Confluent API.
 
@@ -26,13 +26,8 @@ description: |-
 ```
 
 
-Install the provider by using the following command after changing the image tag
-to the [latest release](https://marketplace.upbound.io/providers/crossplane-contrib/provider-confluent):
-```
-up ctp provider install crossplane-contrib/provider-confluent:v0.1.0
-```
-
-Alternatively, you can use declarative installation:
+Install the provider with the following manifest, after replacing `<version>`
+with the [latest release](https://github.com/crossplane-contrib/provider-confluent/releases):
 ```
 cat <<EOF | kubectl apply -f -
 apiVersion: pkg.crossplane.io/v1
@@ -40,15 +35,47 @@ kind: Provider
 metadata:
   name: provider-confluent
 spec:
-  package: crossplane-contrib/provider-confluent:v0.1.0
+  package: xpkg.crossplane.io/crossplane-contrib/provider-confluent:<version>
 EOF
 ```
 
-Notice that in this example Provider resource is referencing ControllerConfig with debug enabled.
+To run the provider with debug logging, reference a `DeploymentRuntimeConfig`
+from the Provider. `ControllerConfig` is deprecated in favor of
+`DeploymentRuntimeConfig`.
+```
+cat <<EOF | kubectl apply -f -
+apiVersion: pkg.crossplane.io/v1beta1
+kind: DeploymentRuntimeConfig
+metadata:
+  name: debug-config
+spec:
+  deploymentTemplate:
+    spec:
+      selector: {}
+      template:
+        spec:
+          containers:
+            - name: package-runtime
+              args:
+                - --debug
+---
+apiVersion: pkg.crossplane.io/v1
+kind: Provider
+metadata:
+  name: provider-confluent
+spec:
+  package: xpkg.crossplane.io/crossplane-contrib/provider-confluent:<version>
+  runtimeConfigRef:
+    name: debug-config
+EOF
+```
 
 You can see the API reference [here](https://doc.crds.dev/github.com/crossplane-contrib/provider-confluent).
 
 ## Developing / Contributing
+
+Please read [CONTRIBUTING.md](CONTRIBUTING.md) first; all commits must be signed
+off (DCO). Security issues are handled as described in [SECURITY.md](SECURITY.md).
 
 First, make sure you are familiar with Upjet and their documentation:
 1. https://github.com/crossplane/upjet/blob/main/docs/README.md#generating-a-crossplane-provider-using-upjet
