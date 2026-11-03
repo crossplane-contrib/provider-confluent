@@ -27,7 +27,10 @@ description: |-
 
 
 Install the provider with the following manifest, after replacing `<version>`
-with the [latest release](https://github.com/crossplane-contrib/provider-confluent/releases):
+with the [latest release](https://github.com/crossplane-contrib/provider-confluent/releases).
+Releases up to and including v1.0.0 were published only to
+`xpkg.upbound.io/crossplane-contrib/provider-confluent`; newer releases are
+published to `ghcr.io/crossplane-contrib` and served by `xpkg.crossplane.io`:
 ```
 cat <<EOF | kubectl apply -f -
 apiVersion: pkg.crossplane.io/v1

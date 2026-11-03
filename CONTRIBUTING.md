@@ -45,19 +45,23 @@ Familiarize yourself with its documentation first:
 2. [Configuring a
    resource](https://github.com/crossplane/upjet/blob/main/docs/configuring-a-resource.md)
 
-Resource configuration lives in `config/`. The `apis/`, `internal/controller/`,
-`package/crds/` and `examples-generated/` directories are generated: change the
-configuration and run `make generate` instead of editing them by hand.
+Resource configuration lives in `config/`. Generated code is written to the
+`zz_*.go` files under `apis/` and `internal/controller/`, plus `package/crds/`,
+`examples-generated/`, and the generated config metadata files
+(`config/schema.json`, `config/provider-metadata.yaml`, `config/generated.lst`).
+Change the configuration and run `make generate` instead of editing those
+generated files by hand.
 
 ### Toolchain
 
-Use the Go version the repository is built with (see `GO_REQUIRED_VERSION` in
-the [Makefile](./Makefile)). With a newer local Go, select the right toolchain
-and install `goimports` before generating:
+Use the Go version declared in [`go.mod`](./go.mod). With a newer local Go,
+select the matching toolchain and install `goimports` before generating:
 
 ```console
-export GOTOOLCHAIN=go1.24.2 PATH="$PATH:$(go env GOPATH)/bin"
-go install golang.org/x/tools/cmd/goimports@latest
+GO_VERSION=$(awk '$1 == "go" { print $2; exit }' go.mod)
+export GOTOOLCHAIN="go${GO_VERSION}"
+export PATH="$PATH:$(go env GOPATH)/bin"
+go install golang.org/x/tools/cmd/goimports
 ```
 
 ### Building and testing
@@ -71,8 +75,20 @@ make reviewable test
 
 `make reviewable` runs code generation, linting and the unit tests, and the
 resulting generated code must be committed. A failed `make generate` can leave
-generated files deleted; restore them with `git checkout -- apis
-examples-generated internal package config`.
+generated files deleted or truncated; restore only the generated outputs. Do
+**not** restore all of `config/`, `internal/`, or `package/` as those directories
+contain hand-written files:
+
+```console
+git restore -- \
+  ':(glob)apis/**/zz_*.go' \
+  ':(glob)internal/controller/**/zz_*.go' \
+  package/crds \
+  examples-generated \
+  config/schema.json \
+  config/provider-metadata.yaml \
+  config/generated.lst
+```
 
 Run the provider against a Kubernetes cluster, out of cluster, with:
 
