@@ -2,3 +2,24 @@ apiVersion: meta.pkg.crossplane.io/v1
 kind: Provider
 metadata:
   name: provider-confluent
+  annotations:
+    meta.crossplane.io/maintainer: Crossplane Maintainers <info@crossplane.io>
+    meta.crossplane.io/source: github.com/crossplane-contrib/provider-confluent
+    meta.crossplane.io/license: Apache-2.0
+    meta.crossplane.io/description: |
+      The Confluent Crossplane provider enables management of Confluent Cloud
+      resources such as environments, Kafka clusters, topics and service
+      accounts.
+    meta.crossplane.io/readme: |
+      `provider-confluent` is the Crossplane infrastructure provider for
+      [Confluent Cloud](https://www.confluent.io/confluent-cloud/). It is built
+      with [Upjet](https://github.com/crossplane/upjet) on top of the
+      [Confluent Terraform provider](https://github.com/confluentinc/terraform-provider-confluent).
+      See the [README](https://github.com/crossplane-contrib/provider-confluent/blob/main/README.md)
+      for installation and usage. If you encounter an issue, please create one
+      in the [crossplane-contrib/provider-confluent](https://github.com/crossplane-contrib/provider-confluent)
+      repository.
+    friendly-name.meta.crossplane.io: Provider Confluent
+spec:
+  crossplane:
+    version: ">=v1.14.0-0"
