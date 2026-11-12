@@ -9,5 +9,10 @@ func Configure(p *config.Provider) {
 		r.ShortGroup = "confluent"
 		r.UseAsync = true
 		r.Kind = "IdentityPool"
+
+		// Allows us to reference the Identity Provider ID via spec.forProvider.identityProvider[].idRef
+		r.References["identity_provider.id"] = config.Reference{
+			Type: "IdentityProvider",
+		}
 	})
 }

@@ -9,4 +9,5 @@ spec:
     identityClaim: claims.sub
     filter: claims.aud=="confluent"
     identityProvider:
-      - id: ${data.confluent_identity_provider_id}
+      - idRef:
+          name: provider-confluent-test-identity-provider

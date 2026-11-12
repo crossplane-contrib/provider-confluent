@@ -1,0 +1,10 @@
+apiVersion: confluent.crossplane.io/v1alpha1
+kind: IdentityProvider
+metadata:
+  name: provider-confluent-test-identity-provider
+spec:
+  forProvider:
+    displayName: provider-confluent-test-identity-provider
+    description: Test Identity Provider for provider-confluent
+    issuer: https://login.microsoftonline.com/${data.confluent_tenant_id}/v2.0
+    jwksUri: https://login.microsoftonline.com/${data.confluent_tenant_id}/discovery/v2.0/keys

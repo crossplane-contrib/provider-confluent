@@ -95,10 +95,6 @@ type IdentityPoolParameters struct {
 }
 
 type IdentityProviderInitParameters struct {
-
-	// The ID of the Identity Provider associated with the Identity Pool, for example, op-abc123.
-	// The unique identifier for the Identity Provider.
-	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 }
 
 type IdentityProviderObservation struct {
@@ -112,8 +108,17 @@ type IdentityProviderParameters struct {
 
 	// The ID of the Identity Provider associated with the Identity Pool, for example, op-abc123.
 	// The unique identifier for the Identity Provider.
+	// +crossplane:generate:reference:type=IdentityProvider
 	// +kubebuilder:validation:Optional
-	ID *string `json:"id" tf:"id,omitempty"`
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// Reference to a IdentityProvider to populate id.
+	// +kubebuilder:validation:Optional
+	IDRef *v1.Reference `json:"idRef,omitempty" tf:"-"`
+
+	// Selector for a IdentityProvider to populate id.
+	// +kubebuilder:validation:Optional
+	IDSelector *v1.Selector `json:"idSelector,omitempty" tf:"-"`
 }
 
 // IdentityPoolSpec defines the desired state of IdentityPool
