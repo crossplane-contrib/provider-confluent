@@ -11,6 +11,7 @@ import (
 	ujconfig "github.com/crossplane/upjet/pkg/config"
 
 	confluentapikey "github.com/crossplane-contrib/provider-confluent/config/confluent_api_key"
+	confluentconnector "github.com/crossplane-contrib/provider-confluent/config/confluent_connector"
 	confluentenvironment "github.com/crossplane-contrib/provider-confluent/config/confluent_environment"
 	confluentkafkaacl "github.com/crossplane-contrib/provider-confluent/config/confluent_kafka_acl"
 	confluentkafkacluster "github.com/crossplane-contrib/provider-confluent/config/confluent_kafka_cluster"
@@ -51,6 +52,7 @@ func GetProvider() *ujconfig.Provider {
 		confluentkafkaacl.Configure,
 		confluentkafkatopic.Configure,
 		confluentrolebinding.Configure,
+		confluentconnector.Configure,
 	} {
 		configure(pc)
 	}
