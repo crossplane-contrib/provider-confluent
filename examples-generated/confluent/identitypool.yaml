@@ -1,0 +1,16 @@
+apiVersion: confluent.crossplane.io/v1alpha1
+kind: IdentityPool
+metadata:
+  annotations:
+    meta.upbound.io/example-id: confluent/v1alpha1/identitypool
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    description: Prod Access to Kafka clusters to Release Engineering
+    displayName: My Identity Pool
+    filter: claims.aud=="confluent" && claims.group!="invalid_group"
+    identityClaim: claims.sub
+    identityProvider:
+    - id: ${confluent_identity_provider.azure.id}
