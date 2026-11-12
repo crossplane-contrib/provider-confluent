@@ -21,5 +21,7 @@ spec:
         name: example-api-key
         namespace: upbound-system
     kafkaCluster:
-    - id: ${confluent_kafka_cluster.dedicated.id}
+    - idSelector:
+        matchLabels:
+          testing.upbound.io/example-name: dedicated
     restEndpoint: ${confluent_kafka_cluster.dedicated.rest_endpoint}

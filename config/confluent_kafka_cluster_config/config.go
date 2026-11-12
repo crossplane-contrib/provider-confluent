@@ -8,5 +8,10 @@ func Configure(p *config.Provider) {
 		// We need to override the default group that upjet generated for
 		r.ShortGroup = "confluent"
 		r.UseAsync = true
+
+		// Allows us to reference the Kafka cluster ID via spec.forProvider.kafkaCluster.idRef
+		r.References["kafka_cluster.id"] = config.Reference{
+			Type: "Cluster",
+		}
 	})
 }

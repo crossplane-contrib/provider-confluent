@@ -109,6 +109,35 @@ func (mg *Cluster) ResolveReferences(ctx context.Context, c client.Reader) error
 	return nil
 }
 
+// ResolveReferences of this ClusterConfig.
+func (mg *ClusterConfig) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPIResolver(c, mg)
+
+	var rsp reference.ResolutionResponse
+	var err error
+
+	for i3 := 0; i3 < len(mg.Spec.ForProvider.KafkaCluster); i3++ {
+		rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+			CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.KafkaCluster[i3].ID),
+			Extract:      reference.ExternalName(),
+			Reference:    mg.Spec.ForProvider.KafkaCluster[i3].IDRef,
+			Selector:     mg.Spec.ForProvider.KafkaCluster[i3].IDSelector,
+			To: reference.To{
+				List:    &ClusterList{},
+				Managed: &Cluster{},
+			},
+		})
+		if err != nil {
+			return errors.Wrap(err, "mg.Spec.ForProvider.KafkaCluster[i3].ID")
+		}
+		mg.Spec.ForProvider.KafkaCluster[i3].ID = reference.ToPtrValue(rsp.ResolvedValue)
+		mg.Spec.ForProvider.KafkaCluster[i3].IDRef = rsp.ResolvedReference
+
+	}
+
+	return nil
+}
+
 // ResolveReferences of this KafkaACL.
 func (mg *KafkaACL) ResolveReferences(ctx context.Context, c client.Reader) error {
 	r := reference.NewAPIResolver(c, mg)
