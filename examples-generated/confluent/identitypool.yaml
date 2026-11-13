@@ -1,0 +1,35 @@
+apiVersion: confluent.crossplane.io/v1alpha1
+kind: IdentityPool
+metadata:
+  annotations:
+    meta.upbound.io/example-id: confluent/v1alpha1/identitypool
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    description: Prod Access to Kafka clusters to Release Engineering
+    displayName: My Identity Pool
+    filter: claims.aud=="confluent" && claims.group!="invalid_group"
+    identityClaim: claims.sub
+    identityProvider:
+    - idSelector:
+        matchLabels:
+          testing.upbound.io/example-name: azure
+
+---
+
+apiVersion: confluent.crossplane.io/v1alpha1
+kind: IdentityProvider
+metadata:
+  annotations:
+    meta.upbound.io/example-id: confluent/v1alpha1/identitypool
+  labels:
+    testing.upbound.io/example-name: azure
+  name: azure
+spec:
+  forProvider:
+    description: My description
+    displayName: 'My OIDC Provider: Azure AD'
+    issuer: https://login.microsoftonline.com/{tenant_id}/v2.0
+    jwksUri: https://login.microsoftonline.com/common/discovery/v2.0/keys

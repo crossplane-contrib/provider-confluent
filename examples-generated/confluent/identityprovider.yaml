@@ -1,0 +1,14 @@
+apiVersion: confluent.crossplane.io/v1alpha1
+kind: IdentityProvider
+metadata:
+  annotations:
+    meta.upbound.io/example-id: confluent/v1alpha1/identityprovider
+  labels:
+    testing.upbound.io/example-name: azure
+  name: azure
+spec:
+  forProvider:
+    description: My description
+    displayName: 'My OIDC Provider: Azure AD'
+    issuer: https://login.microsoftonline.com/{tenant_id}/v2.0
+    jwksUri: https://login.microsoftonline.com/common/discovery/v2.0/keys

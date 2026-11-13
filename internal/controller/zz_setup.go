@@ -13,6 +13,8 @@ import (
 	cluster "github.com/crossplane-contrib/provider-confluent/internal/controller/confluent/cluster"
 	clusterconfig "github.com/crossplane-contrib/provider-confluent/internal/controller/confluent/clusterconfig"
 	environment "github.com/crossplane-contrib/provider-confluent/internal/controller/confluent/environment"
+	identitypool "github.com/crossplane-contrib/provider-confluent/internal/controller/confluent/identitypool"
+	identityprovider "github.com/crossplane-contrib/provider-confluent/internal/controller/confluent/identityprovider"
 	kafkaacl "github.com/crossplane-contrib/provider-confluent/internal/controller/confluent/kafkaacl"
 	kafkatopic "github.com/crossplane-contrib/provider-confluent/internal/controller/confluent/kafkatopic"
 	rolebinding "github.com/crossplane-contrib/provider-confluent/internal/controller/confluent/rolebinding"
@@ -29,6 +31,8 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		cluster.Setup,
 		clusterconfig.Setup,
 		environment.Setup,
+		identitypool.Setup,
+		identityprovider.Setup,
 		kafkaacl.Setup,
 		kafkatopic.Setup,
 		rolebinding.Setup,
