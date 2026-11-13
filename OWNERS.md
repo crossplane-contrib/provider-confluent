@@ -6,6 +6,8 @@ This page lists all maintainers for **this** repository.
 
 * Björn Bärtschi ([bisbeb](https://github.com/bisbeb))
 * Dylan Moore ([dzmoore](https://github.com/dzmoore))
+* Florim ([ferim4](https://github.com/ferim4))
+* Zahra Assadizadeh ([ZahraAssdizadeh](https://github.com/ZahraAssdizadeh))
 
 ## Emeritus Maintainers
 
