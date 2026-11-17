@@ -1,0 +1,13 @@
+apiVersion: confluent.crossplane.io/v1alpha1
+kind: IdentityPool
+metadata:
+  name: provider-confluent-test-identity-pool
+spec:
+  forProvider:
+    displayName: provider-confluent-test-identity-pool
+    description: Test Identity Pool for provider-confluent
+    identityClaim: claims.sub
+    filter: claims.aud=="confluent"
+    identityProvider:
+      - idRef:
+          name: provider-confluent-test-identity-provider
