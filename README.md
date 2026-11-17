@@ -75,6 +75,19 @@ EOF
 
 You can see the API reference [here](https://doc.crds.dev/github.com/crossplane-contrib/provider-confluent).
 
+### Compatibility
+
+The package requires Crossplane v1.14.0 or later (`spec.crossplane.version` in
+[`package/crossplane.yaml`](package/crossplane.yaml)), which matches the
+`crossplane-runtime` version the provider is built with. The package was
+installed and reported healthy on Crossplane v1.14.9, v1.20.14 and v2.4.3. That
+check covers installation and start-up only; it does not exercise the managed
+resources against Confluent Cloud.
+
+The provider uses cluster-scoped managed resources. The namespaced managed
+resources introduced with Crossplane v2 are not supported yet
+([#43](https://github.com/crossplane-contrib/provider-confluent/issues/43)).
+
 ## Developing / Contributing
 
 Please read [CONTRIBUTING.md](CONTRIBUTING.md) first; all commits must be signed
