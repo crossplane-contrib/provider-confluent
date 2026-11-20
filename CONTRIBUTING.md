@@ -102,6 +102,36 @@ The embedded Terraform CLI must stay on 1.5.x. Terraform 1.6 and later are
 licensed under the BSL, which is not permitted for Crossplane community
 extension projects.
 
+## Releases
+
+Maintainers cut releases. The package is published to
+`ghcr.io/crossplane-contrib/provider-confluent`, served as
+`xpkg.crossplane.io/crossplane-contrib/provider-confluent`, and mirrored to
+`xpkg.upbound.io` when the Upbound credentials are configured.
+
+1. Make sure CI on `main` is green and the commit to release is on `main`.
+2. Tag the commit and push the tag to the upstream repository (the remote that
+   points to `crossplane-contrib/provider-confluent`):
+
+   ```console
+   git tag -a vX.Y.Z <commit> -m "Release vX.Y.Z"
+   git push <upstream-remote> vX.Y.Z
+   ```
+
+3. The tag runs the CI workflow, which builds and publishes the package with
+   the version taken from the tag, then mirrors it. Check that all jobs,
+   including `publish-artifacts` and the mirror job, are green and that the
+   tag exists on `ghcr.io`. A green `publish-artifacts` job alone is not proof:
+   `make publish` only publishes for `main`, `master`, `release-*` and `v*`
+   (`RELEASE_BRANCH_FILTER`) and otherwise does nothing without an error.
+4. Install the package from `xpkg.crossplane.io` on a fresh cluster and wait for
+   the `Provider` to become healthy.
+5. Create the GitHub release for the tag with release notes.
+
+If the tag run did not publish, move a `release-X.Y` branch to the tagged
+commit (`git push <upstream-remote> <commit>:refs/heads/release-X.Y`); pushes to
+`release-*` branches publish as well.
+
 ## Pull requests
 
 - Open a pull request against `main` and describe what it changes and how it

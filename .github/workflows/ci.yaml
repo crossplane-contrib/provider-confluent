@@ -5,6 +5,8 @@ on:
     branches:
       - main
       - release-*
+    tags:
+      - 'v*'
   pull_request: {}
   workflow_dispatch: {}
 
@@ -353,6 +355,7 @@ jobs:
       - name: Publish Artifacts
         run: |-
           make publish BRANCH_NAME=${GITHUB_REF##*/} \
+            RELEASE_BRANCH_FILTER="main master release-% v%" \
             XPKG_REG_ORGS="${{ env.CROSSPLANE_REGORG }}" \
             XPKG_REG_ORGS_NO_PROMOTE="${{ env.CROSSPLANE_REGORG }}" \
             REGISTRY_ORGS="${{ env.CROSSPLANE_REGORG }}"
