@@ -18,6 +18,9 @@ import (
 	rolebinding "github.com/crossplane-contrib/provider-confluent/internal/controller/confluent/rolebinding"
 	schema "github.com/crossplane-contrib/provider-confluent/internal/controller/confluent/schema"
 	serviceaccount "github.com/crossplane-contrib/provider-confluent/internal/controller/confluent/serviceaccount"
+	artifact "github.com/crossplane-contrib/provider-confluent/internal/controller/flink/artifact"
+	computepool "github.com/crossplane-contrib/provider-confluent/internal/controller/flink/computepool"
+	statement "github.com/crossplane-contrib/provider-confluent/internal/controller/flink/statement"
 	providerconfig "github.com/crossplane-contrib/provider-confluent/internal/controller/providerconfig"
 )
 
@@ -34,6 +37,9 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		rolebinding.Setup,
 		schema.Setup,
 		serviceaccount.Setup,
+		artifact.Setup,
+		computepool.Setup,
+		statement.Setup,
 		providerconfig.Setup,
 	} {
 		if err := setup(mgr, o); err != nil {
