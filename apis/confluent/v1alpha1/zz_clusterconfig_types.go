@@ -55,10 +55,6 @@ type ClusterConfigInitParameters struct {
 }
 
 type ClusterConfigKafkaClusterInitParameters struct {
-
-	// The ID of the Dedicated Kafka cluster, for example, lkc-abc123.
-	// The Kafka cluster ID (e.g., `lkc-12345`).
-	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 }
 
 type ClusterConfigKafkaClusterObservation struct {
@@ -72,8 +68,17 @@ type ClusterConfigKafkaClusterParameters struct {
 
 	// The ID of the Dedicated Kafka cluster, for example, lkc-abc123.
 	// The Kafka cluster ID (e.g., `lkc-12345`).
+	// +crossplane:generate:reference:type=Cluster
 	// +kubebuilder:validation:Optional
-	ID *string `json:"id" tf:"id,omitempty"`
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// Reference to a Cluster to populate id.
+	// +kubebuilder:validation:Optional
+	IDRef *v1.Reference `json:"idRef,omitempty" tf:"-"`
+
+	// Selector for a Cluster to populate id.
+	// +kubebuilder:validation:Optional
+	IDSelector *v1.Selector `json:"idSelector,omitempty" tf:"-"`
 }
 
 type ClusterConfigObservation struct {
