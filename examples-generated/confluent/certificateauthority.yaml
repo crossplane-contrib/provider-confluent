@@ -1,0 +1,17 @@
+apiVersion: confluent.crossplane.io/v1alpha1
+kind: CertificateAuthority
+metadata:
+  annotations:
+    meta.upbound.io/example-id: confluent/v1alpha1/certificateauthority
+  labels:
+    testing.upbound.io/example-name: main
+  name: main
+spec:
+  forProvider:
+    certificateChainFilename: certificate.pem
+    certificateChainSecretRef:
+      key: example-key
+      name: example-secret
+      namespace: upbound-system
+    description: description
+    displayName: my_certificate_authority

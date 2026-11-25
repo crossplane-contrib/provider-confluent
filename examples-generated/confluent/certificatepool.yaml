@@ -1,0 +1,18 @@
+apiVersion: confluent.crossplane.io/v1alpha1
+kind: CertificatePool
+metadata:
+  annotations:
+    meta.upbound.io/example-id: confluent/v1alpha1/certificatepool
+  labels:
+    testing.upbound.io/example-name: main
+  name: main
+spec:
+  forProvider:
+    certificateAuthority:
+    - idSelector:
+        matchLabels:
+          testing.upbound.io/example-name: main
+    description: example description
+    displayName: my-certificate-pool
+    externalIdentifier: CN
+    filter: CN == "test"

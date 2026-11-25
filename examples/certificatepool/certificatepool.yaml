@@ -1,0 +1,13 @@
+apiVersion: confluent.crossplane.io/v1alpha1
+kind: CertificatePool
+metadata:
+  name: provider-confluent-test-certificate-pool
+spec:
+  forProvider:
+    displayName: provider-confluent-test-certificate-pool
+    description: Test Certificate Pool for provider-confluent
+    externalIdentifier: CN
+    filter: CN == "provider-confluent-test"
+    certificateAuthority:
+      - idRef:
+          name: provider-confluent-test-certificate-authority

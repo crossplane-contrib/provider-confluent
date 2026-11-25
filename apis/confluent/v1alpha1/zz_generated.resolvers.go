@@ -80,6 +80,35 @@ func (mg *APIKey) ResolveReferences(ctx context.Context, c client.Reader) error 
 	return nil
 }
 
+// ResolveReferences of this CertificatePool.
+func (mg *CertificatePool) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPIResolver(c, mg)
+
+	var rsp reference.ResolutionResponse
+	var err error
+
+	for i3 := 0; i3 < len(mg.Spec.ForProvider.CertificateAuthority); i3++ {
+		rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+			CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.CertificateAuthority[i3].ID),
+			Extract:      reference.ExternalName(),
+			Reference:    mg.Spec.ForProvider.CertificateAuthority[i3].IDRef,
+			Selector:     mg.Spec.ForProvider.CertificateAuthority[i3].IDSelector,
+			To: reference.To{
+				List:    &CertificateAuthorityList{},
+				Managed: &CertificateAuthority{},
+			},
+		})
+		if err != nil {
+			return errors.Wrap(err, "mg.Spec.ForProvider.CertificateAuthority[i3].ID")
+		}
+		mg.Spec.ForProvider.CertificateAuthority[i3].ID = reference.ToPtrValue(rsp.ResolvedValue)
+		mg.Spec.ForProvider.CertificateAuthority[i3].IDRef = rsp.ResolvedReference
+
+	}
+
+	return nil
+}
+
 // ResolveReferences of this Cluster.
 func (mg *Cluster) ResolveReferences(ctx context.Context, c client.Reader) error {
 	r := reference.NewAPIResolver(c, mg)

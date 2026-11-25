@@ -1,0 +1,13 @@
+apiVersion: confluent.crossplane.io/v1alpha1
+kind: CertificateAuthority
+metadata:
+  name: provider-confluent-test-certificate-authority
+spec:
+  forProvider:
+    displayName: provider-confluent-test-certificate-authority
+    description: Test Certificate Authority for provider-confluent
+    certificateChainFilename: ca.pem
+    certificateChainSecretRef:
+      namespace: crossplane-system
+      name: confluent-certificate-authority
+      key: ca.pem
