@@ -10,6 +10,8 @@ import (
 	"github.com/crossplane/upjet/pkg/controller"
 
 	apikey "github.com/crossplane-contrib/provider-confluent/internal/controller/confluent/apikey"
+	certificateauthority "github.com/crossplane-contrib/provider-confluent/internal/controller/confluent/certificateauthority"
+	certificatepool "github.com/crossplane-contrib/provider-confluent/internal/controller/confluent/certificatepool"
 	cluster "github.com/crossplane-contrib/provider-confluent/internal/controller/confluent/cluster"
 	clusterconfig "github.com/crossplane-contrib/provider-confluent/internal/controller/confluent/clusterconfig"
 	environment "github.com/crossplane-contrib/provider-confluent/internal/controller/confluent/environment"
@@ -26,6 +28,8 @@ import (
 func Setup(mgr ctrl.Manager, o controller.Options) error {
 	for _, setup := range []func(ctrl.Manager, controller.Options) error{
 		apikey.Setup,
+		certificateauthority.Setup,
+		certificatepool.Setup,
 		cluster.Setup,
 		clusterconfig.Setup,
 		environment.Setup,
